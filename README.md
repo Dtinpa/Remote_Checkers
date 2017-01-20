@@ -1,2 +1,6 @@
-# Remote_Chess
-Too implement a game of chess that can be played from two different clients.
+# Remote_Checkers
+To implement a game of checkers that can be played from two different clients.
+
+A collaboration by:
+-Zakary Olyarnik (zwo24@drexel.edu)
+
