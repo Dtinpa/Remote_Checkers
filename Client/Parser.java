@@ -1,9 +1,9 @@
 
 public class Parser
 {
-	public Object translate(Object input)
+	/*public Object translate(Object input)
 	{
 		
-	}
+	}*/
 
 }

@@ -3,9 +3,9 @@ import java.net.Socket;
 
 public class Connect extends Transcription
 {
-	public Socket connectSocket()
+	/*public Socket connectSocket()
 	{
 		
-	}
+	}*/
 
 }

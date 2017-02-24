@@ -1,39 +1,42 @@
+import java.awt.Dimension;
+import java.awt.Font;
+
 import javax.swing.JFrame;
 
 
-
-public class DrawUI
+public abstract class DrawUI
 {
-	public JFrame frame;
-	
-	public void createElements()
+	public static JFrame frame;							// frame is treated as a singleton
+	public Font TITLE_FONT = new Font("Tahoma", Font.BOLD, 50);
+	public Font BUTTON_FONT = new Font("Tahoma", Font.BOLD, 30);
+	public Dimension buttonSize = new Dimension(300, 70);
+
+	public abstract void createElements();				// initializes each GUI element
+	public abstract void drawElements();				// places GUI elements
+	public abstract void registerEventHandlers();		// adds click handlers to buttons
+	public abstract void show();
+	public abstract void hide();
+
+	DrawUI()					// all subclasses call this super constructor
 	{
-		
+		frame = getFrame();
+		createElements();
+		drawElements();
+		registerEventHandlers();
 	}
 	
-	public void initializeElements()
+	public JFrame getFrame()		// frame is treated as a singleton
 	{
-		
+		if(frame == null)
+		{
+			frame = new JFrame("Remote_Checkers");
+	    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    	frame.setSize(1000, 1000);
+	    	frame.setResizable(false);
+	    	frame.setVisible(true);
+		}
+		return frame;
 	}
-	
-	public void drawElements()
-	{
-		
-	}
-	
-	public void registerEventHandlers()
-	{
-		
-	}
-	
-	public void Hide()
-	{
-		
-	}
-	
-	public void Show()
-	{
-		
-	}
+
 
 }

@@ -1,9 +1,9 @@
 
 public class Input implements IO
 {
-	public Object read(Object stream)
+/*	public Object read(Object stream)
 	{
 		
-	}
+	}*/
 
 }

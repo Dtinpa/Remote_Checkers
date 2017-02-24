@@ -4,7 +4,7 @@ public class ServerInfo
 	private String ipAddress = "";
 	private int port = 0;
 	
-	public String getIP()
+	/*public String getIP()
 	{
 		
 	}
@@ -22,6 +22,6 @@ public class ServerInfo
 	public void setPort(int p)
 	{
 		
-	}
+	}*/
 
 }

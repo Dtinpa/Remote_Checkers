@@ -5,11 +5,11 @@ public class Client
 	public Parser parser;
 	public Transcription transcription;
 	public IO[] io;
-	public Execute ex;
 	
 	public static void main(String[] args)
 	{
-		
+		MainScreen ms = MainScreen.getMainScreen();
+		ms.execute();
 	}
 
 }
