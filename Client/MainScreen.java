@@ -41,7 +41,7 @@ public class MainScreen extends Screen
 				Settings.getSettings().execute();
 				break;
 			case("Help"):
-				//todo
+				Help.getHelp().execute();
 				break;
 			case("Quit"):
 				System.exit(0);

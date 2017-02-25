@@ -40,7 +40,7 @@ public class Game extends Screen implements MouseListener
 				System.out.println("resign");
 				break;
 			case("Help"):
-				System.out.println("help");
+				Help.getHelp().execute();
 				break;
 		}
 	}

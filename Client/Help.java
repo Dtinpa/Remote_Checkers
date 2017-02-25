@@ -5,7 +5,6 @@ public class Help extends Screen
 	public static Help singleton;
 	public DrawHelp drawHelp;
 	
-	
 	public static Help getHelp()	// implements singleton
 	{
 		if(singleton == null)
