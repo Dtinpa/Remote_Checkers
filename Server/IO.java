@@ -1,5 +1,5 @@
 
-public interface IO
+public abstract class IO
 {
-
+	
 }

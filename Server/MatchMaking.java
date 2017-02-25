@@ -8,7 +8,7 @@ public class MatchMaking
 	
 	public Object[] getPlayers()
 	{
-		
+		return null; 
 	}
 
 }

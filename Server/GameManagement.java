@@ -5,8 +5,8 @@ public class GameManagement
 	public PlayerManagement playerManagement;
 	public Board[] boards;
 	public MakeMove makeMove;
-	public ValidPiece validPiece;
-	public ValidMove validMove;
+	public ValidPieces validPiece;
+	public ValidMoves validMove;
 	public GameStatus gameStatus;
 
 }

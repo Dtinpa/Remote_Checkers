@@ -1,9 +1,9 @@
 
-public class Input implements IO
+public abstract class Input extends IO
 {
 	public Object read(Object stream)
 	{
-		
+		return null; 
 	}
 
 }

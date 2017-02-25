@@ -6,12 +6,12 @@ public class ClientInfo
 	
 	public String getIP()
 	{
-		
+		return ipAddress; 
 	}
 	
 	public int getPort()
 	{
-		
+		return port; 
 	}
 	
 	public void setIP(String ip)
