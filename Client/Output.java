@@ -1,7 +1,15 @@
+import java.sql.Timestamp;
 
-public class Output implements IO
+
+public class Output extends IO
 {
-	public void Write(String message)
+	public Timestamp getTime()
+	{
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		return timestamp;
+	}
+	
+	public void write(Object[] message)
 	{
 		
 	}

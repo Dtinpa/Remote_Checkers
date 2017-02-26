@@ -1,22 +1,39 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.Socket;
+
 
 public class Game extends Screen implements MouseListener
 {
-	public static Game singleton;
+	private static Game singleton;
 	
-	private DrawGame gameUI;
+	public DrawGame gameUI;
 	private Board playerPos;
+	private Transcription t;
+	private OutServer out;
+	private InServer in;
 	
-	Game()
-	{ playerPos = new Board(); }
+	private Game()
+	{
+		playerPos = new Board();
+		t = Transcription.getTranscription();
+	}
 	
 	public static Game getGame()	// implements singleton
 	{
 		if(singleton == null)
 		{ singleton = new Game(); }
 		return singleton;
+	}
+	
+	public void connect()
+	{
+	/*	Socket socket = t.connect.connectSocket();
+		t.outServer = new OutServer(socket);
+		out = t.outServer;
+		t.inServer = new InServer(socket);
+		in = t.inServer;*/
 	}
 	
 	@Override

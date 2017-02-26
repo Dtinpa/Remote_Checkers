@@ -1,5 +1,5 @@
 
-public class Input implements IO
+public class Input extends IO
 {
 /*	public Object read(Object stream)
 	{

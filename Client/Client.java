@@ -8,8 +8,7 @@ public class Client
 	
 	public static void main(String[] args)
 	{
-		MainScreen ms = MainScreen.getMainScreen();
-		ms.execute();
+		MainScreen.getMainScreen().execute();
 	}
 
 }

@@ -29,6 +29,9 @@ public class DrawGame extends DrawUI
 		setupBoard();
 	}
 	
+	public void displayMessage(String message)		// displays String messages from server
+	{ lblMessage.setText(message); }
+	
 	public void reDraw(Board newBoard)	// redraws only the board spaces that have updated
 	{
 		for (int row=0; row<size; row++)

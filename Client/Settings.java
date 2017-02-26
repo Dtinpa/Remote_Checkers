@@ -1,12 +1,18 @@
 import java.awt.event.ActionEvent;
 
+
 public class Settings extends Screen
 {
-	public static Settings singleton;
+	private static Settings singleton;
 	private DrawSettings drawSettings;
-		
-	Settings()
-	{ }
+	private OutFile out;
+	private InFile in;
+
+	private Settings()
+	{
+		out = new OutFile();
+		in = new InFile();
+	}
 	
 	public static Settings getSettings()	// implements singleton
 	{
@@ -33,7 +39,9 @@ public class Settings extends Screen
 		switch(e.getActionCommand())
 		{
 			case("Save"):
-			//todo
+				String[] fields = drawSettings.getFields();
+			//TODO error checking on fields
+				out.write(fields);
 				break;
 			case("Cancel"):
 				Settings.getSettings().dispose();

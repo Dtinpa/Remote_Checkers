@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 public class Space extends JPanel
 {
 	public static ImageIcon WHITE_SQUARE;			// board images shared across all instances of the Space class
@@ -17,8 +18,8 @@ public class Space extends JPanel
 	private Element contents;		// enum Element representation of the space's contents
 	private JLabel lblContents;		// label where image is displayed
 	private ImageIcon icon;			// picture set on the label
-	private int row;
-	private int col;
+	private int row;				// space's row location
+	private int col;				// space's column location
 	
 	Space(int r, int c)
 	{

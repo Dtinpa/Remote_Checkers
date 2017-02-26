@@ -1,10 +1,6 @@
 import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,7 +23,7 @@ public class DrawHelp extends DrawUI
 	@Override
 	public void createElements()
 	{
-		parentComponent = null;
+		parentComponent = frame;
 		title = "Checkers Help";
 		messageType = JOptionPane.PLAIN_MESSAGE;
 		icon = new ImageIcon("res/homer.jpg");
@@ -35,15 +31,11 @@ public class DrawHelp extends DrawUI
 	
 	@Override
 	public void drawElements()
-	{
-		scrollPane = new JScrollPane(new JLabel(icon));
-	}
+	{ scrollPane = new JScrollPane(new JLabel(icon)); }
 	
 	@Override
-	public void registerEventHandlers()
-	{
-		
-	}
+	public void registerEventHandlers()		// JOptionPane automatically closes on OK click
+	{ }
 	
 	@Override
 	public void show()
@@ -56,8 +48,8 @@ public class DrawHelp extends DrawUI
 	}
 	
 	@Override
-	public void hide()
-	{
-	}
-
+	public void hide()		// JOptionPane automatically closes on OK click
+	{ }
 }
+
+

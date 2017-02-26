@@ -131,6 +131,14 @@ public class DrawSettings extends DrawUI
 		return buttonsPanel;
 	}
 	
+	public String[] getFields()
+	{
+		String[] fields = new String[2];
+		fields[0] = txtIP.getText();
+		fields[1] = txtPort.getText();
+		return fields;
+	}
+	
 	@Override
 	public void registerEventHandlers()		// adds click handlers to buttons
 	{

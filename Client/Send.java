@@ -1,5 +1,5 @@
 
-public class Send extends Transcription
+public class Send
 {
 	public void sendMessage()
 	{

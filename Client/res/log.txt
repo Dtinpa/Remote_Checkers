@@ -1,0 +1,1 @@
+2017-02-25 14:35:33.721 [Ljava.lang.StackTraceElement;@7591a41d  Error writing to config file

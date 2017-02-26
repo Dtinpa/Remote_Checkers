@@ -1,8 +1,9 @@
 import java.net.Socket;
 
 
-public class Connect extends Transcription
+public class Connect
 {
+	InFile inFile;
 	/*public Socket connectSocket()
 	{
 		

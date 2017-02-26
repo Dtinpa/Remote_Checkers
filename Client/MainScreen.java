@@ -1,11 +1,12 @@
 import java.awt.event.ActionEvent;
 
+
 public class MainScreen extends Screen
 {
-	public static MainScreen singleton;
+	private static MainScreen singleton;
 	private DrawMain drawMain;
 	
-	MainScreen()
+	private MainScreen()
 	{ }
 	
 	public static MainScreen getMainScreen()	// implements singleton
@@ -34,6 +35,7 @@ public class MainScreen extends Screen
 		{
 			case("Start Game"):
 				MainScreen.getMainScreen().dispose();
+				Game.getGame().connect();
 				Game.getGame().execute();
 				break;
 			case("Settings"):
