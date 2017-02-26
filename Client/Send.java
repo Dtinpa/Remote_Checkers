@@ -6,10 +6,8 @@ public class Send
 		
 	}
 	
-	public void sendMove()
-	{
-		
-	}
+	public void sendMove(Space clicked)
+	{ Transcription.getTranscription().parseToServer.translate(clicked); }
 	
 	public void sendPairRequest()
 	{

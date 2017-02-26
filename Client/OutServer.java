@@ -19,9 +19,15 @@ public class OutServer extends Output
 		}
 	}
 	
-	public void write(Object[] message)
+	public void write(String message)	// message is "xy" position of click
 	{
-		
+		try
+		{ stream.writeUTF(message); }
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

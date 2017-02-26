@@ -11,8 +11,6 @@ public class Game extends Screen implements MouseListener
 	public DrawGame gameUI;
 	private Board playerPos;
 	private Transcription t;
-	private OutServer out;
-	private InServer in;
 	
 	private Game()
 	{
@@ -31,9 +29,7 @@ public class Game extends Screen implements MouseListener
 	{
 	/*	Socket socket = t.connect.connectSocket();
 		t.outServer = new OutServer(socket);
-		out = t.outServer;
-		t.inServer = new InServer(socket);
-		in = t.inServer;*/
+		t.inServer = new InServer(socket);*/
 	}
 	
 	@Override
@@ -66,9 +62,12 @@ public class Game extends Screen implements MouseListener
 	public void mousePressed(MouseEvent e)	// logic for handling board clicks
 	{
 		Space clicked = (Space) e.getSource();
-		System.out.println(clicked.getContents().toString());
+		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING || clicked.getContents() == Element.GREENSPACE)
+		{ t.send.sendMove(clicked); }
+		
+		/*System.out.println(clicked.getContents().toString());
 		playerPos.setAt(clicked.getRow(), clicked.getCol(), Element.GREENSPACE);
-		gameUI.reDraw(playerPos);
+		gameUI.reDraw(playerPos);*/
 	}
 	
 	@Override
