@@ -1,17 +1,20 @@
-import java.sql.Timestamp;
 
-
-public class Output extends IO
+public abstract class Output extends IO
 {
-	public Timestamp getTime()
+	private OutConsole console = new OutConsole(); 
+	
+	public void Write(String message)
 	{
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		return timestamp;
+		console.Write(message);
 	}
 	
-	public void write(Object[] message)
+	public void Write(String[] messages)
 	{
-		
+		console.Write(messages);
 	}
-
+	
+	public void WriteError(String message)
+	{
+		console.WriteError(message);
+	}
 }

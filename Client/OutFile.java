@@ -1,11 +1,59 @@
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 
 public class OutFile extends Output
 {
-	@Override
+	
+	private ObjectOutputStream output; 
+	private File logFile = new File(""); 
+	private File errorLog = new File("");
+	
+	private OutConsole console = new OutConsole(); 
+	
+	public void Write(String message)
+	{
+		this.Write(logFile, message);
+	}
+	
+	public void WriteError(String message)
+	{
+		this.Write(errorLog, message); 
+	}
+	
+	private void Write(File file, String message)
+	{
+		String[] messages = {message}; 
+		Write(file, messages); 
+	}
+	
+	private void Write(File file, String[] messages)
+	{
+		if (!logFile.mkdirs())
+		{
+			//Error
+		}
+
+		try
+		{
+			if (!logFile.exists())
+			{
+				//Make file 
+				logFile.createNewFile(); 
+			}
+			
+			output = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath())); 
+			
+			output.writeObject(dateTimeString + ": " + messages);
+		}
+		catch(Exception ex)
+		{
+			console.WriteError(ex.getMessage());
+		}
+	}
+	
+	/*@Override
 	public void write(Object[] message)
 	{
 		PrintWriter writer;
@@ -32,6 +80,6 @@ public class OutFile extends Output
 		}
 	    
 
-	}
+	}*/
 
 }

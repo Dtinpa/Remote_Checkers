@@ -1,9 +1,9 @@
 
 public class Input extends IO
 {
-/*	public Object read(Object stream)
+	public Object Read(String fileName)
 	{
-		
-	}*/
-
+		InFile input = new InFile(); 
+		return input.Read(fileName); 
+	}
 }
