@@ -1,9 +1,9 @@
 
 public abstract class Input extends IO
 {
-	public Object read(Object stream)
+	public Object Read(String fileName)
 	{
-		return null; 
+		InFile input = new InFile(); 
+		return input.Read(fileName); 
 	}
-
 }

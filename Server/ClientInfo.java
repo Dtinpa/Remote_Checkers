@@ -2,27 +2,25 @@
 public class ClientInfo
 {
 	private String ipAddress = "";
-	private int port = 0;
+	private int portNum = 0;
 	
-	public String getIP()
+	public String GetIP()
 	{
 		return ipAddress; 
 	}
 	
-	public int getPort()
+	public int GetPort()
 	{
-		return port; 
+		return portNum; 
 	}
 	
-	public void setIP(String ip)
+	public void SetIP(String ip)
 	{
-		
+		ipAddress = ip; 
 	}
 	
-	public void setPort(int p)
+	public void SetPort(int port)
 	{
-		
+		portNum = port; 
 	}
-
-
 }
