@@ -1,9 +1,11 @@
+import java.util.ArrayList;
 
-public class Valid
+public abstract class Valid
 {
-	public Board find(Board board)
+	protected ArrayList<Board> boards;
+	
+	public Valid(ArrayList<Board> board)
 	{
-		return null; 
+		this.boards = board;
 	}
-
 }

@@ -1,23 +1,65 @@
+import java.util.*;
 
 public class PlayerManagement
-{
-	public Object[] playerOnes;
-	public Object[] playerTwos;
-	public MatchMaking matchmaking;
+{	
+	public ArrayList<Player> playerOnes;
+	public ArrayList<Player> playerTwos;
+	public ArrayList<Player> activePlayers;
+	public MatchMaking matchMaking;
 	
-	public Object assignOrder(Object player1, Object player2)
+	public PlayerManagement()
 	{
-		return null; 
+		playerOnes = new ArrayList<Player>();
+		playerTwos = new ArrayList<Player>();
+		activePlayers = new ArrayList<Player>();
+		matchMaking = new MatchMaking();
 	}
 	
-	public Object swapTurn(Object activePlayer, Object nextPlayer)
+	public Player getPlayerOne(int game_index)
 	{
-		return null; 
+		return playerOnes.get(game_index);
 	}
 	
-	public Object rematch(Object player1, Object player2)
+	public Player getPlayerTwo(int game_index)
 	{
-		return null; 
+		return playerTwos.get(game_index);
 	}
-
+	
+	public Player getActivePlayer(int game_index)
+	{
+		return activePlayers.get(game_index);
+	}
+	
+	public void assignOrder(Player firstClient, Player secondClient)
+	{
+		firstClient.color = Player.RED;
+		firstClient.score = 0;
+		firstClient.game_index = GameManagement.next_game;
+		playerOnes.add(firstClient);
+		
+		secondClient.color = Player.BLUE;
+		secondClient.score = 0;
+		secondClient.game_index = GameManagement.next_game;
+		playerTwos.add(secondClient);
+		
+		activePlayers.add(firstClient);
+	}
+	
+	public void swapTurnOrder(int game_index)
+	{
+		Player playerOne = playerOnes.get(game_index);
+		Player playerTwo = playerTwos.get(game_index);
+		playerOnes.set(game_index, playerTwo);
+		playerTwos.set(game_index, playerOne);
+	}
+	
+	public void changeActivePlayer(int game_index)
+	{
+		Player playerOne = playerOnes.get(game_index);
+		Player playerTwo = playerTwos.get(game_index);
+		if (activePlayers.get(game_index) == playerOne)
+			activePlayers.set(game_index, playerTwo);
+		else
+			activePlayers.set(game_index, playerOne);
+	}
 }
