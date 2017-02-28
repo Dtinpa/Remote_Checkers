@@ -8,7 +8,7 @@ public class Game extends Screen implements MouseListener
 {
 	private static Game singleton;
 	
-	public DrawGame gameUI;
+	private DrawGame gameUI;
 	private Board playerPos;
 	private Transcription t;
 	
@@ -31,6 +31,12 @@ public class Game extends Screen implements MouseListener
 		t.outServer = new OutServer(socket);
 		t.inServer = new InServer(socket);*/
 	}
+	
+	public void reDraw(Board board)
+	{ gameUI.reDraw(board); }
+	
+	public void displayMessage(String message)
+	{ gameUI.displayMessage(message); }
 	
 	@Override
 	public void execute()
@@ -63,7 +69,7 @@ public class Game extends Screen implements MouseListener
 	{
 		Space clicked = (Space) e.getSource();
 		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING || clicked.getContents() == Element.GREENSPACE)
-		{ t.send.sendMove(clicked); }
+		{ t.sendMove(clicked); }
 		
 		/*System.out.println(clicked.getContents().toString());
 		playerPos.setAt(clicked.getRow(), clicked.getCol(), Element.GREENSPACE);

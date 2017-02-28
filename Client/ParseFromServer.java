@@ -6,12 +6,12 @@ public class ParseFromServer extends Parser
 		switch(messageType)
 		{
 			case 'B': // Board
-				Board newBoard = (Board) Transcription.getTranscription().inServer.read();
-				Game.getGame().gameUI.reDraw(newBoard);
+				Board newBoard = (Board) Transcription.getTranscription().read();
+				Game.getGame().reDraw(newBoard);
 				break;
 			case 'M': // String Message
-				String message = (String) Transcription.getTranscription().inServer.read();
-				Game.getGame().gameUI.displayMessage(message);
+				String message = (String) Transcription.getTranscription().read();
+				Game.getGame().displayMessage(message);
 				break;
 			default:
 				break;

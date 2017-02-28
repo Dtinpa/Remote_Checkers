@@ -41,7 +41,7 @@ public class Settings extends Screen
 			case("Save"):
 				String[] fields = drawSettings.getFields();
 			//TODO error checking on fields
-				out.write(fields);
+				out.Write(fields);
 				break;
 			case("Cancel"):
 				Settings.getSettings().dispose();

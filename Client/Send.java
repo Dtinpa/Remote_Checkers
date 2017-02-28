@@ -7,7 +7,7 @@ public class Send
 	}
 	
 	public void sendMove(Space clicked)
-	{ Transcription.getTranscription().parseToServer.translate(clicked); }
+	{ Transcription.getTranscription().translateToServer(clicked); }
 	
 	public void sendPairRequest()
 	{

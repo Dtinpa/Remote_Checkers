@@ -30,4 +30,22 @@ public class Transcription
 		{ singleton = new Transcription(); }
 		return singleton;
 	}
+	
+	public Object read()
+	{ return inServer.read(); }
+	
+	public Byte readByte()
+	{ return inServer.readByte(); }
+	
+	public void write(String message)
+	{ outServer.write(message); }
+	
+	public void sendMove(Space clicked)
+	{ send.sendMove(clicked); }
+	
+	public void translateToServer(Space clicked)
+	{ parseToServer.translate(clicked); }
+	
+	public void translateFromServer(Byte messageType)
+	{ parseFromServer.translate(messageType); }
 }
