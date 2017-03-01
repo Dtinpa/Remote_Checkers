@@ -4,33 +4,45 @@ import java.io.ObjectInputStream;
 
 public class InFile extends Input
 {
+	private static InFile instance; 
 	private ObjectInputStream input; 
-	private OutFile output = new OutFile(); 
-	private File file = new File(""); 
+	private OutFile output = OutFile.GetInstance(); 
+	private File file = new File(getLogFilePath()); 
 	
-	public Object Read(String fileName)
+	private InFile(){}
+	
+	public static InFile GetInstance()
+	{
+		if(instance == null)
+		{
+			instance = new InFile(); 
+		}
+		return instance; 
+	}
+	
+	public Object read()
 	{
 		Object inputObj = new Object(); 
 		
 		if (!file.mkdirs())
 		{
 			//Error
-			output.WriteError("Could not create parent directory for file"); 
+			output.writeError("Could not create parent directory for file"); 
 		}
 
 		try
 		{
 			if (!file.exists())
 			{
-				output.WriteError("Cannot read file, file does not exist");
+				output.writeError("Cannot read file, file does not exist");
 			}
 			
-			input = new ObjectInputStream(new FileInputStream(fileName)); 
+			input = new ObjectInputStream(new FileInputStream(file.getName())); 
 			inputObj = input.readObject(); 
 		}
 		catch(Exception ex)
 		{
-			output.WriteError(ex.getMessage());
+			output.writeError(ex.getMessage());
 		}
 		
 		return inputObj; 

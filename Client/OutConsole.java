@@ -1,12 +1,12 @@
 
 public class OutConsole extends Output
 {
-	public void Write(String message)
+	public void write(String message)
 	{
 		System.out.println(dateTimeString + ": " + message);
 	}
 	
-	public void Write(String[] messages)
+	public void write(String[] messages)
 	{
 		for(int i = 0; i < messages.length; i++)
 		{
@@ -14,7 +14,7 @@ public class OutConsole extends Output
 		}
 	}
 	
-	public void WriteError(String message)
+	public void writeError(String message)
 	{
 		System.out.println("[Error] - " + dateTimeString + ": " + message);
 	}

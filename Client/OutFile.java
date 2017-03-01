@@ -5,30 +5,46 @@ import java.io.ObjectOutputStream;
 
 public class OutFile extends Output
 {
-	
 	private ObjectOutputStream output; 
-	private File logFile = new File(""); 
-	private File errorLog = new File("");
+	private File logFile = new File(getLogFilePath()); 
+	private File errorLog = new File(getErrorFilePath()); 
 	
+	private static OutFile outFile; 
 	private OutConsole console = new OutConsole(); 
 	
-	public void Write(String message)
+	private OutFile(){}
+	
+	public static OutFile GetInstance()
 	{
-		this.Write(logFile, message);
+		if (outFile == null)
+		{
+			outFile = new OutFile(); 
+		}
+		return outFile; 
 	}
 	
-	public void WriteError(String message)
+	public void write(String message)
 	{
-		this.Write(errorLog, message); 
+		this.write(logFile, message);
 	}
 	
-	private void Write(File file, String message)
+	public void write(String[] messages)
+	{
+		this.write(logFile, messages);
+	}
+	
+	public void writeError(String message)
+	{
+		this.write(errorLog, message); 
+	}
+	
+	private void write(File file, String message)
 	{
 		String[] messages = {message}; 
-		Write(file, messages); 
+		write(file, messages); 
 	}
 	
-	private void Write(File file, String[] messages)
+	private void write(File file, String[] messages)
 	{
 		if (!logFile.mkdirs())
 		{
@@ -49,37 +65,7 @@ public class OutFile extends Output
 		}
 		catch(Exception ex)
 		{
-			console.WriteError(ex.getMessage());
+			console.writeError(ex.getMessage());
 		}
 	}
-	
-	/*@Override
-	public void write(Object[] message)
-	{
-		PrintWriter writer;
-		try
-		{
-			writer = new PrintWriter(configFile, "UTF-8");	// edit this line to an invalid file path to get the error to throw
-			writer.println(message[0]);
-		    writer.println(message[1]);
-		    writer.close();
-		}
-		catch (FileNotFoundException | UnsupportedEncodingException e)
-		{
-			try
-			{
-				writer = new PrintWriter(logFile, "UTF-8");
-				writer.println(getTime() + "  Error writing to config file");	// find way to display current method?
-			    writer.close();
-			}
-			catch (FileNotFoundException | UnsupportedEncodingException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-	    
-
-	}*/
-
 }

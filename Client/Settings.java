@@ -10,8 +10,8 @@ public class Settings extends Screen
 
 	private Settings()
 	{
-		out = new OutFile();
-		in = new InFile();
+		out = OutFile.GetInstance();
+		in = InFile.GetInstance();
 	}
 	
 	public static Settings getSettings()	// implements singleton
@@ -41,7 +41,7 @@ public class Settings extends Screen
 			case("Save"):
 				String[] fields = drawSettings.getFields();
 			//TODO error checking on fields
-				out.Write(fields);
+				out.write(fields);
 				break;
 			case("Cancel"):
 				Settings.getSettings().dispose();

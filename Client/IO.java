@@ -1,3 +1,4 @@
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
@@ -7,33 +8,40 @@ public abstract class IO
 	private String logFile = "logs/log.txt";
 	private String errorFile = "logs/error.txt";
 	
+	protected Socket useSocket; 
+	
 	protected SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
 	protected String dateTimeString = dateTime.format(LocalDateTime.now());
 	
 	//Getters
-	public String GetConfigFilePath()
+	public String getConfigFilePath()
 	{
 		return configFile; 
 	}
-	public String GetLogFilePath()
+	public String getLogFilePath()
 	{
 		return logFile; 
 	}
-	public String GetErrorFilePath()
+	public String getErrorFilePath()
 	{
 		return errorFile; 
 	}
+	public Socket getSocketToUse()
+	{
+		useSocket = Transcription.getTranscription().GetServerSocket(); 
+		return useSocket; 
+	}
 	
 	//Setters
-	public void SetConfigFilePath(String filePath)
+	public void setConfigFilePath(String filePath)
 	{
 		configFile = filePath; 
 	}
-	public void SetLogFilePath(String filePath)
+	public void setLogFilePath(String filePath)
 	{
 		logFile = filePath; 
 	}
-	public void SetErrorFilePath(String filePath)
+	public void setErrorFilePath(String filePath)
 	{
 		errorFile = filePath; 
 	}

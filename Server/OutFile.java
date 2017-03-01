@@ -5,57 +5,45 @@ import java.io.ObjectOutputStream;
 public class OutFile extends Output
 {
 	private ObjectOutputStream output; 
-	private File logFile = new File(""); 
-	private File errorLog = new File("");
+	private File logFile = new File(getLogFilePath()); 
+	private File errorLog = new File(getErrorFilePath()); 
 	
+	private static OutFile outFile; 
 	private OutConsole console = new OutConsole(); 
 	
-	public void Write(String message)
+	private OutFile(){}
+	
+	public static OutFile GetInstance()
 	{
-		this.Write(logFile, message);
-		/*if (!logFile.mkdirs())
+		if (outFile == null)
 		{
-			//Error
+			outFile = new OutFile(); 
 		}
-
-		try
-		{
-			if (!logFile.exists())
-			{
-				//Make file 
-				logFile.createNewFile(); 
-			}
-			
-			output = new ObjectOutputStream(new FileOutputStream(logFile.getAbsolutePath())); 
-			
-			output.writeChars(dateTimeString + ": " + message);			
-		}
-		catch(NoSuchElementException ex)
-		{
-			
-		}
-		catch(FileNotFoundException ex)
-		{
-			
-		}
-		catch(IOException ex)
-		{
-			
-		}*/
+		return outFile; 
 	}
 	
-	public void WriteError(String message)
+	public void write(String message)
 	{
-		this.Write(errorLog, message); 
+		this.write(logFile, message);
 	}
 	
-	private void Write(File file, String message)
+	public void write(String[] messages)
+	{
+		this.write(logFile, messages);
+	}
+	
+	public void writeError(String message)
+	{
+		this.write(errorLog, message); 
+	}
+	
+	private void write(File file, String message)
 	{
 		String[] messages = {message}; 
-		Write(file, messages); 
+		write(file, messages); 
 	}
 	
-	private void Write(File file, String[] messages)
+	private void write(File file, String[] messages)
 	{
 		if (!logFile.mkdirs())
 		{
@@ -76,7 +64,7 @@ public class OutFile extends Output
 		}
 		catch(Exception ex)
 		{
-			console.WriteError(ex.getMessage());
+			console.writeError(ex.getMessage());
 		}
 	}
 }

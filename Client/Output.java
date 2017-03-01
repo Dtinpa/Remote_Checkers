@@ -1,20 +1,7 @@
 
 public abstract class Output extends IO
 {
-	private OutConsole console = new OutConsole(); 
+	public abstract void write(String message);
 	
-	public void Write(String message)
-	{
-		console.Write(message);
-	}
-	
-	public void Write(String[] messages)
-	{
-		console.Write(messages);
-	}
-	
-	public void WriteError(String message)
-	{
-		console.WriteError(message);
-	}
+	public abstract void writeError(String message);
 }

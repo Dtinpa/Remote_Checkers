@@ -1,3 +1,4 @@
+import java.net.Socket;
 
 public class Transcription
 {
@@ -11,6 +12,9 @@ public class Transcription
 	public ParseFromServer parseFromServer;
 	
 	private static Transcription singleton;
+	private static Transcription instance;
+	
+	public IO io;
 	
 	private Transcription()
 	{
@@ -48,4 +52,9 @@ public class Transcription
 	
 	public void translateFromServer(Byte messageType)
 	{ parseFromServer.translate(messageType); }
+	
+	public Socket GetServerSocket()
+	{
+		return serverInfo.GetSocket(); 
+	}
 }

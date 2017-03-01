@@ -1,24 +1,58 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 public class OutClient extends Output
 {
 	//This is where talking to the server actually takes place....
 	//but it is not where the connection happens. The connection happens else where
+
+	private Socket socket;
+	private BufferedWriter writer; 
+	private OutFile logging = OutFile.GetInstance(); 
+ 
 	
-	
-	private OutFile logging = new OutFile(); 
-	
-	public void Write(String message)
+	public void write(String message)
 	{
-		logging.Write("Wrote to server.");
+		logging.write("Getting socket.");		
+		socket = getSocketToUse(); 
+		
+		write(socket, message); 
 	}
 	
-	public void Write(String[] messages)
+	public void write(Socket socket, String message)
 	{
-		logging.Write("Wrote to server.");
+		logging.write("Wrote to server.");
+		if (socket == null) return; 
+		try 
+		{
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			writer.write(message);
+			writer.flush();
+		}
+		catch (IOException e) 
+		{
+			logging.write(e.getMessage());
+			return; 
+		} 
+		
+		logging.write("Sucessfully wrote to client.");
 	}
 	
-	public void WriteError(String message)
+	public void write(String[] messages)
 	{
-		logging.WriteError(message);
+		logging.write("Getting socket.");		
+		socket = getSocketToUse(); 
+		
+		for (int i = 0; i < messages.length; i++)
+		{
+			write(socket, messages[i]); 
+		}
+	}
+	
+	public void writeError(String message)
+	{
+		logging.writeError(message);
 	}
 }
