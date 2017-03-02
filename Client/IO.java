@@ -9,9 +9,8 @@ public abstract class IO
 	private String errorFile = "logs/error.txt";
 	
 	protected Socket useSocket; 
-	
-	protected SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
-	protected String dateTimeString = dateTime.format(LocalDateTime.now());
+	 
+	protected String dateTimeString = LocalDateTime.now().toString();
 	
 	//Getters
 	public String getConfigFilePath()
