@@ -10,6 +10,9 @@ public class Server
 
 	public static void main(String[] args)
 	{
+		OutFile file = OutFile.getInstance(); 
+		file.write("Message");
+		
 		Server server = new Server();
 		server.gM = GameManagement.getInstance();
 	}
