@@ -10,8 +10,8 @@ public class Settings extends Screen
 
 	private Settings()
 	{
-		out = OutFile.GetInstance();
-		in = InFile.GetInstance();
+		out = OutFile.getInstance();
+		in = InFile.getInstance();
 	}
 	
 	public static Settings getSettings()	// implements singleton
