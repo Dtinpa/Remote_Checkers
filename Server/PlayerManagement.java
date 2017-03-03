@@ -32,14 +32,12 @@ public class PlayerManagement
 	
 	public void assignOrder(Player firstClient, Player secondClient)
 	{
-		firstClient.color = Player.RED;
+		firstClient.color = Player.BLUE;
 		firstClient.score = 0;
-		firstClient.game_index = GameManagement.next_game;
 		playerOnes.add(firstClient);
 		
-		secondClient.color = Player.BLUE;
+		secondClient.color = Player.RED;
 		secondClient.score = 0;
-		secondClient.game_index = GameManagement.next_game;
 		playerTwos.add(secondClient);
 		
 		activePlayers.add(firstClient);
@@ -61,5 +59,11 @@ public class PlayerManagement
 			activePlayers.set(game_index, playerTwo);
 		else
 			activePlayers.set(game_index, playerOne);
+	}
+	
+	public void dismissPlayers(int game_index)
+	{
+		activePlayers.set(game_index, null);
+		
 	}
 }
