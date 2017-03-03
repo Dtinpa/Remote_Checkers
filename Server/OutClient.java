@@ -10,7 +10,7 @@ public class OutClient extends Output
 
 	private Socket socket;
 	private BufferedWriter writer; 
-	private OutFile logging = OutFile.GetInstance(); 
+	private OutFile logging = OutFile.getInstance(); 
  
 	
 	public void write(String message)

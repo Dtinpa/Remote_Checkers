@@ -13,7 +13,7 @@ public class OutFile extends Output
 	
 	private OutFile(){}
 	
-	public static OutFile GetInstance()
+	public static OutFile getInstance()
 	{
 		if (outFile == null)
 		{
@@ -45,7 +45,7 @@ public class OutFile extends Output
 	
 	private void write(File file, String[] messages)
 	{
-		if (!logFile.mkdirs())
+		if (!logFile.getParentFile().mkdirs())
 		{
 			//Error
 		}

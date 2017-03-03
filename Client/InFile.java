@@ -6,12 +6,12 @@ public class InFile extends Input
 {
 	private static InFile instance; 
 	private ObjectInputStream input; 
-	private OutFile output = OutFile.GetInstance(); 
-	private File file = new File(getLogFilePath()); 
+	private OutFile output = OutFile.getInstance(); 
+	private File file = new File(getConfigFilePath()); 
 	
 	private InFile(){}
 	
-	public static InFile GetInstance()
+	public static InFile getInstance()
 	{
 		if(instance == null)
 		{

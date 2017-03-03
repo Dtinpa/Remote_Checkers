@@ -8,13 +8,14 @@ public class OutFile extends Output
 	private ObjectOutputStream output; 
 	private File logFile = new File(getLogFilePath()); 
 	private File errorLog = new File(getErrorFilePath()); 
+	private File configFile = new File(getConfigFilePath()); 
 	
 	private static OutFile outFile; 
 	private OutConsole console = new OutConsole(); 
 	
 	private OutFile(){}
 	
-	public static OutFile GetInstance()
+	public static OutFile getInstance()
 	{
 		if (outFile == null)
 		{
@@ -33,6 +34,11 @@ public class OutFile extends Output
 		this.write(logFile, messages);
 	}
 	
+	public void write(Object configuration)
+	{
+		this.write(configFile, configuration);
+	}
+	
 	public void writeError(String message)
 	{
 		this.write(errorLog, message); 
@@ -44,9 +50,9 @@ public class OutFile extends Output
 		write(file, messages); 
 	}
 	
-	private void write(File file, String[] messages)
+	private void write(File file, Object messages)
 	{
-		if (!logFile.mkdirs())
+		if (!logFile.getParentFile().mkdirs())
 		{
 			//Error
 		}

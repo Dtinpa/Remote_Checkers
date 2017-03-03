@@ -10,7 +10,7 @@ public class OutServer extends Output
 	//but it is not where the connection happens. The connection happens else where
 
 	private BufferedWriter writer; 
-	private OutFile logging = OutFile.GetInstance(); 
+	private OutFile logging = OutFile.getInstance(); 
 
 	Socket socket = new Socket(); 
 	

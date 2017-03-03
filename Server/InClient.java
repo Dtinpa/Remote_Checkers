@@ -7,7 +7,7 @@ public class InClient extends Input
 {
 	private Socket clientSocket; 
 	private BufferedReader reader; 
-	private OutFile logging = OutFile.GetInstance();
+	private OutFile logging = OutFile.getInstance();
 	
 	public Object read() 
 	{
