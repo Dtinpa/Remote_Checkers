@@ -10,6 +10,7 @@ public abstract class DrawUI
 	public Font TITLE_FONT = new Font("Tahoma", Font.BOLD, 50);
 	public Font BUTTON_FONT = new Font("Tahoma", Font.BOLD, 30);
 	public Dimension buttonSize = new Dimension(300, 70);
+	public Dimension labelSize = new Dimension(300, 50);
 
 	public abstract void createElements();				// initializes each GUI element
 	public abstract void drawElements();				// places GUI elements
