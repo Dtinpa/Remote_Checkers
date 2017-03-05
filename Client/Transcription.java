@@ -12,7 +12,6 @@ public class Transcription
 	public ParseFromServer parseFromServer;
 	
 	private static Transcription singleton;
-	private static Transcription instance;
 	
 	private IO io;
 	
@@ -53,7 +52,7 @@ public class Transcription
 	public void translateFromServer(Byte messageType)
 	{ parseFromServer.translate(messageType); }
 	
-	public Socket GetServerSocket()
+	public Socket getServerSocket()
 	{
 		return serverInfo.GetSocket(); 
 	}
