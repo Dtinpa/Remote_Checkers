@@ -9,12 +9,10 @@ public class Game extends Screen implements MouseListener
 	private static Game singleton;
 	
 	private DrawGame gameUI;
-	private Board playerPos;
 	private Transcription t;
 	
 	private Game()
 	{
-		playerPos = new Board();
 		t = Transcription.getTranscription();
 	}
 	
@@ -70,10 +68,6 @@ public class Game extends Screen implements MouseListener
 		Space clicked = (Space) e.getSource();
 		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING || clicked.getContents() == Element.GREENSPACE)
 		{ t.sendMove(clicked); }
-		
-		/*System.out.println(clicked.getContents().toString());
-		playerPos.setAt(clicked.getRow(), clicked.getCol(), Element.GREENSPACE);
-		gameUI.reDraw(playerPos);*/
 	}
 	
 	@Override
