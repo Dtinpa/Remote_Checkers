@@ -54,6 +54,6 @@ public class Transcription
 	
 	public Socket getServerSocket()
 	{
-		return serverInfo.GetSocket(); 
+		return serverInfo.getSocket(); 
 	}
 }
