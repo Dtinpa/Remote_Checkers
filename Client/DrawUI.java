@@ -20,13 +20,13 @@ public abstract class DrawUI
 
 	DrawUI()					// all subclasses call this super constructor
 	{
-		frame = getFrame();
+		getFrame();
 		createElements();
 		drawElements();
 		registerEventHandlers();
 	}
 	
-	public static JFrame getFrame()		// frame is treated as a singleton
+	public static void getFrame()		// frame is treated as a singleton
 	{
 		if(frame == null)
 		{
@@ -36,7 +36,6 @@ public abstract class DrawUI
 	    	frame.setResizable(false);
 	    	frame.setVisible(true);
 		}
-		return frame;
 	}
 
 

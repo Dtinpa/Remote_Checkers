@@ -27,7 +27,7 @@ public abstract class IO
 	}
 	public Socket getSocketToUse()
 	{
-		useSocket = Transcription.getTranscription().GetServerSocket(); 
+		useSocket = Transcription.getTranscription().getServerSocket(); 
 		return useSocket; 
 	}
 	
