@@ -8,27 +8,9 @@ import java.net.Socket;
 
 public class InServer extends Input
 {
-	private Socket clientSocket; 
-	private BufferedReader reader; 
+	//private Socket clientSocket; 
+	//private BufferedReader reader; 
 	private OutFile logging = OutFile.getInstance();
-	
-	public Object read() 
-	{
-		logging.write("Getting socket.");		
-		clientSocket = getSocketToUse();
-		
-		try 
-		{
-			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			return reader.readLine(); 
-		}
-		catch (IOException e) 
-		{
-			logging.writeError("Could not read from socket.");
-		} 
-		
-		return null; 
-	}
 	
 	ObjectInputStream stream;
 	InServer(Socket s)
@@ -53,6 +35,28 @@ public class InServer extends Input
 			e.printStackTrace();
 		}
 		return b;
+	}
+	
+	public Object read() 
+	{
+		logging.write("Getting socket.");		
+		//clientSocket = getSocketToUse();
+		
+		try 
+		{
+			//reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			//return reader.readLine();
+			return stream.readObject();
+		}
+		catch (IOException e) 
+		{
+			logging.writeError("Could not read from socket.");
+		}
+		catch (ClassNotFoundException e)
+		{
+			logging.writeError("Could not find class to deserialize.");
+		} 
+		return null; 
 	}
 	
 	/*ObjectInputStream stream;

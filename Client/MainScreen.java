@@ -34,12 +34,13 @@ public class MainScreen extends Screen
 		switch(e.getActionCommand())
 		{
 			case("Start Game"):
-				MainScreen.getMainScreen().dispose();
-				Game.getGame().connect();
+				dispose();
+				//Game.getGame().connect();
 				Game.getGame().execute();
+				
 				break;
 			case("Settings"):
-				MainScreen.getMainScreen().dispose();
+				dispose();
 				Settings.getSettings().execute();
 				break;
 			case("Help"):

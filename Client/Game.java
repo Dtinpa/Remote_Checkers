@@ -23,15 +23,14 @@ public class Game extends Screen implements MouseListener
 		return singleton;
 	}
 	
-	public void connect()
-	{
-	/*	Socket socket = t.connect.connectSocket();
-		t.outServer = new OutServer(socket);
-		t.inServer = new InServer(socket);*/
-	}
+	//public void connect()
+	//{ t.connect(); }
 	
 	public void reDraw(Board board)
 	{ gameUI.reDraw(board); }
+	
+	public void setColor(String color)
+	{ gameUI.setColor(color); }
 	
 	public void displayMessage(String message)
 	{ gameUI.displayMessage(message); }
