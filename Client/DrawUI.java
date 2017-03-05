@@ -26,7 +26,7 @@ public abstract class DrawUI
 		registerEventHandlers();
 	}
 	
-	public JFrame getFrame()		// frame is treated as a singleton
+	public static JFrame getFrame()		// frame is treated as a singleton
 	{
 		if(frame == null)
 		{

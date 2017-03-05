@@ -14,7 +14,7 @@ public class Transcription
 	private static Transcription singleton;
 	private static Transcription instance;
 	
-	public IO io;
+	private IO io;
 	
 	private Transcription()
 	{

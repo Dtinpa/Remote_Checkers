@@ -26,7 +26,7 @@ public class InFile extends Input
 	
 	public String read()
 	{
-		String inputObj = new String(); 
+		String inputObj = ""; 
 		
 		try
 		{

@@ -9,8 +9,8 @@ import javax.swing.JScrollPane;
 
 public class DrawHelp extends DrawUI
 {
-	public JPanel panel;
-	public JButton btnClose;
+	private JPanel panel;
+	private JButton btnClose;
 	private ImageIcon icon;
 	private Component parentComponent;
 	private String title;
