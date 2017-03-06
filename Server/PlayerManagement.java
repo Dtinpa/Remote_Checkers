@@ -5,14 +5,12 @@ public class PlayerManagement
 	public ArrayList<Player> playerOnes;
 	public ArrayList<Player> playerTwos;
 	public ArrayList<Player> activePlayers;
-	public MatchMaking matchMaking;
 	
 	public PlayerManagement()
 	{
 		playerOnes = new ArrayList<Player>();
 		playerTwos = new ArrayList<Player>();
 		activePlayers = new ArrayList<Player>();
-		matchMaking = new MatchMaking();
 	}
 	
 	public Player getPlayerOne(int game_index)
@@ -30,17 +28,28 @@ public class PlayerManagement
 		return activePlayers.get(game_index);
 	}
 	
-	public void assignOrder(Player firstClient, Player secondClient)
+	public void assignOrder(int matchIndex)
 	{
-		firstClient.color = Player.BLUE;
-		firstClient.score = 0;
-		playerOnes.add(firstClient);
+		Player firstPlayer = new Player();
+		firstPlayer.color = Player.BLUE;
+		firstPlayer.score = 0;
 		
-		secondClient.color = Player.RED;
-		secondClient.score = 0;
-		playerTwos.add(secondClient);
+		Player secondPlayer = new Player();
+		secondPlayer.color = Player.RED;
+		secondPlayer.score = 0;
 		
-		activePlayers.add(firstClient);
+		if (matchIndex == activePlayers.size())
+		{
+			playerOnes.add(firstPlayer);
+			playerTwos.add(secondPlayer);
+			activePlayers.add(firstPlayer);
+		}
+		else
+		{
+			playerOnes.set(matchIndex, firstPlayer);
+			playerTwos.set(matchIndex, secondPlayer);
+			activePlayers.set(matchIndex, firstPlayer);
+		}
 	}
 	
 	public void swapTurnOrder(int game_index)
@@ -63,7 +72,8 @@ public class PlayerManagement
 	
 	public void dismissPlayers(int game_index)
 	{
+		playerOnes.set(game_index, null);
+		playerTwos.set(game_index, null);
 		activePlayers.set(game_index, null);
-		
 	}
 }

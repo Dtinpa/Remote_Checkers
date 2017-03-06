@@ -6,7 +6,6 @@ public class GameManagement
 	final int SAME_STATE_LIMIT = 3;
 	
 	private static GameManagement singleton;
-	public static int next_game = 0;
 	
 	public PlayerManagement playerManagement;
 	public ArrayList<Board> boards;
@@ -35,13 +34,21 @@ public class GameManagement
 		return singleton;
 	}
 		
-	public void openGameForClients(Player firstClient, Player secondClient)
+	public void openGameForClients(int matchIndex)
 	{
-		playerManagement.assignOrder(firstClient, secondClient);
-		boards.add(new Board());
-		previous_states.add(new ArrayList<BoardState>());
-		drawCounter.add(0);
-		next_game++;
+		playerManagement.assignOrder(matchIndex);
+		if (matchIndex == boards.size())
+		{
+			boards.add(new Board());
+			previous_states.add(new ArrayList<BoardState>());
+			drawCounter.add(0);
+		}
+		else
+		{
+			boards.set(matchIndex, new Board());
+			previous_states.set(matchIndex, new ArrayList<BoardState>());
+			drawCounter.set(matchIndex, 0);
+		}
 	}
 	
 	public void startTurn(int game_index)
