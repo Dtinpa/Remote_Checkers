@@ -25,7 +25,7 @@ public class MatchMaking
 	
 	public void matchClients()
 	{
-		Transcription transcription = Transcription.getInstance();
+		Transcription transcription = Transcription.getTranscription();
 		transcription.removeDisconnectedClients();
 		if (transcription.getClientsCount() > 2)
 		{
