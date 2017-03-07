@@ -17,6 +17,16 @@ public class ParseFromServer extends Parser
 				String message = (String) Transcription.getTranscription().read();
 				Game.getGame().displayMessage(message);
 				break;
+			case 'V': // Victory
+				String messageV = (String) Transcription.getTranscription().read();
+				PopUp.getPopUp().setMessage(messageV);
+				PopUp.getPopUp().setTitle("Victory");
+				PopUp.getPopUp().execute();
+			case 'D': // Defeat
+				String messageD = (String) Transcription.getTranscription().read();
+				PopUp.getPopUp().setMessage(messageD);
+				PopUp.getPopUp().setTitle("Defeat");
+				PopUp.getPopUp().execute();
 			default:
 				break;
 		}
