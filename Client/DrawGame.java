@@ -15,10 +15,7 @@ public class DrawGame extends DrawUI
 {
 	private JPanel panel;				// main panel of content
 	private JButton btnHelp;			// launches Help window
-	private JLabel lblPlayer;			// displays player color
 	private JLabel lblMessage;			// displays messages from server
-	private JLabel lblScore;			// displays player score
-	private JLabel lblOppScore;			// displays opponent score
 	private JButton btnResign;			// forfeits the game and offers a rematch
 	private JPanel boardPanel;			// GUI representation of the checkerboard
 	private Space[][] board;
@@ -35,13 +32,6 @@ public class DrawGame extends DrawUI
 	public void displayMessage(String message)		// displays String messages from server
 	{ lblMessage.setText(message); }
 	
-	// sets player color when received from Server
-	public void setColor(String color)
-	{
-		this.color = color;
-		lblPlayer.setText("Welcome, " + color + "!");	
-	}
-		
 	public void reDraw(Board newBoard)	// redraws only the board spaces that have updated
 	{
 		for (int row=0; row<size; row++)
@@ -94,8 +84,7 @@ public class DrawGame extends DrawUI
 	public void createElements()		// initializes each GUI element
 	{
 		size = 8;
-		Dimension messageSize = new Dimension(500, 40);
-		Dimension scoreSize = new Dimension(200, 40);
+		Dimension messageSize = new Dimension(700, 60);
 		
 		panel = new JPanel(); 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -106,37 +95,14 @@ public class DrawGame extends DrawUI
 		btnHelp.setFont(BUTTON_FONT);
 		btnHelp.setToolTipText("View Rules and Usage Guide");
 		
-		lblPlayer = new JLabel();
-		lblPlayer.setFont(LABEL_FONT);
-		lblPlayer.setMinimumSize(messageSize); 
-		lblPlayer.setMaximumSize(messageSize); 
-		lblPlayer.setPreferredSize(messageSize);
-		lblPlayer.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblPlayer.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		lblMessage = new JLabel("Opponent's Turn, Please Wait...");
-		lblMessage.setFont(LABEL_FONT);
+		lblMessage = new JLabel("Opponent's Turn");
+		lblMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblMessage.setFont(TITLE_FONT);
 		lblMessage.setMinimumSize(messageSize); 
 		lblMessage.setMaximumSize(messageSize); 
 		lblMessage.setPreferredSize(messageSize);
 		lblMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		lblScore = new JLabel("Score: 0");
-		lblScore.setFont(LABEL_FONT);
-		lblScore.setMinimumSize(scoreSize); 
-		lblScore.setMaximumSize(scoreSize); 
-		lblScore.setPreferredSize(scoreSize);
-		lblScore.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblScore.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		lblOppScore = new JLabel("Opponent: 0");
-		//lblOppScore.setFont(LABEL_FONT);
-		lblOppScore.setMinimumSize(scoreSize); 
-		lblOppScore.setMaximumSize(scoreSize); 
-		lblOppScore.setPreferredSize(scoreSize);
-		lblOppScore.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblOppScore.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		btnResign = new JButton("Resign");
 		btnResign.setActionCommand("Resign");
@@ -161,22 +127,10 @@ public class DrawGame extends DrawUI
 		Dimension borderSize = new Dimension(100, 100);
 		
 		JPanel messagePanel = new JPanel();
-		messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.Y_AXIS));
-		messagePanel.add(lblPlayer);
+		messagePanel.setLayout(new BoxLayout(messagePanel, BoxLayout.X_AXIS));
+		messagePanel.add(btnHelp);
 		messagePanel.add(lblMessage);
-		
-		JPanel scorePanel = new JPanel();
-		scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.Y_AXIS));
-		scorePanel.add(lblScore);
-		scorePanel.add(lblOppScore);
-		
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.X_AXIS));
-		topPanel.add(btnHelp);
-		topPanel.add(messagePanel);
-		topPanel.add(scorePanel);
-		topPanel.add(Box.createRigidArea(new Dimension(25, 25)));
-		topPanel.add(btnResign);
+		messagePanel.add(btnResign);
 
 		JPanel boardHolderPanel = new JPanel();
 		boardHolderPanel.setLayout(new BoxLayout(boardHolderPanel, BoxLayout.X_AXIS));
@@ -186,7 +140,7 @@ public class DrawGame extends DrawUI
 		
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		panel.add(Box.createRigidArea(new Dimension(25, 25)));
-		panel.add(topPanel);
+		panel.add(messagePanel);
 		panel.add(Box.createRigidArea(new Dimension(35, 35)));
 		panel.add(boardHolderPanel);
 		panel.add(Box.createRigidArea(borderSize));

@@ -1,5 +1,5 @@
 
-public class Listen
+public class Listen extends Transcription
 {
 	public Object retrieveMessages()
 	{

@@ -6,32 +6,32 @@ public class ServerInfo
 	private int portNum = 0;
 	private Socket socket = null; 
 	
-	public String getIP()
+	public String GetIP()
 	{
 		return ipAddress; 
 	}
 	
-	public int getPort()
+	public int GetPort()
 	{
 		return portNum; 
 	}
 	
-	public Socket getSocket()
+	public Socket GetSocket()
 	{
 		return socket;
 	}
 	
-	public void setIP(String ip)
+	public void SetIP(String ip)
 	{
 		ipAddress = ip; 
 	}
 	
-	public void setPort(int port)
+	public void SetPort(int port)
 	{
 		portNum = port; 
 	}
 	
-	public void setSocket(Socket socket)
+	public void SetSocket(Socket socket)
 	{
 		this.socket = socket;
 	}

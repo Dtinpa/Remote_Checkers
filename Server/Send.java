@@ -1,18 +1,9 @@
 
-public class Send
+public class Send extends Transcription
 {
 	public void sendMessage()
 	{
 		
 	}
-	
-	public void sendMove()
-	{ 
-		//Transcription.getTranscription().translateToServer(); 
-	}
-	
-	public void sendPairRequest()
-	{
-		
-	}
+
 }

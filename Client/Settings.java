@@ -20,26 +20,12 @@ public class Settings extends Screen
 		{ singleton = new Settings(); }
 		return singleton;
 	}
-	
-	public boolean validateField()
-	{
-		String ip = drawSettings.getIP();
-
-		if(ip.isEmpty())	// field left blank
-		{
-			drawSettings.errorBlank();
-			return false;
-		}
-		return true;
-	}
 
 	@Override
 	public void execute()
 	{ 
 		if (drawSettings == null)
-		{ drawSettings = new DrawSettings(); }
-		String ip = in.read();
-		drawSettings.populateIP(ip);
+		{ drawSettings = new DrawSettings();  }
 		drawSettings.show();
 	}
 	
@@ -53,18 +39,15 @@ public class Settings extends Screen
 		switch(e.getActionCommand())
 		{
 			case("Save"):
-				if(validateField())
-				{
-					ConfigData cd = new ConfigData(drawSettings.getIP());
-					out.write(cd);
-					dispose();
-					MainScreen.getMainScreen().execute();
-				}
+				String[] fields = drawSettings.getFields();
+			//TODO error checking on fields
+				out.write(fields);
 				break;
 			case("Cancel"):
-				dispose();
+				Settings.getSettings().dispose();
 				MainScreen.getMainScreen().execute();
 				break;
 		}
+		
 	}
 }

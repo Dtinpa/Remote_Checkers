@@ -1,15 +1,11 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.ObjectInputStream;
 
 public class InFile extends Input
 {
 	private static InFile instance; 
-	private BufferedReader input; 
+	private ObjectInputStream input; 
 	private OutFile output = OutFile.getInstance(); 
 	private File file = new File(getConfigFilePath()); 
 	
@@ -24,19 +20,25 @@ public class InFile extends Input
 		return instance; 
 	}
 	
-	public String read()
+	public Object read()
 	{
-		String inputObj = ""; 
+		Object inputObj = new Object(); 
 		
+		if (!file.mkdirs())
+		{
+			//Error
+			output.writeError("Could not create parent directory for file"); 
+		}
+
 		try
 		{
 			if (!file.exists())
 			{
-				// display error popup, file does not exist, please configure in settings
 				output.writeError("Cannot read file, file does not exist");
 			}
-			input = new BufferedReader(new FileReader(file.getAbsolutePath()));
-			inputObj = input.readLine();
+			
+			input = new ObjectInputStream(new FileInputStream(file.getName())); 
+			inputObj = input.readObject(); 
 		}
 		catch(Exception ex)
 		{
@@ -46,4 +48,3 @@ public class InFile extends Input
 		return inputObj; 
 	}
 }
-

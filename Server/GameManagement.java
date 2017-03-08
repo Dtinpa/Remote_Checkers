@@ -6,6 +6,7 @@ public class GameManagement
 	final int SAME_STATE_LIMIT = 3;
 	
 	private static GameManagement singleton;
+	public static int next_game = 0;
 	
 	public PlayerManagement playerManagement;
 	public ArrayList<Board> boards;
@@ -34,43 +35,19 @@ public class GameManagement
 		return singleton;
 	}
 		
-	public void openGameForClients(int matchIndex)
+	public void startGame(Player firstClient, Player secondClient)
 	{
-		playerManagement.assignOrder(matchIndex);
-		if (matchIndex == boards.size())
-		{
-			boards.add(new Board());
-			previous_states.add(new ArrayList<BoardState>());
-			drawCounter.add(0);
-		}
-		else
-		{
-			boards.set(matchIndex, new Board());
-			previous_states.set(matchIndex, new ArrayList<BoardState>());
-			drawCounter.set(matchIndex, 0);
-		}
-	}
-	
-	public void startTurn(int game_index)
-	{
-		Player active_player = playerManagement.getActivePlayer(game_index);
-		int active_color = active_player.color;
-		Board validPieceBoard = validPieces.find(game_index, active_color);
-		Board board = boards.get(game_index);
-		if (board.compare(validPieceBoard))
-		{
-			EndGameCondition win = (active_color == Player.BLUE) ? EndGameCondition.REDWIN : EndGameCondition.BLUEWIN;
-			endGame(game_index, win);
-			return;
-		}
-		// Else
-		// Send ValidPiece board to ActivePlayer
+		playerManagement.assignOrder(firstClient, secondClient);
+		boards.add(new Board());
+		previous_states.add(new ArrayList<BoardState>());
+		drawCounter.add(0);
+		next_game++;
 	}
 	
 	public void processSelectPieceMessage(int game_index, int selected_row, int selected_column)
 	{
 		Board validMoveBoard = validMoves.find(game_index, selected_row, selected_column);
-		// Send ValidMove Board to ActivePlayer
+		// Send ValidMove Board to player
 	}
 	
 	public void processMoveMessage(int game_index, Move move)
@@ -84,7 +61,6 @@ public class GameManagement
 				endTurn(game_index);
 			//else
 			//	Send ValidMove Board to continue jump
-			//  Send Normal Board to other player
 		}
 		else if (distance == MakeMove.STEP_DISTANCE)
 		{
@@ -96,8 +72,7 @@ public class GameManagement
 	public void endTurn(int game_index)
 	{
 		Board board = boards.get(game_index);
-		// Send Normal board to both players
-		
+
 		ArrayList<BoardState> prev_states = previous_states.get(game_index);
 		for (int i = 0; i < prev_states.size(); i++)
 		{
@@ -126,9 +101,19 @@ public class GameManagement
 			return;
 		}
 		
+		Player active_player = playerManagement.getActivePlayer(game_index);
+		int active_color = (active_player.color == Player.BLUE) ? Player.RED : Player.BLUE;
+		Board validBoard = validPieces.find(game_index, active_color);
+		if (board.compare(validBoard))
+		{
+			EndGameCondition win = (active_color == Player.BLUE) ? EndGameCondition.REDWIN : EndGameCondition.BLUEWIN;
+			endGame(game_index, win);
+			return;
+		}
+		
 		drawCounter.set(game_index, drawCount+1);
 		playerManagement.changeActivePlayer(game_index);
-		startTurn(game_index);
+		// Send ValidPiece Board to next player
 	}
 	
 	public void endGame(int game_index, EndGameCondition condition)
@@ -151,11 +136,7 @@ public class GameManagement
 				player2.score++;
 		}
 		
-		// Send end-game notification
-		
 		// Send Rematch request
-		// Call rematch() if both accepts
-		// Call closeGame() if one denies
 	}
 	
 	public void resetDrawCounters(int game_index)
@@ -169,14 +150,5 @@ public class GameManagement
 		boards.set(game_index, new Board());
 		playerManagement.swapTurnOrder(game_index);
 		resetDrawCounters(game_index);
-		startTurn(game_index);
-	}
-	
-	public void closeGame(int game_index)
-	{
-		playerManagement.dismissPlayers(game_index);
-		boards.set(game_index, null);
-		drawCounter.set(game_index, -1);
-		previous_states.set(game_index, null);
 	}
 }

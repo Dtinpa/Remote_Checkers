@@ -39,11 +39,11 @@ public class OutFile extends Output
 		this.write(logFile, messages);
 	}
 	
-	public void write(ConfigData configuration) 
-	{ 
-		this.write(configFile, configuration); 
-	} 
-
+	public void write(Object configuration)
+	{
+		this.write(configFile, configuration);
+	}
+	
 	public void writeError(String message)
 	{
 		this.write(errorLog, message); 
@@ -57,26 +57,22 @@ public class OutFile extends Output
 	
 	private void write(File file, Object messages)
 	{
-		if (!file.getParentFile().mkdirs())
+		if (!logFile.getParentFile().mkdirs())
 		{
 			//Error
 		}
 
 		try
 		{
-			if (!file.exists())
+			if (!logFile.exists())
 			{
 				//Make file 
-				file.createNewFile(); 
+				logFile.createNewFile(); 
 			}
 			
 			if (messages instanceof String || messages instanceof String[])
 			{
 				writeString(file, (String[])messages);
-			}
-			else if (messages instanceof ConfigData)
-			{
-				writeConfig(file, messages);
 			}
 			else
 			{
@@ -89,41 +85,17 @@ public class OutFile extends Output
 			console.writeError(ex.getMessage());
 		}
 	}
-			
-	private void writeString(File file, String[] messages)
-	{
-		try {
-			outputWriter = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true));
-			
-			for(int i = 0; i < messages.length; i++)
-			{
-				outputWriter.write(dateTimeString + ": " + messages[i]);
-				outputWriter.newLine();
-			}
-			outputWriter.flush();
-			outputWriter.close();
-		}
-		catch (IOException ex)
-		{
-			console.writeError(ex.getMessage());
-		}
-
-	}
 	
-	private void writeConfig(File file, Object messages)
+	private void writeString(File file, String[] messages) throws IOException
 	{
-		try
+		outputWriter = new BufferedWriter(new FileWriter(file.getAbsolutePath(), true));
+		
+		for(int i = 0; i < messages.length; i++)
 		{
-			outputWriter = new BufferedWriter(new FileWriter(file.getAbsolutePath(), false));
-			String configIP = ((ConfigData) messages).getIP();
-			outputWriter.write(configIP);
-			outputWriter.flush();
-			outputWriter.close();
+			outputWriter.write(dateTimeString + ": " + messages[i]);
+			outputWriter.newLine();
 		}
-		catch (IOException ex)
-		{
-			console.writeError(ex.getMessage());
-		}
+		outputWriter.flush();
 	}
 	
 	private void writeObject(File file, Object messages) throws FileNotFoundException, IOException

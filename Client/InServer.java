@@ -8,18 +8,37 @@ import java.net.Socket;
 
 public class InServer extends Input
 {
-	//private Socket clientSocket; 
-	//private BufferedReader reader; 
+	private Socket clientSocket; 
+	private BufferedReader reader; 
 	private OutFile logging = OutFile.getInstance();
 	
-	private ObjectInputStream stream;
-	public InServer(Socket s)
+	public Object read() 
+	{
+		logging.write("Getting socket.");		
+		clientSocket = getSocketToUse();
+		
+		try 
+		{
+			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			return reader.readLine(); 
+		}
+		catch (IOException e) 
+		{
+			logging.writeError("Could not read from socket.");
+		} 
+		
+		return null; 
+	}
+	
+	ObjectInputStream stream;
+	InServer(Socket s)
 	{
 		try
-		{ stream = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));}
+		{ stream = new ObjectInputStream(new BufferedInputStream(s.getInputStream())); }
 		catch (IOException e)
 		{
-			logging.writeError(e.getMessage());
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
 	}
 	
@@ -34,28 +53,6 @@ public class InServer extends Input
 			e.printStackTrace();
 		}
 		return b;
-	}
-	
-	public Object read() 
-	{
-		logging.write("Getting socket.");		
-		//clientSocket = getSocketToUse();
-		
-		try 
-		{
-			//reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			//return reader.readLine();
-			return stream.readObject();
-		}
-		catch (IOException e) 
-		{
-			logging.writeError("Could not read from socket.");
-		}
-		catch (ClassNotFoundException e)
-		{
-			logging.writeError("Could not find class to deserialize.");
-		} 
-		return null; 
 	}
 	
 	/*ObjectInputStream stream;
