@@ -9,7 +9,7 @@ public class Server
 		GameManagement gM = GameManagement.getInstance();
 		MatchMaking matchMaking = new MatchMaking();
 		Parser parser = new Parser();
-		Transcription transcription = new Transcription();
+		Transcription transcription = Transcription.getTranscription();
 		ArrayList<IO> io;
 	}
 

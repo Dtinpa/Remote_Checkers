@@ -23,12 +23,12 @@ public class Transcription
 	{
 		//inServer = new InServer();
 		//outServer = new OutServer();	// these are done in Game.Connect, when we have a socket
+		connect = new Connect();
 		connect();
 		outServer = new OutServer(socket);
 		inServer = new InServer(socket);
 		
 		serverInfo = new ServerInfo();
-		connect = new Connect();
 		listen = new Listen();
 		send = new Send();
 		parseToServer = new ParseToServer();

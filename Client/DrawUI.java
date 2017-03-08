@@ -9,6 +9,7 @@ public abstract class DrawUI
 	public static JFrame frame;							// frame is treated as a singleton
 	public Font TITLE_FONT = new Font("Tahoma", Font.BOLD, 50);
 	public Font BUTTON_FONT = new Font("Tahoma", Font.BOLD, 30);
+	public Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 22); 
 	public Dimension buttonSize = new Dimension(300, 70);
 	public Dimension labelSize = new Dimension(300, 50);
 

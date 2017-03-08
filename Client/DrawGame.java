@@ -131,7 +131,7 @@ public class DrawGame extends DrawUI
 		lblScore.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		lblOppScore = new JLabel("Opponent: 0");
-		lblOppScore.setFont(LABEL_FONT);
+		//lblOppScore.setFont(LABEL_FONT);
 		lblOppScore.setMinimumSize(scoreSize); 
 		lblOppScore.setMaximumSize(scoreSize); 
 		lblOppScore.setPreferredSize(scoreSize);

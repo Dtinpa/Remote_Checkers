@@ -1,5 +1,7 @@
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
@@ -12,6 +14,19 @@ public class OutClient extends Output
 	private BufferedWriter writer; 
 	private OutFile logging = OutFile.getInstance(); 
  
+	
+	private ObjectOutputStream stream;
+	public OutClient(Socket s)
+	{
+		try
+		{ 
+			stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); 
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	public void write(String message)
 	{

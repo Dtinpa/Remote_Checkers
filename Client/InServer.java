@@ -12,15 +12,14 @@ public class InServer extends Input
 	//private BufferedReader reader; 
 	private OutFile logging = OutFile.getInstance();
 	
-	ObjectInputStream stream;
-	InServer(Socket s)
+	private ObjectInputStream stream;
+	public InServer(Socket s)
 	{
 		try
-		{ stream = new ObjectInputStream(new BufferedInputStream(s.getInputStream())); }
+		{ stream = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));}
 		catch (IOException e)
 		{
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			logging.writeError(e.getMessage());
 		}
 	}
 	

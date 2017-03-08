@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 public class OutServer extends Output
@@ -16,17 +17,22 @@ public class OutServer extends Output
 	//private BufferedWriter writer; 
 	private OutFile logging = OutFile.getInstance(); 
 
-	Socket socket = new Socket(); 
-	
-	ObjectOutputStream stream;
-	OutServer(Socket s)
+	private Socket socket; 
+	private ObjectOutputStream stream;
+	public OutServer(Socket s)
 	{
+		socket = s; 
 		try
-		{ stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); }
+		{ 
+			stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); 
+		}
+		catch (SocketException e)
+		{
+			//Connection Reset....disconnection 
+		}
 		catch (IOException e)
 		{
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			
 		}
 	}
 	
