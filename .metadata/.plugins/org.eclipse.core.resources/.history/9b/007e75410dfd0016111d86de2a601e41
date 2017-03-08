@@ -1,0 +1,13 @@
+
+public class OutConsole extends Output
+{
+	public void Write(String message)
+	{
+		System.out.println(dateTimeString + ": " + message);
+	}
+	
+	public void WriteError(String message)
+	{
+		System.out.println("[Error] - " + dateTimeString + ": " + message);
+	}
+}

@@ -1,0 +1,86 @@
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+
+
+public class OutServer extends Output
+{
+	/*ObjectOutputStream stream;
+	
+	OutServer(Socket s)
+	{
+		try
+		{ stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); }
+		catch (IOException e)
+		{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+	}
+	
+	public void write(String message)	// message is "xy" position of click
+	{
+		try
+		{ stream.writeUTF(message); }
+		catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	*/
+	
+	//This is where talking to the server actually takes place....
+		//but it is not where the connection happens. The connection happens else where
+
+		private BufferedWriter writer; 
+		private OutFile logging = new OutFile(); 
+
+		Socket socket = new Socket(); 
+		
+		public void Write(String message)
+		{
+			logging.Write("Getting socket.");		
+			socket = GetSocketToUse(); 
+			
+			Write(socket, message); 
+		}
+		
+		public void Write(Socket socket, String message)
+		{
+			logging.Write("Wrote to server.");
+			if (socket == null) return; 
+			try 
+			{
+				writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+				writer.write(message);
+				writer.flush();
+			}
+			catch (IOException e) 
+			{
+				logging.Write(e.getMessage());
+				return; 
+			} 
+			
+			logging.Write("Sucessfully wrote to client.");
+		}
+		
+		public void Write(String[] messages)
+		{
+			logging.Write("Getting socket.");		
+			socket = GetSocketToUse(); 
+			
+			for (int i = 0; i < messages.length; i++)
+			{
+				Write(socket, messages[i]); 
+			}
+		}
+		
+		public void WriteError(String message)
+		{
+			logging.WriteError(message);
+		}
+}

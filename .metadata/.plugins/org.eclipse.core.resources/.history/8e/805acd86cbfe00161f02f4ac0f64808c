@@ -1,0 +1,5 @@
+
+public abstract class Input extends IO
+{
+	public Object read(String fileName){}
+}

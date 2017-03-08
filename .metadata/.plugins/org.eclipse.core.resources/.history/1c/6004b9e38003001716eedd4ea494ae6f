@@ -1,0 +1,14 @@
+import java.net.ServerSocket;
+
+
+public class Connect
+{
+	ServerSocket socket = new ServerSocket(); 
+	
+	public ServerSocket connectSocket()
+	{
+		socket.
+		return socket; 
+	}
+
+}

@@ -1,0 +1,8 @@
+
+public class InClient extends Input
+{
+	public Object read(String fileName) 
+	{
+		return null; 
+	}
+}

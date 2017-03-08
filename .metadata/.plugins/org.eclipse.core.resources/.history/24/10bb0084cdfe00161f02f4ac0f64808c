@@ -1,0 +1,14 @@
+import java.net.Socket;
+
+public class InClient extends Input
+{
+	private Socket socket; 
+	private OutFile logging = OutFile.GetInstance();
+	
+	public Object read(String fileName) 
+	{
+		logging.write("Getting socket.");		
+		socket = getSocketToUse();
+		return null; 
+	}
+}

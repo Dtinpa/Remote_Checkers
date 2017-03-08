@@ -1,0 +1,17 @@
+2017-03-03T13:00:16.816: Message
+2017-03-03T13:00:18.719: Message
+2017-03-07T17:08:01.874: Server socket was connected
+2017-03-07T17:11:08.299: Server socket was connected
+2017-03-07T17:11:08.299: Socket connected: /127.0.0.1:60218
+2017-03-07T18:04:03.355: Server socket was connected
+2017-03-07T18:04:03.355: Socket connected: /127.0.0.1:60307
+2017-03-07T18:07:01.529: Server socket was connected
+2017-03-07T18:07:01.529: Socket connected: /127.0.0.1:60318
+2017-03-07T18:14:08.915: Server socket was connected
+2017-03-07T18:14:08.915: Socket connected: /127.0.0.1:60336
+2017-03-07T18:17:55.429: Server socket was connected
+2017-03-07T18:17:55.429: Socket connected: /127.0.0.1:60345
+2017-03-07T18:19:44.776: Server socket was connected
+2017-03-07T18:19:44.776: Socket connected: /127.0.0.1:60350
+2017-03-07T18:27:42.378: Server socket was connected
+2017-03-07T18:27:42.378: Socket connected: /127.0.0.1:60375

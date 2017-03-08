@@ -1,0 +1,12 @@
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+
+public abstract class IO
+{
+	protected SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+	protected String dateTimeString = dateTime.format(LocalDateTime.now());
+	
+	protected String configFile = "res/config.txt";
+	protected String logFile = "logs/log.txt";
+	protected String errorFile = "logs/error.txt";
+}

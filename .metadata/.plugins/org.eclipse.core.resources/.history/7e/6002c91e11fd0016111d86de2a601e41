@@ -1,0 +1,18 @@
+
+public class OutClient extends Output
+{
+	public void Write(String message)
+	{
+		
+	}
+	
+	public void Write(String[] messages)
+	{
+		
+	}
+	
+	public void WriteError(String message)
+	{
+		
+	}
+}

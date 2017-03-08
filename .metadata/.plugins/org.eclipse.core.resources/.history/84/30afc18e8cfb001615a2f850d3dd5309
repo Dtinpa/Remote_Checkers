@@ -1,0 +1,13 @@
+
+public enum Element
+{
+	WHITESPACE,
+	BLACKSPACE,
+	GREENSPACE,
+	RED,
+	BLUE,
+	REDKING,
+	BLUEKING,
+	VALID,
+	VALIDKING;
+}

@@ -1,0 +1,8 @@
+
+public class OutConsole extends Output
+{
+	public void Write(String message)
+	{
+		System.out.println(super.dateTimeString + ": " + message);
+	}
+}

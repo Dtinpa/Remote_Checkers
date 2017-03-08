@@ -1,0 +1,28 @@
+
+public class ClientInfo
+{
+	private String ipAddress = "";
+	private int port = 0;
+	
+	public String GetIP()
+	{
+		return ipAddress; 
+	}
+	
+	public int GetPort()
+	{
+		return port; 
+	}
+	
+	public void SetIP(String ip)
+	{
+		ipAddress = ip; 
+	}
+	
+	public void SetPort(int port)
+	{
+		this.port = port; 
+	}
+
+
+}

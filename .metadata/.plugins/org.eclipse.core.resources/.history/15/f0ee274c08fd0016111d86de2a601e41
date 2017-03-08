@@ -1,0 +1,14 @@
+
+public abstract class Output extends IO
+{
+	public void Write(String message)
+	{
+		System.out.print(dateTimeString + ": " + message);
+	}
+	
+	public void WriteError(String message)
+	{
+		System.out.println("[Error] " + dateTimeString + ": " + message);
+	}
+
+}

@@ -1,0 +1,15 @@
+
+public class OutFile extends Output
+{
+	//File  
+	
+	public void Write(String message)
+	{
+		
+	}
+	
+	public void WriteError(String message)
+	{
+		
+	}
+}

@@ -1,0 +1,139 @@
+import java.net.Socket;
+import java.util.*;
+
+import javax.swing.SwingWorker;
+
+public class Transcription
+{
+	private static Transcription instance;
+	
+	public InClient inClient;
+	public OutClient outClient;
+	public ClientInfo serverInfo;
+	public Connect connect;
+	public Listen listen;
+	public Send send;
+	public ParseToClient parseToServer;
+	public ParseFromClient parseFromServer;
+	
+	private Socket socket;
+	
+	private static Transcription singleton;
+	
+	private IO io;
+
+	private Transcription()
+	{
+		//inClient = new inClient();
+		//outClient = new outClient();	// these are done in Game.Connect, when we have a socket
+		connect();
+		outClient = new OutClient(socket);
+		inClient = new InClient(socket);
+		
+		serverInfo = new ServerInfo();
+		connect = new Connect();
+		listen = new Listen();
+		send = new Send();
+		parseToServer = new ParseToServer();
+		parseFromServer = new ParseFromServer();
+	}
+	
+	public static Transcription getTranscription()	// implements singleton
+	{
+		if(singleton == null)
+		{ singleton = new Transcription(); }
+		return singleton;
+	}
+	
+	public Socket getClientSocket(int index)
+	{
+		if (clientsInfo != null && clientsInfo.size() >= index)
+		{
+			return clientsInfo.get(index).getSocket(); 
+		}
+		return null; 
+	}
+	
+	public ClientInfo getClientForMatching()
+	{
+		ClientInfo client = clientsInfo.remove(0);
+		return client;
+	}
+	
+	public int getClientsCount()
+	{
+		return clientsInfo.size();
+	}
+	
+	public void removeDisconnectedClients()
+	{
+		ArrayList<ClientInfo> disconnectedClients = new ArrayList<ClientInfo>();
+		for (int i = 0; i < clientsInfo.size(); i++)
+		{
+			ClientInfo client = clientsInfo.get(i);
+			// if (Socket of ClientInfo is disconnected) (test through reading or writing)
+			if (false)
+				disconnectedClients.add(client);
+		}
+		
+		clientsInfo.removeAll(disconnectedClients);
+	}
+	
+	public Object read()
+	{ return inClient.read(); }
+	
+	public Byte readByte()
+	{ return inClient.readByte(); }
+	
+	public void write(String message)
+	{ outClient.write(message); }
+	
+	public void sendMove(Space clicked)
+	{ send.sendMove(clicked); }
+	
+	public void translateToClient(Space clicked)
+	{ parseToServer.translate(clicked); }
+	
+	public void translateFromClient(Byte messageType)
+	{ parseFromServer.translate(messageType); }
+	
+	public void connect()
+	{
+		socket = connect.connectSocket();
+		//outClient = new outClient(socket);
+		//inClient = new inClient(socket);
+		
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
+		{
+			protected Void doInBackground() throws Exception
+			{                
+				listen();
+				return null;
+			}
+			@Override
+			protected void done()
+			{
+				try
+				{ }
+				catch (Exception e)
+				{ }
+			}
+		};
+		worker.execute();
+		
+	/*	Byte messageType = inClient.readByte();
+		if(messageType == 'C')
+		{
+			String color = (String) inClient.read();
+			GameScreen.getGameScreen().setColor(color);
+		}*/
+	}
+	
+	public void listen()
+	{ listen.retrieveMessages(); }
+	
+	public Socket getServerSocket()
+	{
+		return serverInfo.getSocket(); 
+	}
+}

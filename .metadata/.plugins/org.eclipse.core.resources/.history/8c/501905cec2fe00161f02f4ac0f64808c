@@ -1,0 +1,7 @@
+
+public interface Output extends IO
+{
+	public void Write(String message);
+	
+	public void WriteError(String message);
+}
