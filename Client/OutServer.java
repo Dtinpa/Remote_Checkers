@@ -1,7 +1,12 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 public class OutServer extends Output
@@ -9,15 +14,32 @@ public class OutServer extends Output
 	//This is where talking to the server actually takes place....
 	//but it is not where the connection happens. The connection happens else where
 
-	private BufferedWriter writer; 
+	//private BufferedWriter writer; 
 	private OutFile logging = OutFile.getInstance(); 
 
-	Socket socket = new Socket(); 
+	private Socket socket; 
+	private ObjectOutputStream stream;
+	public OutServer(Socket s)
+	{
+		socket = s; 
+		try
+		{ 
+			stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); 
+		}
+		catch (SocketException e)
+		{
+			//Connection Reset....disconnection 
+		}
+		catch (IOException e)
+		{
+			
+		}
+	}
 	
 	public void write(String message)
 	{
 		logging.write("Getting socket.");		
-		socket = getSocketToUse(); 
+		//socket = getSocketToUse(); 
 		
 		write(socket, message); 
 	}
@@ -28,9 +50,11 @@ public class OutServer extends Output
 		if (socket == null) return; 
 		try 
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			writer.write(message);
-			writer.flush();
+			//writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			//writer.write(message);
+			//writer.flush();
+			stream.writeUTF(message);
+			stream.flush();
 		}
 		catch (IOException e) 
 		{

@@ -1,20 +1,16 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Server
 {
 	public String version = "0.1.0";
-	private GameManagement gM;
-	private Parser parser;
-	private Transcription transciption;
-	private IO[] io;
 
 	public static void main(String[] args)
 	{
-		OutFile file = OutFile.getInstance(); 
-		file.write("Message");
-		
-		Server server = new Server();
-		server.gM = GameManagement.getInstance();
+		GameManagement gM = GameManagement.getInstance();
+		MatchMaking matchMaking = new MatchMaking();
+		Parser parser = new Parser();
+		Transcription transcription = Transcription.getTranscription();
+		ArrayList<IO> io;
 	}
 
 }

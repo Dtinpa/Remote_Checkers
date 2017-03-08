@@ -1,5 +1,7 @@
 import java.net.Socket;
 
+import javax.swing.SwingWorker;
+
 public class Transcription
 {
 	public InServer inServer;
@@ -11,17 +13,22 @@ public class Transcription
 	public ParseToServer parseToServer;
 	public ParseFromServer parseFromServer;
 	
-	private static Transcription singleton;
-	private static Transcription instance;
+	private Socket socket;
 	
-	public IO io;
+	private static Transcription singleton;
+	
+	private IO io;
 	
 	private Transcription()
 	{
 		//inServer = new InServer();
 		//outServer = new OutServer();	// these are done in Game.Connect, when we have a socket
-		serverInfo = new ServerInfo();
 		connect = new Connect();
+		connect();
+		outServer = new OutServer(socket);
+		inServer = new InServer(socket);
+		
+		serverInfo = new ServerInfo();
 		listen = new Listen();
 		send = new Send();
 		parseToServer = new ParseToServer();
@@ -53,8 +60,43 @@ public class Transcription
 	public void translateFromServer(Byte messageType)
 	{ parseFromServer.translate(messageType); }
 	
-	public Socket GetServerSocket()
+	public void connect()
 	{
-		return serverInfo.GetSocket(); 
+		socket = connect.connectSocket();
+		//outServer = new OutServer(socket);
+		//inServer = new InServer(socket);
+		
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
+		{
+			protected Void doInBackground() throws Exception
+			{                
+				listen();
+				return null;
+			}
+			@Override
+			protected void done()
+			{
+				try
+				{ }
+				catch (Exception e)
+				{ }
+			}
+		};
+		worker.execute();
+		
+	/*	Byte messageType = inServer.readByte();
+		if(messageType == 'C')
+		{
+			String color = (String) inServer.read();
+			GameScreen.getGameScreen().setColor(color);
+		}*/
+	}
+	
+	public void listen()
+	{ listen.retrieveMessages(); }
+	
+	public Socket getServerSocket()
+	{
+		return serverInfo.getSocket(); 
 	}
 }

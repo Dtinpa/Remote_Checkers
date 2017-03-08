@@ -1,11 +1,13 @@
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -17,8 +19,6 @@ public class DrawSettings extends DrawUI
 	private JLabel lblTitle;
 	private JLabel lblIP;
 	private JTextField txtIP;
-	private JLabel lblPort;
-	private JTextField txtPort;
 	private JButton btnSave;		// saves settings information and moves to MainScreen
 	private JButton btnCancel;		// moves to MainScreen
 	
@@ -38,15 +38,17 @@ public class DrawSettings extends DrawUI
 		
 		lblIP = new JLabel("Server IP Address:");
 		lblIP.setFont(BUTTON_FONT);
+		lblIP.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		lblIP.setMinimumSize(labelSize);
+		lblIP.setMaximumSize(labelSize);
+		lblIP.setPreferredSize(labelSize);
 		
 		txtIP = new JTextField();
 		txtIP.setFont(BUTTON_FONT);
-		
-		lblPort = new JLabel("Server Port:");
-		lblPort.setFont(BUTTON_FONT);
-		
-		txtPort = new JTextField();
-		txtPort.setFont(BUTTON_FONT);
+		txtIP.setMargin(new Insets(0,5,0,5));
+		txtIP.setMinimumSize(labelSize);
+		txtIP.setMaximumSize(labelSize);
+		txtIP.setPreferredSize(labelSize);
 		
 		btnSave = new JButton("Save");
 		btnSave.setActionCommand("Save");
@@ -79,44 +81,17 @@ public class DrawSettings extends DrawUI
 		frame.add(panel);
 	}
 	
-	// Creates a GroupLayout to properly align labels and text boxes.  Repurposed code from
-		// an earlier project.
-	public JPanel createSettingsEntryPanel()
-	{
-		JPanel settingsEntryPanel = new JPanel();
-		GroupLayout groupLayout = new GroupLayout(settingsEntryPanel);
-		settingsEntryPanel.setLayout(groupLayout);
+	// creates an intermediate panel to help align components correctly
+		public JPanel createSettingsEntryPanel()
+		{
+			JPanel settingsEntryPanel = new JPanel();
+			settingsEntryPanel.setLayout(new BoxLayout(settingsEntryPanel, BoxLayout.X_AXIS));
 			
-		// creates a sequential group for the horizontal axis.  The sequential group contains
-			// two parallel groups, one containing the labels and the other the second column
-			// of objects.  Putting the labels in a parallel group along the horizontal axis
-			// positions them at the same x-location.
-		GroupLayout.SequentialGroup rows = groupLayout.createSequentialGroup();
-		rows.addGap(50);
-		rows.addGroup(groupLayout.createParallelGroup().
-				addComponent(lblIP).
-				addComponent(lblPort));
-		rows.addGap(25);
-		rows.addGroup(groupLayout.createParallelGroup().
-				addComponent(txtIP).
-				addComponent(txtPort));
-		rows.addGap(50);
-		groupLayout.setHorizontalGroup(rows);
+			settingsEntryPanel.add(lblIP);
+			settingsEntryPanel.add(txtIP);
 
-		// creates a sequential group for the vertical axis.  The sequential group contains
-			// parallel groups that align the contents along the baseline.  Each parallel group
-			// contains a label and the labeled component.  By using a sequential group, the labels
-			// and corresponding components are positioned vertically one after another.
-		GroupLayout.SequentialGroup columns = groupLayout.createSequentialGroup();
-		columns.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-				addComponent(lblIP).addComponent(txtIP));
-		columns.addGap(25);
-		columns.addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE).
-				addComponent(lblPort).addComponent(txtPort));
-		groupLayout.setVerticalGroup(columns);
-		
-		return settingsEntryPanel;
-	}
+			return settingsEntryPanel;
+		}
 	
 	// creates an intermediate panel to help align components correctly
 	public JPanel createButtonsPanel()
@@ -131,12 +106,18 @@ public class DrawSettings extends DrawUI
 		return buttonsPanel;
 	}
 	
-	public String[] getFields()
+	// returns the user-entered value
+	public String getIP()
+	{ return txtIP.getText().trim(); }
+	
+	public void populateIP(String ip)
+	{ txtIP.setText(ip); }
+	
+	// display error - field left blank
+	public void errorBlank()
 	{
-		String[] fields = new String[2];
-		fields[0] = txtIP.getText();
-		fields[1] = txtPort.getText();
-		return fields;
+		JOptionPane.showMessageDialog(frame, "Server IP cannot be left blank!",
+				"Update Settings Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	@Override

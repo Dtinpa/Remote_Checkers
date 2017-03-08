@@ -35,7 +35,7 @@ public abstract class IO
 		//Get this by other means
 		int index = 1; 
 		
-		useSocket = Transcription.GetInstance().GetClientSocket(index); 
+		useSocket = Transcription.getTranscription().getClientSocket(index); 
 		return useSocket; 
 	}
 	

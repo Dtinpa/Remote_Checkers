@@ -9,7 +9,9 @@ public abstract class DrawUI
 	public static JFrame frame;							// frame is treated as a singleton
 	public Font TITLE_FONT = new Font("Tahoma", Font.BOLD, 50);
 	public Font BUTTON_FONT = new Font("Tahoma", Font.BOLD, 30);
+	public Font LABEL_FONT = new Font("Tahoma", Font.BOLD, 22); 
 	public Dimension buttonSize = new Dimension(300, 70);
+	public Dimension labelSize = new Dimension(300, 50);
 
 	public abstract void createElements();				// initializes each GUI element
 	public abstract void drawElements();				// places GUI elements
@@ -19,13 +21,13 @@ public abstract class DrawUI
 
 	DrawUI()					// all subclasses call this super constructor
 	{
-		frame = getFrame();
+		getFrame();
 		createElements();
 		drawElements();
 		registerEventHandlers();
 	}
 	
-	public JFrame getFrame()		// frame is treated as a singleton
+	public static void getFrame()		// frame is treated as a singleton
 	{
 		if(frame == null)
 		{
@@ -35,7 +37,6 @@ public abstract class DrawUI
 	    	frame.setResizable(false);
 	    	frame.setVisible(true);
 		}
-		return frame;
 	}
 
 
