@@ -1,24 +1,27 @@
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class Transcription
 {
+	public Lock lock; 
 	public InClient inClient;
 	public OutClient outClient;
 	public ArrayList<Socket> socketIndicies; 
-	public HashMap<Socket, ClientInfo> clientsInfo;
+	public ArrayList<ClientInfo> clientsInfo;
 	public Connect connect;
 	public Listen listen;
 	public Send send;
 	public ParseToClient parseToClient;
 	public ParseFromClient parseFromClient;
-	private Socket socket;
+	//private Socket socket;
 	private static Transcription singleton;
 
 	private Transcription()
 	{
-
+		lock = new ReentrantLock(); 
 	}
 	
 	public static Transcription getTranscription()	// implements singleton
@@ -33,7 +36,8 @@ public class Transcription
 	public void openToConnections()
 	{
 		socketIndicies = new ArrayList<Socket>(); 
-		clientsInfo = new HashMap<Socket, ClientInfo>();
+		//clientsInfo = new HashMap<Socket, ClientInfo>();
+		clientsInfo = new ArrayList<ClientInfo>(); 
 		
 		connect = new Connect();
 		connect.acceptConnections(); 
@@ -76,41 +80,55 @@ public class Transcription
 		ClientInfo client = new ClientInfo(); 
 		client.setSocket(clientSocket);
 		socketIndicies.add(clientSocket); 
-		clientsInfo.put(clientSocket, client); 
+		clientsInfo.add(client); 
 	}
 	
 	public ClientInfo getClientForMatching()
 	{
-		//ClientInfo client = clientsInfo.remove(0);
-		//return client;
-		return null;
+		ClientInfo client = clientsInfo.remove(0);
+		return client;
 	}
 	
 	public int getClientsCount()
 	{
-		//return clientsInfo.size();
-		return 0; 
+		return clientsInfo.size();
 	}
 	
 	public void removeDisconnectedClients()
 	{
-		/*ArrayList<ClientInfo> disconnectedClients = new ArrayList<ClientInfo>();
+		while (!lock.tryLock())
+		{
+			try 
+			{
+				Thread.sleep(100);
+			}
+			catch (InterruptedException e){}
+		}
+		//ArrayList<ClientInfo> disconnectedClients = new ArrayList<ClientInfo>();
 		for (int i = 0; i < clientsInfo.size(); i++)
 		{
 			ClientInfo client = clientsInfo.get(i);
+			if (client.getSocket().isClosed())
+			{
+				clientsInfo.remove(client); 
+			}
 			// if (Socket of ClientInfo is disconnected) (test through reading or writing)
-			if (false)
-				disconnectedClients.add(client);
+			/*if (false)
+			{
+				//disconnectedClients.add(client);
+				clientsInfo.remove(client); 
+			}*/
 		}
+		lock.unlock(); 
 		
-		clientsInfo.removeAll(disconnectedClients);*/
+		//clientsInfo.remo.removeAll(disconnectedClients);
 	}
 	
 	public Object read()
 	{ return inClient.read(); }
 	
 	public Byte readByte()
-	{ return inClient.readByte(); }
+	{ return (Byte)inClient.read(); }
 	
 	public void write(String message)
 	{ outClient.write(message); }

@@ -1,7 +1,4 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
@@ -9,27 +6,25 @@ import java.net.SocketException;
 public class InClient extends Input
 {
 	private Socket clientSocket; 
-	private BufferedReader reader; 
-	private OutFile logging = OutFile.getInstance();
+	private OutFile logging;
 	
-	private ObjectInputStream stream;
 	
 	public InClient(Socket s)
 	{
-		clientSocket = s; 
+		clientSocket = s;
+		logging = OutFile.getInstance(); 
 	}
 	
-	public String read() 
+	public Object read() 
 	{
 		logging.write("Getting socket.");
-		stream = null; 
 		
 		clientSocket = getSocketToUse();
 		
 		try 
 		{
-			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-			return reader.readLine(); 
+			ObjectInputStream stream = new ObjectInputStream(clientSocket.getInputStream());
+			return stream.readObject(); 
 		}
 		catch (SocketException e)
 		{
@@ -39,32 +34,25 @@ public class InClient extends Input
 		catch (IOException e) 
 		{
 			logging.writeError("Could not read line from socket.");
+		}
+		catch (ClassNotFoundException e)
+		{
+			logging.writeError(e.getMessage());
 		} 
 		
 		return null; 
 	}
 	
-	public Byte readByte()		// read first byte to determine message type
+	/*public Byte readByte()		// read first byte to determine message type
 	{
-		/*Byte b = null;
-		try
-		{ b = stream.readByte(); }
-		catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return b;*/
-		
 		logging.write("Getting socket.");
-		stream = null; 
 		
 		clientSocket = getSocketToUse();
 		
 		try 
 		{
-			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-			return (byte)reader.read(); 
+			ObjectInputStream stream = new ObjectInputStream(clientSocket.getInputStream());
+			return (Byte)stream.readObject();
 		}
 		catch (SocketException e)
 		{
@@ -75,7 +63,11 @@ public class InClient extends Input
 		{
 			logging.writeError("Could not read byte from socket.");
 		} 
+		catch (ClassNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
 		
 		return null;
-	}
+	}*/
 }

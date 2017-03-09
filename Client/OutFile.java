@@ -20,6 +20,8 @@ public class OutFile extends Output
 	
 	private OutFile(){}
 	
+	//TODO: LOOK AT THIS FILE?
+	
 	public static OutFile getInstance()
 	{
 		if (outFile == null)
@@ -29,9 +31,9 @@ public class OutFile extends Output
 		return outFile; 
 	}
 	
-	public void write(String message)
+	public void write(Object message)
 	{
-		this.write(logFile, message);
+		this.write(logFile, (String)message);
 	}
 	
 	public void write(String[] messages)

@@ -15,8 +15,10 @@ public class Listen
 	public void retrieveMessages(Integer socketIndex)
 	{
 		//Do this for now
-		Byte messageType = input.readByte();
-		String message = input.read(); 
+		Byte messageType = (Byte)input.read();
+		System.out.println(messageType);
+		Object message = input.read();
+		System.out.println((String)message);
 		Object[] retVal = {messageType, message}; 
 		System.out.println(retVal[0].toString());
 		System.out.println(retVal[1].toString());

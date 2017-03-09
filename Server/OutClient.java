@@ -1,9 +1,5 @@
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class OutClient extends Output
@@ -11,52 +7,41 @@ public class OutClient extends Output
 	//This is where talking to the server actually takes place....
 	//but it is not where the connection happens. The connection happens else where
 
-	private Socket socket;
-	private BufferedWriter writer; 
-	private OutFile logging = OutFile.getInstance(); 
+	private Socket socket; 
+	private OutFile logging;
  
-	
-	private ObjectOutputStream stream;
 	public OutClient(Socket s)
 	{
-		try
-		{ 
-			stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		socket = s; 
+		logging = OutFile.getInstance(); 
 	}
 
-	public void write(String message)
+	/*public void write(Object message)
 	{
-		logging.write("Getting socket.");		
-		socket = getSocketToUse(); 
+		logging.write("Getting socket.");	
 		
 		write(socket, message); 
-	}
+	}*/
 	
 	public void write(String[] messages)
 	{
-		logging.write("Getting socket.");		
-		socket = getSocketToUse(); 
+		logging.write("Getting socket.");	
 		
 		for (int i = 0; i < messages.length; i++)
 		{
-			write(socket, messages[i]); 
+			write(messages[i]); 
 		}
 	}
 	
-	public void write(Socket socket, String message)
+	public void write(Object message)
 	{
 		logging.write("Wrote to server.");
 		if (socket == null) return; 
 		try 
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			writer.write(message);
-			writer.flush();
+			ObjectOutputStream stream = new ObjectOutputStream(socket.getOutputStream());
+			stream.writeObject(message);
+			stream.flush(); 
 		}
 		catch (IOException e) 
 		{
@@ -72,17 +57,17 @@ public class OutClient extends Output
 		logging.writeError(message);
 	}
 
-	//Trying this
-	public void write(byte b) 
+	/*public void write(byte b) 
 	{
+		
 		logging.write("Wrote to server.");
-		socket = getSocketToUse(); 
+		
 		if (socket == null) return; 
 		try 
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			writer.write(b);
-			writer.flush();
+			ObjectOutputStream stream = new ObjectOutputStream(socket.getOutputStream());
+			stream.writeObject(b);
+			stream.flush(); 
 		}
 		catch (IOException e) 
 		{
@@ -91,5 +76,5 @@ public class OutClient extends Output
 		} 
 		
 		logging.write("Sucessfully wrote to client.");
-	}
+	}*/
 }

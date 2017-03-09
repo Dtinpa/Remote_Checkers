@@ -1,9 +1,9 @@
 
 public class OutConsole extends Output
 {
-	public void write(String message)
+	public void write(Object message)
 	{
-		System.out.println(dateTimeString + ": " + message);
+		System.out.println(dateTimeString + ": " + (String)message);
 	}
 	
 	public void write(String[] messages)

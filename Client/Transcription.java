@@ -30,7 +30,9 @@ public class Transcription
 		
 		serverCheck = true; 
 		
-		send = Send.getInstance(socket); 
+		send = Send.getInstance(socket);
+		send.sendMessage((byte)'C'); 
+		send.sendMessage("Test message");
 		
 		listen = Listen.getInstance(socket);
 		Thread listenThread = new Thread()

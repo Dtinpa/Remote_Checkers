@@ -36,7 +36,7 @@ public class Listen
 		while (true)
 		{
 			lock.tryLock();
-			Byte messageType = input.readByte();
+			Byte messageType = (Byte)input.read();
 			types.add(messageType); 
 			messages.add((String)input.read());
 			lock.unlock();

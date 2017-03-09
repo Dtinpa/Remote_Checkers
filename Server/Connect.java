@@ -4,9 +4,6 @@ import java.net.Socket;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.SwingWorker;
-
-
 public class Connect
 {
 	private Lock lock; 
@@ -48,6 +45,8 @@ public class Connect
 					send = new Send(index);
 					byte thisByte = (byte) 'C'; 
 					send.sendMessage(thisByte);
+					//send.sendMessage("Messgage for Server");
+					
 					Thread listenThread = new Thread()
 					{
 						public void run()
@@ -57,6 +56,13 @@ public class Connect
 						}
 					}; 
 					listenThread.start();
+					
+
+					//Search for matches here?
+					//MatchMaker.matchClients()
+					
+					//Then is that it????!?!???!
+					
 					lock.unlock();
 			}
 		}

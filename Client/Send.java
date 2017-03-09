@@ -21,13 +21,21 @@ public class Send
 		return instance; 
 	}
 	
+	public void sendMessage(byte b)
+	{
+		output.write(b);
+	}
+	
 	public void sendMessage(String message)
 	{
+		//TODO: Get translates stuff;
 		parser.translate(null, message); 
+		output.write(message);
 	}
 	
 	public void sendMove(Space clicked)
 	{
+		//TODO: Get translated STUFF; 
 		parser.translate(clicked);
 		//TODO: Change this cause this will not work -- temp
 		output.write(clicked.getName());
