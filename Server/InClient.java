@@ -16,33 +16,29 @@ public class InClient extends Input
 	
 	public InClient(Socket s)
 	{
-		try
-		{ 
-			stream = new ObjectInputStream(new BufferedInputStream(s.getInputStream())); 
-		}
-		catch (SocketException e)
-		{
-			//Connection Reset....disconnection 
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		clientSocket = s; 
 	}
 	
-	public Object read() 
+	public String read() 
 	{
-		logging.write("Getting socket.");		
+		logging.write("Getting socket.");
+		stream = null; 
+		
 		clientSocket = getSocketToUse();
 		
 		try 
 		{
-			reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
 			return reader.readLine(); 
+		}
+		catch (SocketException e)
+		{
+			//Connection Reset....disconnection 
+			logging.writeError("Client disconnected");
 		}
 		catch (IOException e) 
 		{
-			logging.writeError("Could not read from socket.");
+			logging.writeError("Could not read line from socket.");
 		} 
 		
 		return null; 
@@ -50,7 +46,7 @@ public class InClient extends Input
 	
 	public Byte readByte()		// read first byte to determine message type
 	{
-		Byte b = null;
+		/*Byte b = null;
 		try
 		{ b = stream.readByte(); }
 		catch (IOException e)
@@ -58,6 +54,28 @@ public class InClient extends Input
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return b;
+		return b;*/
+		
+		logging.write("Getting socket.");
+		stream = null; 
+		
+		clientSocket = getSocketToUse();
+		
+		try 
+		{
+			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
+			return (byte)reader.read(); 
+		}
+		catch (SocketException e)
+		{
+			//Connection Reset....disconnection 
+			logging.writeError("Client disconnected");
+		}
+		catch (IOException e) 
+		{
+			logging.writeError("Could not read byte from socket.");
+		} 
+		
+		return null;
 	}
 }

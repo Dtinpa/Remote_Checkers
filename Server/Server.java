@@ -6,11 +6,11 @@ public class Server
 
 	public static void main(String[] args)
 	{
-		GameManagement gM = GameManagement.getInstance();
-		MatchMaking matchMaking = new MatchMaking();
-		Parser parser = new Parser();
+		//GameManagement gM = GameManagement.getInstance();
+		//MatchMaking matchMaking = new MatchMaking();
 		Transcription transcription = Transcription.getTranscription();
-		ArrayList<IO> io;
+		transcription.openToConnections();
+		//ArrayList<IO> io;
 	}
 
 }

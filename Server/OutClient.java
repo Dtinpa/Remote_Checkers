@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class OutClient extends Output
@@ -20,20 +21,31 @@ public class OutClient extends Output
 	{
 		try
 		{ 
-			stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream())); 
+			stream = new ObjectOutputStream(new BufferedOutputStream(s.getOutputStream()));
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void write(String message)
 	{
 		logging.write("Getting socket.");		
 		socket = getSocketToUse(); 
 		
 		write(socket, message); 
+	}
+	
+	public void write(String[] messages)
+	{
+		logging.write("Getting socket.");		
+		socket = getSocketToUse(); 
+		
+		for (int i = 0; i < messages.length; i++)
+		{
+			write(socket, messages[i]); 
+		}
 	}
 	
 	public void write(Socket socket, String message)
@@ -53,17 +65,6 @@ public class OutClient extends Output
 		} 
 		
 		logging.write("Sucessfully wrote to client.");
-	}
-	
-	public void write(String[] messages)
-	{
-		logging.write("Getting socket.");		
-		socket = getSocketToUse(); 
-		
-		for (int i = 0; i < messages.length; i++)
-		{
-			write(socket, messages[i]); 
-		}
 	}
 	
 	public void writeError(String message)

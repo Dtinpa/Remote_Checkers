@@ -1,34 +1,40 @@
 
 public class ParseFromServer extends Parser
 {
-	public void translate(Byte messageType)
+	public void translate(Byte messageType, Object message)
 	{
+		//TODO: MOVE THIS LOGIC ELSE WHERE THIS IS MEANT TO PARSE ONLY NOT 
+		//EXECUTE THESE THINGS
 		switch(messageType)
 		{
 			case 'C':
-				String color = (String) Transcription.getTranscription().read();
+				String color = (String) message; 
 				Game.getGame().setColor(color);
 				break;
 			case 'B': // Board
-				Board newBoard = (Board) Transcription.getTranscription().read();
+				Board newBoard = (Board) message; 
 				Game.getGame().reDraw(newBoard);
 				break;
 			case 'M': // String Message
-				String message = (String) Transcription.getTranscription().read();
-				Game.getGame().displayMessage(message);
+				Game.getGame().displayMessage((String)message);
 				break;
 			case 'V': // Victory
-				String messageV = (String) Transcription.getTranscription().read();
+				String messageV = (String) message;
 				PopUp.getPopUp().setMessage(messageV);
 				PopUp.getPopUp().setTitle("Victory");
 				PopUp.getPopUp().execute();
 			case 'D': // Defeat
-				String messageD = (String) Transcription.getTranscription().read();
+				String messageD = (String) message;
 				PopUp.getPopUp().setMessage(messageD);
 				PopUp.getPopUp().setTitle("Defeat");
 				PopUp.getPopUp().execute();
 			default:
 				break;
 		}
+	}
+
+	public String translate(Space clicked) 
+	{
+		return null;
 	}
 }

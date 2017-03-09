@@ -1,16 +1,33 @@
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class PlayerManagement
 {	
-	public ArrayList<Player> playerOnes;
-	public ArrayList<Player> playerTwos;
-	public ArrayList<Player> activePlayers;
+	private static Lock lock; 
+	private static PlayerManagement instance; 
+	private ArrayList<Player> playerOnes;
+	private ArrayList<Player> playerTwos;
+	private ArrayList<Player> activePlayers;
 	
-	public PlayerManagement()
+	private PlayerManagement()
 	{
+		lock = new ReentrantLock(); 
 		playerOnes = new ArrayList<Player>();
 		playerTwos = new ArrayList<Player>();
-		activePlayers = new ArrayList<Player>();
+		activePlayers = new ArrayList<Player>();	
+	}
+	
+	public static PlayerManagement getInstance()
+	{
+		lock.tryLock();
+		if (instance == null)
+		{
+			lock.tryLock();
+			instance = new PlayerManagement(); 
+		}
+		lock.unlock();
+		return instance; 
 	}
 	
 	public Player getPlayerOne(int game_index)

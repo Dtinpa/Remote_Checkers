@@ -1,43 +1,24 @@
 import java.net.Socket;
 import java.util.*;
 
-import javax.swing.SwingWorker;
 
 public class Transcription
 {
 	public InClient inClient;
 	public OutClient outClient;
-	public ClientInfo clientsInfo;
+	public ArrayList<Socket> socketIndicies; 
+	public HashMap<Socket, ClientInfo> clientsInfo;
 	public Connect connect;
 	public Listen listen;
 	public Send send;
 	public ParseToClient parseToClient;
 	public ParseFromClient parseFromClient;
-	
 	private Socket socket;
-	
 	private static Transcription singleton;
-	
-	private IO io;
 
 	private Transcription()
 	{
-		//inClient = new inClient();
-		//outClient = new outClient();	// these are done in Game.Connect, when we have a socket
 
-		clientsInfo = new ClientInfo();
-		
-		connect = new Connect();
-		connect(); 
-		
-		outClient = new OutClient(socket);
-		//Needs connection before this happens 
-		inClient = new InClient(socket);
-		
-		listen = new Listen();
-		send = new Send();
-		parseToClient = new ParseToClient();
-		parseFromClient = new ParseFromClient();
 	}
 	
 	public static Transcription getTranscription()	// implements singleton
@@ -47,6 +28,34 @@ public class Transcription
 			singleton = new Transcription(); 
 		}
 		return singleton;
+	}
+	
+	public void openToConnections()
+	{
+		socketIndicies = new ArrayList<Socket>(); 
+		clientsInfo = new HashMap<Socket, ClientInfo>();
+		
+		connect = new Connect();
+		connect.acceptConnections(); 
+		//socket = connect.getSocket(); 
+		
+		/*outClient = new OutClient(socket);
+		outClient.write("Sending to client");
+		inClient = new InClient(socket);*/
+		
+		/*Thread thread = new Thread()
+		{
+			public void run()
+			{
+				inClient = new InClient(socket);
+			}
+		}; 
+		thread.start();*/
+		
+		//listen = new Listen();
+		//send = new Send();
+		//parseToClient = new ParseToClient();
+		//parseFromClient = new ParseFromClient();
 	}
 	
 	public Socket getClientSocket(int index)
@@ -110,43 +119,24 @@ public class Transcription
 		
 	}
 	
-	public void connect()
+	public Socket getSocket(int index)
 	{
-		socket = connect.connectSocket();
-		//outClient = new outClient(socket);
-		//inClient = new inClient(socket);
-		
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
-		{
-			protected Void doInBackground() throws Exception
-			{                
-				listen();
-				return null;
-			}
-			@Override
-			protected void done()
-			{
-				try
-				{ }
-				catch (Exception e)
-				{ }
-			}
-		};
-		worker.execute();
-		
-	/*	Byte messageType = inClient.readByte();
-		if(messageType == 'C')
-		{
-			String color = (String) inClient.read();
-			GameScreen.getGameScreen().setColor(color);
-		}*/
+		return clientsInfo.get(index).getSocket(); 
 	}
 	
-	public void listen()
-	{ listen.retrieveMessages(); }
-	
-	public Socket getServerSocket()
+	public Integer getSocketIndex(Socket socket)
 	{
-		return clientsInfo.getSocket(); 
+		//To get the socket from this index....get the socket from the index arraylist
+		//then get from HashMap as the key to get ClientInfo...which is rendered useless now
+		//but keeping for older versions
+		return socketIndicies.indexOf(socket);
+	}
+	
+	public void addClientSocket(Socket clientSocket)
+	{
+		ClientInfo client = new ClientInfo(); 
+		client.setSocket(clientSocket);
+		socketIndicies.add(clientSocket); 
+		clientsInfo.put(clientSocket, client); 
 	}
 }

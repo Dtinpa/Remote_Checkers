@@ -17,7 +17,7 @@ public class GameManagement
 	
 	private GameManagement()
 	{
-		playerManagement = new PlayerManagement();
+		playerManagement = PlayerManagement.getInstance();
 		boards = new ArrayList<Board>();
 		previous_states = new ArrayList<ArrayList<BoardState>>();
 		drawCounter = new ArrayList<Integer>();

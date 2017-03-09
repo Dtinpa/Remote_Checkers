@@ -1,9 +1,14 @@
 
 public class ParseToServer extends Parser
-{
-	public void translate(Space clicked)
+{	
+	public String translate(Space clicked)
 	{
 		String xy = Integer.toString(clicked.getRow()) + Integer.toString(clicked.getCol());
-		Transcription.getTranscription().write(xy);
+		return xy; 
+	}
+
+	public void translate(Byte messageType, Object message)
+	{
+		
 	}
 }

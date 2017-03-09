@@ -21,18 +21,10 @@ public class ClientInfo
 		return socket;
 	}
 	
-	public void setIP(String ip)
-	{
-		ipAddress = ip; 
-	}
-	
-	public void setPort(int port)
-	{
-		portNum = port; 
-	}
-	
 	public void setSocket(Socket socket)
 	{
 		this.socket = socket;
+		ipAddress = socket.getInetAddress().getHostAddress(); 
+		portNum = socket.getPort(); 
 	}
 }

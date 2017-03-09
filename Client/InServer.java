@@ -1,50 +1,44 @@
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
 
 public class InServer extends Input
 {
-	//private Socket clientSocket; 
+	private Socket clientSocket; 
 	//private BufferedReader reader; 
 	private OutFile logging = OutFile.getInstance();
 	
 	private ObjectInputStream stream;
 	public InServer(Socket s)
 	{
-		try
-		{ stream = new ObjectInputStream(new BufferedInputStream(s.getInputStream()));}
-		catch (IOException e)
-		{
-			logging.writeError(e.getMessage());
-		}
+		clientSocket = s; 
 	}
 	
 	public Byte readByte()		// read first byte to determine message type
 	{
 		Byte b = null;
+		stream = null; 
 		try
-		{ b = stream.readByte(); }
+		{ 
+			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
+			b = stream.readByte(); 
+		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logging.writeError(e.getMessage());
 		}
 		return b;
 	}
 	
 	public Object read() 
-	{
-		logging.write("Getting socket.");		
-		//clientSocket = getSocketToUse();
+	{		
+		stream = null; 
 		
 		try 
 		{
-			//reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			//return reader.readLine();
+			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
 			return stream.readObject();
 		}
 		catch (IOException e) 

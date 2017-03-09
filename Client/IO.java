@@ -26,8 +26,8 @@ public abstract class IO
 		return errorFile; 
 	}
 	public Socket getSocketToUse()
-	{
-		useSocket = Transcription.getTranscription().getServerSocket(); 
+	{ 
+		useSocket = ServerInfo.getInstance().getSocket(); 
 		return useSocket; 
 	}
 	

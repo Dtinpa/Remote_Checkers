@@ -1,102 +1,71 @@
 import java.net.Socket;
 
-import javax.swing.SwingWorker;
 
 public class Transcription
 {
-	public InServer inServer;
-	public OutServer outServer;
-	public ServerInfo serverInfo;
-	public Connect connect;
-	public Listen listen;
-	public Send send;
-	public ParseToServer parseToServer;
-	public ParseFromServer parseFromServer;
-	
+	private Connect connect;
+	private Listen listen;
+	private Send send;
+	//private ParseToServer parseToServer;
+	//private ParseFromServer parseFromServer;
 	private Socket socket;
-	
+	private OutFile logging; 
 	private static Transcription singleton;
 	
-	private IO io;
+	private static boolean serverCheck; 
 	
 	private Transcription()
 	{
-		//inServer = new InServer();
-		//outServer = new OutServer();	// these are done in Game.Connect, when we have a socket
+		serverCheck = false; 
 		connect = new Connect();
-		connect();
-		outServer = new OutServer(socket);
-		inServer = new InServer(socket);
+		socket = connect.connectSocket(); 
+		logging = OutFile.getInstance(); 
+
+		if (socket == null)
+		{
+			//Error out...no server available 
+			logging.writeError("No server to connect to.");
+			return; 
+		}
 		
-		serverInfo = new ServerInfo();
-		listen = new Listen();
-		send = new Send();
-		parseToServer = new ParseToServer();
-		parseFromServer = new ParseFromServer();
+		serverCheck = true; 
+		
+		send = Send.getInstance(socket); 
+		
+		listen = Listen.getInstance(socket);
+		Thread listenThread = new Thread()
+		{
+			public void run()
+			{
+				listen.retrieveMessages(); 
+			}
+		};  
+		listenThread.start();
 	}
 	
 	public static Transcription getTranscription()	// implements singleton
 	{
 		if(singleton == null)
-		{ singleton = new Transcription(); }
-		return singleton;
+		{ 
+			singleton = new Transcription();
+		}
+		if (!serverCheck) singleton = null; 
+			
+		return singleton;  
 	}
 	
 	public Object read()
-	{ return inServer.read(); }
+	{ return (String) listen.getNextMessage()[1]; }
 	
 	public Byte readByte()
-	{ return inServer.readByte(); }
+	{ return (Byte) listen.getNextMessage()[0]; }
 	
 	public void write(String message)
-	{ outServer.write(message); }
+	{ send.sendMessage(message); }
 	
 	public void sendMove(Space clicked)
 	{ send.sendMove(clicked); }
 	
-	public void translateToServer(Space clicked)
-	{ parseToServer.translate(clicked); }
-	
-	public void translateFromServer(Byte messageType)
-	{ parseFromServer.translate(messageType); }
-	
-	public void connect()
-	{
-		socket = connect.connectSocket();
-		//outServer = new OutServer(socket);
-		//inServer = new InServer(socket);
-		
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
-		{
-			protected Void doInBackground() throws Exception
-			{                
-				listen();
-				return null;
-			}
-			@Override
-			protected void done()
-			{
-				try
-				{ }
-				catch (Exception e)
-				{ }
-			}
-		};
-		worker.execute();
-		
-	/*	Byte messageType = inServer.readByte();
-		if(messageType == 'C')
-		{
-			String color = (String) inServer.read();
-			GameScreen.getGameScreen().setColor(color);
-		}*/
-	}
-	
 	public void listen()
 	{ listen.retrieveMessages(); }
-	
-	public Socket getServerSocket()
-	{
-		return serverInfo.getSocket(); 
-	}
 }

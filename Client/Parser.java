@@ -1,9 +1,6 @@
 
-public class Parser
+public abstract class Parser
 {
-	/*public Object translate(Object input)
-	{
-		
-	}*/
-
+	public abstract String translate(Space clicked); 
+	public abstract void translate(Byte messageType, Object message); 
 }

@@ -8,11 +8,12 @@ public class Game extends Screen implements MouseListener
 {
 	private static Game singleton;
 	
-	private DrawGame gameUI;
+	private DrawGame gameUI; 
 	private Transcription t;
 	
 	private Game()
 	{
+		//TODO: Check for null....if this does not happen then send message and quit
 		t = Transcription.getTranscription();
 	}
 	
@@ -22,9 +23,6 @@ public class Game extends Screen implements MouseListener
 		{ singleton = new Game(); }
 		return singleton;
 	}
-	
-	//public void connect()
-	//{ t.connect(); }
 	
 	public void reDraw(Board board)
 	{ gameUI.reDraw(board); }
@@ -53,6 +51,7 @@ public class Game extends Screen implements MouseListener
 		switch(e.getActionCommand())
 		{
 			case("Resign"):
+				//TODO: Take this out
 				System.out.println("resign");
 				break;
 			case("Help"):
@@ -66,7 +65,10 @@ public class Game extends Screen implements MouseListener
 	{
 		Space clicked = (Space) e.getSource();
 		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING || clicked.getContents() == Element.GREENSPACE)
-		{ t.sendMove(clicked); }
+		{ 
+			t.sendMove(clicked); 
+			
+		}
 	}
 	
 	@Override
