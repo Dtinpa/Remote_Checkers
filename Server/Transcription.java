@@ -16,7 +16,6 @@ public class Transcription
 	public Send send;
 	public ParseToClient parseToClient;
 	public ParseFromClient parseFromClient;
-	//private Socket socket;
 	private static Transcription singleton;
 
 	private Transcription()
@@ -36,30 +35,10 @@ public class Transcription
 	public void openToConnections()
 	{
 		socketIndicies = new ArrayList<Socket>(); 
-		//clientsInfo = new HashMap<Socket, ClientInfo>();
 		clientsInfo = new ArrayList<ClientInfo>(); 
 		
 		connect = new Connect();
 		connect.acceptConnections(); 
-		//socket = connect.getSocket(); 
-		
-		/*outClient = new OutClient(socket);
-		outClient.write("Sending to client");
-		inClient = new InClient(socket);*/
-		
-		/*Thread thread = new Thread()
-		{
-			public void run()
-			{
-				inClient = new InClient(socket);
-			}
-		}; 
-		thread.start();*/
-		
-		//listen = new Listen();
-		//send = new Send();
-		//parseToClient = new ParseToClient();
-		//parseFromClient = new ParseFromClient();
 	}
 	
 	public Socket getSocket(int index)

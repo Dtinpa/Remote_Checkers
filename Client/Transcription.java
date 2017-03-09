@@ -56,14 +56,29 @@ public class Transcription
 		return singleton;  
 	}
 	
+	/**
+	 * read() - Blocking call to get the next message. Waits for server. 
+	 * @return
+	 */
 	public Object read()
-	{ return (String) listen.getNextMessage()[1]; }
+	{ return listen.getNextMessage()[1]; }
 	
+	/**
+	 * readByte() - Blocking call to get the next byte. Waits for server. 
+	 * @return
+	 */
 	public Byte readByte()
 	{ return (Byte) listen.getNextMessage()[0]; }
 	
-	public void write(String message)
-	{ send.sendMessage(message); }
+	public void write(byte b)
+	{
+		send.sendMessage(b);
+	}
+	
+	public void write(Object message)
+	{
+		send.sendMessage(message);
+	}
 	
 	public void sendMove(Space clicked)
 	{ send.sendMove(clicked); }

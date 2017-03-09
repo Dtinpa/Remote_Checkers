@@ -43,9 +43,11 @@ public class Connect
 					
 					lock.tryLock(); 
 					send = new Send(index);
+					
+					//Send byte C to allow drawing of board
 					byte thisByte = (byte) 'C'; 
 					send.sendMessage(thisByte);
-					//send.sendMessage("Messgage for Server");
+					send.sendMessage("Messgage from the Server");
 					
 					Thread listenThread = new Thread()
 					{
@@ -60,6 +62,8 @@ public class Connect
 
 					//Search for matches here?
 					//MatchMaker.matchClients()
+					MatchMaking maker = new MatchMaking(); 
+					maker.matchClients();
 					
 					//Then is that it????!?!???!
 					

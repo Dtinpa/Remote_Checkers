@@ -26,7 +26,7 @@ public class Send
 		output.write(b);
 	}
 	
-	public void sendMessage(String message)
+	public void sendMessage(Object message)
 	{
 		//TODO: Get translates stuff;
 		parser.translate(null, message); 

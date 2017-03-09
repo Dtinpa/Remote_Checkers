@@ -3,8 +3,8 @@ import java.util.*;
 
 public class MatchMaking
 {
-	ArrayList<ClientInfo> clientOnes;
-	ArrayList<ClientInfo> clientTwos;
+	private ArrayList<ClientInfo> clientOnes;
+	private ArrayList<ClientInfo> clientTwos;
 	
 	public MatchMaking()
 	{
@@ -23,11 +23,29 @@ public class MatchMaking
 		return clientOnes.size();
 	}
 	
+	public void addClient(ClientInfo client)
+	{
+		int clientOnesSize = clientOnes.size(); 
+		int clientTwosSize = clientTwos.size(); 
+		if (clientOnesSize == 0 || (clientOnesSize % 2) == 0)
+		{
+			clientOnes.add(client); 
+		}
+		else if((clientTwosSize % 2) != 0)
+		{
+			clientTwos.add(client); 
+		}
+		else
+		{
+			System.out.println("NOT SURE ABOUT THIS?!?!");
+		}
+	}
+	
 	public void matchClients()
 	{
 		Transcription transcription = Transcription.getTranscription();
 		transcription.removeDisconnectedClients();
-		if (transcription.getClientsCount() > 2)
+		if (transcription.getClientsCount() >= 2)
 		{
 			int matchIndex = getIndexForNewMatch();
 			ClientInfo firstClient = transcription.getClientForMatching();

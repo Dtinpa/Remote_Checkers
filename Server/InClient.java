@@ -39,7 +39,6 @@ public class InClient extends Input
 		{
 			logging.writeError(e.getMessage());
 		} 
-		
 		return null; 
 	}
 	

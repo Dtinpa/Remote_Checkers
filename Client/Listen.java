@@ -11,14 +11,14 @@ public class Listen
 	private ParseFromServer parser; 
 	private InServer input; 
 	private Queue<Byte> types; 
-	private Queue<String> messages; 
+	private Queue<Object> messages; 
 	
 	private Listen(Socket socket)
 	{
 		lock = new ReentrantLock(); 
 		parser = new ParseFromServer();
 		types = new LinkedList<Byte>(); 
-		messages = new LinkedList<String>();
+		messages = new LinkedList<Object>();
 		input = new InServer(socket); 
 	}
 	
@@ -36,9 +36,10 @@ public class Listen
 		while (true)
 		{
 			lock.tryLock();
-			Byte messageType = (Byte)input.read();
+			Object message = input.read(); 
+			Byte messageType = (Byte)message; 
 			types.add(messageType); 
-			messages.add((String)input.read());
+			messages.add(input.read());
 			lock.unlock();
 		}
 	}
@@ -46,12 +47,24 @@ public class Listen
 	//First is always the byte, next is the message
 	public Object[] getNextMessage()
 	{
-		if (messages.peek() == null) return null; 
+		while (messages.peek() == null)
+		{
+			try 
+			{
+				Thread.sleep(500);
+			}
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		} 
 		
 		lock.tryLock(); 
 		Byte type = types.remove(); 
-		String message = messages.remove();
-		Object[] retValue = {type, message}; 
+		Object message = messages.remove();
+		Object[] retValue = {type, message};
+		System.out.println(type);
+		System.out.println(message);
 		lock.unlock();
 		
 		return retValue; 

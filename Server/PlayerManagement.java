@@ -4,7 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PlayerManagement
 {	
-	private static Lock lock; 
+	private static Lock lock = new ReentrantLock(); 
 	private static PlayerManagement instance; 
 	private ArrayList<Player> playerOnes;
 	private ArrayList<Player> playerTwos;
@@ -12,7 +12,6 @@ public class PlayerManagement
 	
 	private PlayerManagement()
 	{
-		lock = new ReentrantLock(); 
 		playerOnes = new ArrayList<Player>();
 		playerTwos = new ArrayList<Player>();
 		activePlayers = new ArrayList<Player>();	
