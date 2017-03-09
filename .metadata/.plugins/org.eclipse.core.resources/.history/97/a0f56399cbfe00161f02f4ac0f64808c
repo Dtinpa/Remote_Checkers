@@ -1,5 +1,0 @@
-
-public abtract class Input extends IO
-{
-	public abstract Object Read(String fileName);
-}
