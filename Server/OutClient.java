@@ -71,4 +71,25 @@ public class OutClient extends Output
 	{
 		logging.writeError(message);
 	}
+
+	//Trying this
+	public void write(byte b) 
+	{
+		logging.write("Wrote to server.");
+		socket = getSocketToUse(); 
+		if (socket == null) return; 
+		try 
+		{
+			writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			writer.write(b);
+			writer.flush();
+		}
+		catch (IOException e) 
+		{
+			logging.write(e.getMessage());
+			return; 
+		} 
+		
+		logging.write("Sucessfully wrote to client.");
+	}
 }

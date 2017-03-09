@@ -32,10 +32,10 @@ public abstract class IO
 	}
 	public Socket getSocketToUse()
 	{
-		//Get this by other means
-		int index = 1; 
+		//TODO: Get read index here
+		int index = 0; 
 		
-		useSocket = Transcription.getTranscription().getClientSocket(index); 
+		useSocket = Transcription.getTranscription().getSocket(index); 
 		return useSocket; 
 	}
 	

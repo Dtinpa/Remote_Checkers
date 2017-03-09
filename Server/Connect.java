@@ -13,6 +13,7 @@ public class Connect
 	private Socket socket;
 	private ServerSocket serverSocket;
 	private OutFile outFile; 
+	private Send send; 
 	private Listen listen; 
 	private Transcription transcription; 
 	
@@ -31,20 +32,27 @@ public class Connect
 			while (true)
 			{
 					outFile.write("Sever ready to accept a new client.");
+					//Blocking call until a client is connected 
 					socket = serverSocket.accept();
 					outFile.write("Socket connected: " + socket.getInetAddress() + ":" + socket.getPort());
 					lock.tryLock();
 					transcription.addClientSocket(socket);
+					int index = transcription.getSocketIndex(socket);
+					//Stop passing sockets, start passing the index to align with 
+					//the other parallel arrays 
 					lock.unlock();
-					int index = transcription.getSocketIndex(socket); 
+					
 					outFile.write("Added client to client storage.");
 					
 					lock.tryLock(); 
+					send = new Send(index);
+					byte thisByte = (byte) 'C'; 
+					send.sendMessage(thisByte);
 					Thread listenThread = new Thread()
 					{
 						public void run()
 						{
-							listen = new Listen(); 
+							listen = new Listen(index); 
 							listen.retrieveMessages(index);
 						}
 					}; 

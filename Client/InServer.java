@@ -1,7 +1,10 @@
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.util.Arrays;
 
 
 public class InServer extends Input
@@ -10,7 +13,9 @@ public class InServer extends Input
 	//private BufferedReader reader; 
 	private OutFile logging = OutFile.getInstance();
 	
-	private ObjectInputStream stream;
+	//private BufferedInputStream stream;
+	private BufferedReader stream; 
+	
 	public InServer(Socket s)
 	{
 		clientSocket = s; 
@@ -22,8 +27,10 @@ public class InServer extends Input
 		stream = null; 
 		try
 		{ 
-			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-			b = stream.readByte(); 
+			//stream = new BufferedInputStream(clientSocket.getInputStream());
+			stream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			b = (byte) stream.read(); 
+			System.out.println(b);
 		}
 		catch (IOException e)
 		{
@@ -38,16 +45,21 @@ public class InServer extends Input
 		
 		try 
 		{
-			stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
-			return stream.readObject();
+			//stream = new ObjectInputStream(new BufferedInputStream(clientSocket.getInputStream()));
+			//return stream.readObject();
+			
+			//Does this have to be like this?
+			//stream = new BufferedInputStream(clientSocket.getInputStream()); 
+			stream = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+			return stream.readLine();
+			/*int available = stream..available();
+			byte[] array = new byte[available]; 
+			stream.read(array, 0, available); 
+			return Arrays.toString(array);  */
 		}
 		catch (IOException e) 
 		{
 			logging.writeError("Could not read from socket.");
-		}
-		catch (ClassNotFoundException e)
-		{
-			logging.writeError("Could not find class to deserialize.");
 		} 
 		return null; 
 	}

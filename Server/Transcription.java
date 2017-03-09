@@ -58,14 +58,25 @@ public class Transcription
 		//parseFromClient = new ParseFromClient();
 	}
 	
-	public Socket getClientSocket(int index)
+	public Socket getSocket(int index)
 	{
-		/*if (clientsInfo != null && clientsInfo.size() >= index)
-		{
-			return clientsInfo.get(index).getSocket(); 
-		}*/
-		return null;
-		
+		return socketIndicies.get(index);  
+	}
+	
+	public Integer getSocketIndex(Socket socket)
+	{
+		//To get the socket from this index....get the socket from the index arraylist
+		//then get from HashMap as the key to get ClientInfo...which is rendered useless now
+		//but keeping for older versions
+		return socketIndicies.indexOf(socket);
+	}
+	
+	public void addClientSocket(Socket clientSocket)
+	{
+		ClientInfo client = new ClientInfo(); 
+		client.setSocket(clientSocket);
+		socketIndicies.add(clientSocket); 
+		clientsInfo.put(clientSocket, client); 
 	}
 	
 	public ClientInfo getClientForMatching()
@@ -117,26 +128,5 @@ public class Transcription
 	public void translateFromClient(Byte messageType)
 	{
 		
-	}
-	
-	public Socket getSocket(int index)
-	{
-		return clientsInfo.get(index).getSocket(); 
-	}
-	
-	public Integer getSocketIndex(Socket socket)
-	{
-		//To get the socket from this index....get the socket from the index arraylist
-		//then get from HashMap as the key to get ClientInfo...which is rendered useless now
-		//but keeping for older versions
-		return socketIndicies.indexOf(socket);
-	}
-	
-	public void addClientSocket(Socket clientSocket)
-	{
-		ClientInfo client = new ClientInfo(); 
-		client.setSocket(clientSocket);
-		socketIndicies.add(clientSocket); 
-		clientsInfo.put(clientSocket, client); 
 	}
 }
