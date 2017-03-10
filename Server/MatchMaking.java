@@ -5,6 +5,7 @@ public class MatchMaking
 {
 	private ArrayList<ClientInfo> clientOnes;
 	private ArrayList<ClientInfo> clientTwos;
+	private Listen listen; 
 	
 	public MatchMaking()
 	{
@@ -45,11 +46,33 @@ public class MatchMaking
 	{
 		Transcription transcription = Transcription.getTranscription();
 		transcription.removeDisconnectedClients();
-		if (transcription.getClientsCount() >= 2)
+		
+		//was: transcription.getClientsCount() >= 2 
+		//Check else 
+		if (transcription.getClientsCount() % 2 == 0)
 		{
 			int matchIndex = getIndexForNewMatch();
 			ClientInfo firstClient = transcription.getClientForMatching();
 			ClientInfo secondClient = transcription.getClientForMatching();
+			
+			//Example of how to write to the client 
+			transcription.getTranscription().write(secondClient.getSocket(), (byte)'C');
+			transcription.getTranscription().write(secondClient.getSocket(), "Red");
+			
+			
+			firstClient.setGameIndex(matchIndex);
+			secondClient.setGameIndex(matchIndex);
+			
+			Thread listenThread = new Thread()
+			{
+				public void run()
+				{
+					listen = new Listen(matchIndex); 
+					listen.retrieveMessages(matchIndex);
+				}
+			}; 
+			listenThread.start();
+			
 			if (matchIndex == clientOnes.size())
 			{
 				clientOnes.add(firstClient);
@@ -61,6 +84,14 @@ public class MatchMaking
 				clientTwos.set(matchIndex, secondClient);
 			}
 			GameManagement.getInstance().openGameForClients(matchIndex);
+		}
+		else
+		{
+			ClientInfo firstClient = transcription.peakClientForMatching(); 
+			
+			//Example of how to write to the client 
+			transcription.getTranscription().write(firstClient.getSocket(), (byte)'C');
+			transcription.getTranscription().write(firstClient.getSocket(), "Blue");
 		}
 	}
 	

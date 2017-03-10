@@ -5,16 +5,18 @@ public class Listen
 	private InClient input; 
 	private Transcription transcription; 
 	private OutFile output; 
+	private Parser parser; 
 	
 	public Listen(Integer socketIndex)
 	{
+		parser = new Parser(); 
 		transcription = transcription.getTranscription(); 
 		Socket socket = transcription.getSocket(socketIndex); 
 		input = new InClient(socket); 
 		output = OutFile.getInstance(); 
 	}
 	
-	public void retrieveMessages(Integer socketIndex)
+	public void retrieveMessages(Integer matchIndex)
 	{
 		while(true)
 		{
@@ -30,6 +32,7 @@ public class Listen
 			}
 			System.out.println(retVal[0].toString());
 			System.out.println(retVal[1].toString());
+			parser.translate(messageType, message, matchIndex);
 		}
 	}
 

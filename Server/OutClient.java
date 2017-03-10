@@ -10,6 +10,11 @@ public class OutClient extends Output
 	private Socket socket; 
 	private OutFile logging;
  
+	public OutClient()
+	{
+		logging = OutFile.getInstance();
+	}
+	
 	public OutClient(Socket s)
 	{
 		socket = s; 
@@ -35,11 +40,16 @@ public class OutClient extends Output
 	
 	public void write(Object message)
 	{
+		write(socket, message); 
+	}
+	
+	public void write(Socket s, Object message)
+	{
 		logging.write("Wrote to server.");
-		if (socket == null) return; 
+		if (s == null) return; 
 		try 
 		{
-			ObjectOutputStream stream = new ObjectOutputStream(socket.getOutputStream());
+			ObjectOutputStream stream = new ObjectOutputStream(s.getOutputStream());
 			stream.writeObject(message);
 			stream.flush(); 
 		}

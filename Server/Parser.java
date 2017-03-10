@@ -1,27 +1,24 @@
 
 public class Parser
 {
-	public void translate(Byte messageType)
+	public void translate(Byte messageType, Object message, Integer matchIndex)
 	{
 		switch(messageType)
 		{
 			case 'C':
-				String color = (String) Transcription.getTranscription().read();
+				String color = (String) message;
 				break;
 			case 'B': // Board
-				Board newBoard = (Board) Transcription.getTranscription().read();
-				
+				Board newBoard = (Board) message;
 				break;
 			case 'M': // String Message
-				String message = (String) Transcription.getTranscription().read();
-				
+				String messageStr = (String) message;
 				break;
 			case 'V': // Victory
-				String messageV = (String) Transcription.getTranscription().read();
-				
+				String messageV = (String) message;
+				break;
 			case 'D': // Defeat
-				String messageD = (String) Transcription.getTranscription().read();
-							default:
+				String messageD = (String) message;
 				break;
 		}
 	}

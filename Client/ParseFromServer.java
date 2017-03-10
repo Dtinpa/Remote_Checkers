@@ -5,6 +5,10 @@ public class ParseFromServer extends Parser
 	{
 		//TODO: MOVE THIS LOGIC ELSE WHERE THIS IS MEANT TO PARSE ONLY NOT 
 		//EXECUTE THESE THINGS
+		
+		System.out.println(messageType);
+		System.out.println(message);
+		
 		switch(messageType)
 		{
 			case 'C':

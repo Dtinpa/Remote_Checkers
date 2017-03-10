@@ -45,27 +45,13 @@ public class Connect
 					send = new Send(index);
 					
 					//Send byte C to allow drawing of board
-					byte thisByte = (byte) 'C'; 
-					send.sendMessage(thisByte);
-					send.sendMessage("Messgage from the Server");
+					//byte thisByte = (byte) 'C'; 
+					//send.sendMessage(thisByte);
+					//send.sendMessage("Messgage from the Server");
 					
-					Thread listenThread = new Thread()
-					{
-						public void run()
-						{
-							listen = new Listen(index); 
-							listen.retrieveMessages(index);
-						}
-					}; 
-					listenThread.start();
 					
-
-					//Search for matches here?
-					//MatchMaker.matchClients()
 					MatchMaking maker = new MatchMaking(); 
 					maker.matchClients();
-					
-					//Then is that it????!?!???!
 					
 					lock.unlock();
 			}

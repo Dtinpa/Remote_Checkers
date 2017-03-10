@@ -21,6 +21,7 @@ public class Transcription
 	private Transcription()
 	{
 		lock = new ReentrantLock(); 
+		outClient = new OutClient(); 
 	}
 	
 	public static Transcription getTranscription()	// implements singleton
@@ -60,6 +61,12 @@ public class Transcription
 		client.setSocket(clientSocket);
 		socketIndicies.add(clientSocket); 
 		clientsInfo.add(client); 
+	}
+	
+	public ClientInfo peakClientForMatching()
+	{
+		ClientInfo client = clientsInfo.get(0); 
+		return client; 
 	}
 	
 	public ClientInfo getClientForMatching()
@@ -103,14 +110,8 @@ public class Transcription
 		//clientsInfo.remo.removeAll(disconnectedClients);
 	}
 	
-	public Object read()
-	{ return inClient.read(); }
-	
-	public Byte readByte()
-	{ return (Byte)inClient.read(); }
-	
-	public void write(String message)
-	{ outClient.write(message); }
+	public void write(Socket s, Object message)
+	{ outClient.write(s, message); }
 	
 	public void readMove()
 	{
