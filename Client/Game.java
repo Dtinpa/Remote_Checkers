@@ -12,16 +12,24 @@ public class Game extends Screen implements MouseListener
 	private Transcription t;
 	private Space lastClicked;
 	
+	private static boolean serverCheck; 
+	
 	private Game()
 	{
 		//TODO: Check for null....if this does not happen then send message and quit
 		t = Transcription.getTranscription();
+		if(t == null) {
+			serverCheck = false;
+		}
 	}
 	
 	public static Game getGame()	// implements singleton
 	{
 		if(singleton == null)
 		{ singleton = new Game(); }
+		if(!serverCheck) {
+			singleton = null;
+		}
 		return singleton;
 	}
 	

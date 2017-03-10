@@ -34,9 +34,18 @@ public class MainScreen extends Screen
 		switch(e.getActionCommand())
 		{
 			case("Start Game"):
-				dispose();
+				Game g = Game.getGame();
 				//Game.getGame().connect();
-				Game.getGame().execute();
+				if(g == null) {
+					PopUp p = PopUp.getPopUp();
+					p.setMessage("Cannot connect to server.  Check configuration settings in the Settings Menu.");
+					p.setTitle("Connection Error");
+					p.execute();
+				}
+				else {
+					dispose();
+					g.execute();
+				}
 				
 				break;
 			case("Settings"):
