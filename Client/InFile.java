@@ -32,14 +32,15 @@ public class InFile extends Input
 		{
 			if (!file.exists())
 			{
-				// display error popup, file does not exist, please configure in settings
-				output.writeError("Cannot read file, file does not exist");
+				file = new File("../" + getConfigFilePath());
 			}
+			
 			input = new BufferedReader(new FileReader(file.getAbsolutePath()));
 			inputObj = input.readLine();
 		}
 		catch(Exception ex)
 		{
+			System.out.println("hey");
 			output.writeError(ex.getMessage());
 		}
 		
