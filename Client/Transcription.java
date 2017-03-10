@@ -43,7 +43,7 @@ public class Transcription
 			}
 		};  
 		listenThread.start();
-		read();
+		//read();
 	}
 	
 	public static Transcription getTranscription()	// implements singleton

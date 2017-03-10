@@ -38,7 +38,12 @@ public class Game extends Screen implements MouseListener
 	{ gameUI.reDraw(board); }
 	
 	public void setColor(String color)
-	{ gameUI.setColor(color); }
+	{ 
+		if (gameUI == null)
+		{ gameUI = new DrawGame(); }
+		gameUI.show();
+		gameUI.setColor(color); 
+	}
 	
 	public void displayMessage(String message)
 	{ gameUI.displayMessage(message); }
@@ -46,13 +51,14 @@ public class Game extends Screen implements MouseListener
 	@Override
 	public void execute()
 	{
-		if (gameUI == null)
+		/*if (gameUI == null)
 		{ gameUI = new DrawGame(); }
-		gameUI.show();
+		gameUI.show();*/
 		
 		while(true)
 		{
 			t.read();
+			break;
 		}
 	}
 	

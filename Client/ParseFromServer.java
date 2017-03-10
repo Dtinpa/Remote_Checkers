@@ -12,8 +12,9 @@ public class ParseFromServer extends Parser
 		switch(messageType)
 		{
 			case 'C':
-				String color = (String) message; 
+				String color = (String) message;
 				Game.getGame().setColor(color);
+				
 				break;
 			case 'B': // Board
 				Board newBoard = (Board) message; 
