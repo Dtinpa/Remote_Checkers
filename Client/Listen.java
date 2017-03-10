@@ -63,6 +63,11 @@ public class Listen
 		Byte type = types.remove(); 
 		Object message = messages.remove();
 		Object[] retValue = {type, message};
+		
+		//Parsers
+		parser.translate(type, message);
+		//End Parsers
+		
 		System.out.println(type);
 		System.out.println(message);
 		lock.unlock();
