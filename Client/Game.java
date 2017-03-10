@@ -10,6 +10,7 @@ public class Game extends Screen implements MouseListener
 	
 	private DrawGame gameUI; 
 	private Transcription t;
+	private Space lastClicked;
 	
 	private Game()
 	{
@@ -69,10 +70,16 @@ public class Game extends Screen implements MouseListener
 	public void mousePressed(MouseEvent e)	// logic for handling board clicks
 	{
 		Space clicked = (Space) e.getSource();
-		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING || clicked.getContents() == Element.GREENSPACE)
+		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING)
+		{
+			lastClicked = clicked;
+			t.write('P');
+			t.sendMove(clicked); 
+		}
+		else if (clicked.getContents() == Element.GREENSPACE)
 		{
 			t.write('S');
-			t.sendMove(clicked); 
+			t.sendMove(clicked, lastClicked);
 		}
 	}
 	
