@@ -36,8 +36,15 @@ public class Send
 	public void sendMove(Space clicked)
 	{
 		// get translated move as string 
-		String cxy = parser.translate(clicked);
-		output.write(cxy);
+		String xy = parser.translate(clicked);
+		output.write(xy);
+	}
+	
+	public void sendMove(Space clicked, Space lastClicked)
+	{
+		// get translated move as string 
+		String xyxy = parser.translate(clicked, lastClicked);
+		output.write(xyxy);
 	}
 	
 	public void sendPairRequest()

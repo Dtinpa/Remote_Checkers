@@ -84,6 +84,9 @@ public class Transcription
 	public void sendMove(Space clicked)
 	{ send.sendMove(clicked); }
 	
+	public void sendMove(Space clicked, Space lastClicked)
+	{ send.sendMove(clicked, lastClicked); }
+	
 	public void listen()
 	{ listen.retrieveMessages(); }
 }
