@@ -14,13 +14,14 @@ public class PopUp extends Screen
 	}
 	
 	PopUp()
-	{ }
+	{ 
+		if (drawPopUp == null)
+		{ drawPopUp = new DrawPopUp();  }
+	}
 	
 	@Override
 	public void execute()
 	{ 
-		if (drawPopUp == null)
-		{ drawPopUp = new DrawPopUp();  }
 		drawPopUp.show();
 	}
 	
