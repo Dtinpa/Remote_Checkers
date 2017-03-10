@@ -59,17 +59,15 @@ public class OutFile extends Output
 	
 	private void write(File file, Object messages)
 	{
-		if (!file.getParentFile().mkdirs())
-		{
-			//Error
-		}
-
-		try
-		{
-			if (!file.exists())
-			{
-				//Make file 
-				file.createNewFile(); 
+		try{
+			if(!file.exists()) {
+				//get the full path, then find the penultimate backslash so the program
+				//can find the correct folder to make the updates
+				String path = file.getAbsolutePath();
+				int firstSlash = path.lastIndexOf("\\");
+				int secondSlash = path.substring(0, firstSlash).lastIndexOf("\\");
+				String filePath = path.substring(secondSlash, path.length());
+				file = new File(".." + filePath);
 			}
 			
 			if (messages instanceof String || messages instanceof String[])
@@ -88,7 +86,16 @@ public class OutFile extends Output
 		}
 		catch(Exception ex)
 		{
-			console.writeError(ex.getMessage());
+			try {
+				if (!file.getParentFile().mkdirs())
+				{
+					//Error
+				}
+				file.createNewFile();
+			}
+			catch(Exception e){
+				console.writeError(ex.getMessage());
+			}
 		}
 	}
 			

@@ -24,6 +24,7 @@ public class Game extends Screen implements MouseListener
 	
 	public static Game getGame()	// implements singleton
 	{
+		serverCheck = true;
 		if(singleton == null)
 		{ singleton = new Game(); }
 		if(!serverCheck) {
