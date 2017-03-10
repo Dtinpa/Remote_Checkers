@@ -39,6 +39,11 @@ public class Game extends Screen implements MouseListener
 		if (gameUI == null)
 		{ gameUI = new DrawGame(); }
 		gameUI.show();
+		
+		while(true)
+		{
+			t.read();
+		}
 	}
 	
 	@Override
@@ -65,9 +70,9 @@ public class Game extends Screen implements MouseListener
 	{
 		Space clicked = (Space) e.getSource();
 		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING || clicked.getContents() == Element.GREENSPACE)
-		{ 
+		{
+			t.write('S');
 			t.sendMove(clicked); 
-			
 		}
 	}
 	

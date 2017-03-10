@@ -35,10 +35,9 @@ public class Send
 	
 	public void sendMove(Space clicked)
 	{
-		//TODO: Get translated STUFF; 
-		parser.translate(clicked);
-		//TODO: Change this cause this will not work -- temp
-		output.write(clicked.getName());
+		// get translated move as string 
+		String cxy = parser.translate(clicked);
+		output.write(cxy);
 	}
 	
 	public void sendPairRequest()
