@@ -5,7 +5,6 @@ public class MatchMaking
 {
 	private ArrayList<ClientInfo> clientOnes;
 	private ArrayList<ClientInfo> clientTwos;
-	private Listen listen;
 	
 	private static MatchMaking singleton;
 	
@@ -36,16 +35,17 @@ public class MatchMaking
 	public void matchClients()
 	{
 		Transcription transcription = Transcription.getTranscription();
+		int matchIndex = getIndexForNewMatch();
 		
 		//was: transcription.getClientsCount() >= 2 
 		//Check else 
 		if (transcription.getClientsCount() % 2 == 0)
 		{
-			int matchIndex = getIndexForNewMatch();
+			
 			ClientInfo firstClient = transcription.getClientForMatching();
 			ClientInfo secondClient = transcription.getClientForMatching();
 			
-			//Example of how to write to the client 
+			//Example of how to write to the client
 			transcription.write(secondClient.getSocket(), (byte)'C');
 			transcription.write(secondClient.getSocket(), "Red");
 			
@@ -57,7 +57,8 @@ public class MatchMaking
 			{
 				public void run()
 				{
-					listen = new Listen(matchIndex); 
+					//listen = new Listen(matchIndex);
+					Listen listen = new Listen(secondClient.getSocket());
 					listen.retrieveMessages(matchIndex);
 				}
 			}; 
@@ -79,9 +80,22 @@ public class MatchMaking
 		{
 			ClientInfo firstClient = transcription.peakClientForMatching(); 
 			
+			Thread listenThread = new Thread()
+			{
+				public void run()
+				{
+					//listen = new Listen(matchIndex);
+					Listen listen = new Listen(firstClient.getSocket());
+					listen.retrieveMessages(matchIndex);
+				}
+			}; 
+			listenThread.start();
+			
 			//Example of how to write to the client 
 			transcription.write(firstClient.getSocket(), (byte)'C');
 			transcription.write(firstClient.getSocket(), "Blue");
+			transcription.write(firstClient.getSocket(), (byte)'M');
+			transcription.write(firstClient.getSocket(), "Waiting for Opponent...");
 		}
 	}
 	
@@ -98,12 +112,12 @@ public class MatchMaking
 	{
 		try
 		{
+			GameManagement.getInstance().closeGame(matchIndex);
+			
 			clientOnes.get(matchIndex).getSocket().close();
 			clientTwos.get(matchIndex).getSocket().close();
 			clientOnes.set(matchIndex, null);
 			clientTwos.set(matchIndex, null);
-			
-			GameManagement.getInstance().closeGame(matchIndex);
 		}
 		catch (IOException e)
 		{

@@ -11,6 +11,9 @@ public class Parser
 		GameManagement gM = GameManagement.getInstance();
 		MatchMaking maker = MatchMaking.getInstance();
 		
+		System.out.println(messageType);
+		System.out.println("Message:\n" + message);
+		
 		switch(messageType)
 		{
 			case 'P':

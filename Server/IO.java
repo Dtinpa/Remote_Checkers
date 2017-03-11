@@ -29,14 +29,14 @@ public abstract class IO
 	{
 		return errorFile; 
 	}
-	public Socket getSocketToUse()
+	/*public Socket getSocketToUse()
 	{
 		//TODO: Get read index here
 		int index = 0; 
 		
 		useSocket = Transcription.getTranscription().getSocket(index); 
 		return useSocket; 
-	}
+	}*/
 	
 	//Setters
 	public void setConfigFilePath(String filePath)

@@ -13,6 +13,7 @@ public class GameManagement
 	public ArrayList<Board> boards;
 	public ArrayList<ArrayList<BoardState>> previous_states;
 	public ArrayList<Integer> drawCounter;
+	public ArrayList<Boolean> rematchStandby;
 	public MakeMove makeMove;
 	public ValidPieces validPieces;
 	public ValidMoves validMoves;
@@ -24,6 +25,7 @@ public class GameManagement
 		boards = new ArrayList<Board>();
 		previous_states = new ArrayList<ArrayList<BoardState>>();
 		drawCounter = new ArrayList<Integer>();
+		rematchStandby = new ArrayList<Boolean>();
 		makeMove = new MakeMove(boards);
 		validMoves = new ValidMoves(boards);
 		validPieces = new ValidPieces(boards);
@@ -45,12 +47,14 @@ public class GameManagement
 			boards.add(new Board());
 			previous_states.add(new ArrayList<BoardState>());
 			drawCounter.add(0);
+			rematchStandby.add(false);
 		}
 		else
 		{
 			boards.set(matchIndex, new Board());
 			previous_states.set(matchIndex, new ArrayList<BoardState>());
 			drawCounter.set(matchIndex, 0);
+			rematchStandby.set(matchIndex, false);
 		}
 		
 		startTurn(matchIndex);
@@ -70,13 +74,10 @@ public class GameManagement
 			return;
 		}
 		
-		transcription.write(active_player.getSocket(), (byte)'B');
-		transcription.write(active_player.getSocket(), validPieceBoard);
-		transcription.write(active_player.getSocket(), (byte)'M');
-		transcription.write(active_player.getSocket(), "Your turn - Select a Piece to Move");
+		sendMessageToPlayer(active_player, 'B', validPieceBoard);
+		sendMessageToPlayer(active_player, 'M', "Your turn - Select a Piece to Move");
 		
-		transcription.write(inactive_player.getSocket(), (byte)'M');
-		transcription.write(inactive_player.getSocket(), "Opponent's Turn, Please Wait...");
+		sendMessageToPlayer(inactive_player, 'M', "Opponent's Turn, Please Wait...");
 	}
 	
 	public void processSelectPieceMessage(int matchIndex, int selected_row, int selected_column)
@@ -84,7 +85,7 @@ public class GameManagement
 		Player active_player = playerManagement.getActivePlayer(matchIndex);
 		int active_color = active_player.getColor();
 		Board validPieceBoard = validPieces.find(matchIndex, active_color);
-		Board validMoveBoard = validMoves.find(matchIndex, selected_row, selected_column);
+		Board validMoveBoard = validMoves.find(matchIndex, selected_row, selected_column, false);
 		for (int i = 0; i < Board.NUM_ROW; i++)
 		{
 			for (int j = 0; j < Board.NUM_COLUMN; j++)
@@ -97,10 +98,8 @@ public class GameManagement
 			}
 		}
 
-		transcription.write(active_player.getSocket(), (byte)'B');
-		transcription.write(active_player.getSocket(), validMoveBoard);
-		transcription.write(active_player.getSocket(), (byte)'M');
-		transcription.write(active_player.getSocket(), "Your turn - Select a Space to Move Into");
+		sendMessageToPlayer(active_player, 'B', validMoveBoard);
+		sendMessageToPlayer(active_player, 'M', "Your turn - Select a Space to Move Into");
 	}
 	
 	public void processMoveMessage(int matchIndex, Move move)
@@ -109,14 +108,13 @@ public class GameManagement
 		if (distance == MakeMove.JUMP_DISTANCE)
 		{
 			boolean hasKing = makeMove.jump(matchIndex, move);
-			Board validMoveBoard = validMoves.find(matchIndex, move.selected_row, move.selected_column);
+			Board validMoveBoard = validMoves.find(matchIndex, move.destination_row, move.destination_column, true);
 			if (boards.get(matchIndex).compare(validMoveBoard) || hasKing)
 				endTurn(matchIndex);
 			else
 			{
 				Player active_player = playerManagement.getActivePlayer(matchIndex);
-				transcription.write(active_player.getSocket(), (byte)'B');
-				transcription.write(active_player.getSocket(), validMoveBoard);
+				sendMessageToPlayer(active_player, 'B', validMoveBoard);
 			}
 		}
 		else if (distance == MakeMove.STEP_DISTANCE)
@@ -126,15 +124,19 @@ public class GameManagement
 		}
 	}
 	
+	public void sendMessageToPlayer(Player player, char messageType, Object message)
+	{
+		transcription.write(player.getSocket(), (byte) messageType);
+		transcription.write(player.getSocket(), message);
+	}
+	
 	public void endTurn(int matchIndex)
 	{
 		Board board = boards.get(matchIndex);
 		Player active_player = playerManagement.getActivePlayer(matchIndex);
 		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
-		transcription.write(active_player.getSocket(), (byte)'B');
-		transcription.write(active_player.getSocket(), board);
-		transcription.write(inactive_player.getSocket(), (byte)'B');
-		transcription.write(inactive_player.getSocket(), board);
+		sendMessageToPlayer(active_player, 'B', board);
+		sendMessageToPlayer(inactive_player, 'B', board);
 		
 		ArrayList<BoardState> prev_states = previous_states.get(matchIndex);
 		for (int i = 0; i < prev_states.size(); i++)
@@ -174,19 +176,15 @@ public class GameManagement
 		Player active_player = playerManagement.getActivePlayer(matchIndex);
 		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
 		
-		if (isDraw)
+		if (!isDraw)
 		{
-			transcription.write(active_player.getSocket(), (byte)'M');
-			transcription.write(active_player.getSocket(), "You lose!");
-			transcription.write(inactive_player.getSocket(), (byte)'M');
-			transcription.write(inactive_player.getSocket(), "You win!");
+			sendMessageToPlayer(active_player, 'E', "You lose!");
+			sendMessageToPlayer(inactive_player, 'E', "You win!");
 		}
 		else
 		{
-			transcription.write(active_player.getSocket(), (byte)'M');
-			transcription.write(active_player.getSocket(), "It's a draw!");
-			transcription.write(inactive_player.getSocket(), (byte)'M');
-			transcription.write(inactive_player.getSocket(), "It's a draw!");
+			sendMessageToPlayer(active_player, 'E', "It's a draw!");
+			sendMessageToPlayer(inactive_player, 'E', "It's a draw!");
 		}
 	}
 	
@@ -194,21 +192,41 @@ public class GameManagement
 	{
 		previous_states.get(matchIndex).clear();
 		drawCounter.set(matchIndex, 0);
+		
 	}
 	
 	public void rematch(int matchIndex)
 	{
-		boards.set(matchIndex, new Board());
-		playerManagement.swapTurnOrder(matchIndex);
-		resetDrawCounters(matchIndex);
-		startTurn(matchIndex);
+		boolean rematchStatus = rematchStandby.get(matchIndex);
+		if (!rematchStatus)
+			rematchStatus = true;
+		else
+		{
+			boards.set(matchIndex, new Board());
+			playerManagement.swapTurnOrder(matchIndex);
+			resetDrawCounters(matchIndex);
+			rematchStandby.set(matchIndex, false);
+			
+			Player active_player = playerManagement.getActivePlayer(matchIndex);
+			Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
+			sendMessageToPlayer(active_player, 'B', boards.get(matchIndex));
+			sendMessageToPlayer(inactive_player, 'B', boards.get(matchIndex));
+			
+			startTurn(matchIndex);
+		}
 	}
 	
 	public void closeGame(int matchIndex)
 	{
+		Player active_player = playerManagement.getActivePlayer(matchIndex);
+		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
+		sendMessageToPlayer(active_player, 'D', " ");
+		sendMessageToPlayer(inactive_player, 'D', " ");
+		
 		playerManagement.dismissPlayers(matchIndex);
 		boards.set(matchIndex, null);
 		drawCounter.set(matchIndex, -1);
+		rematchStandby.set(matchIndex, null);
 		previous_states.set(matchIndex, null);
 	}
 }

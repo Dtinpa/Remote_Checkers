@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.locks.Lock;
@@ -13,6 +14,7 @@ public class Connect
 	private Send send; 
 	private Listen listen; 
 	private Transcription transcription; 
+	private OutConsole console = new OutConsole();
 	
 	public Connect()
 	{
@@ -26,34 +28,37 @@ public class Connect
 		try 
 		{
 			serverSocket = new ServerSocket(9900);
+			InetAddress server = InetAddress.getLocalHost();
+			console.write("Server running at IP Address \"" + server.getHostName() + "\"");
+			
 			while (true)
 			{
-					outFile.write("Sever ready to accept a new client.");
-					//Blocking call until a client is connected 
-					socket = serverSocket.accept();
-					outFile.write("Socket connected: " + socket.getInetAddress() + ":" + socket.getPort());
-					lock.tryLock();
-					transcription.addClientSocket(socket);
-					int index = transcription.getSocketIndex(socket);
-					//Stop passing sockets, start passing the index to align with 
-					//the other parallel arrays 
-					lock.unlock();
-					
-					outFile.write("Added client to client storage.");
-					
-					lock.tryLock(); 
-					send = new Send(index);
-					
-					//Send byte C to allow drawing of board
-					//byte thisByte = (byte) 'C'; 
-					//send.sendMessage(thisByte);
-					//send.sendMessage("Messgage from the Server");
-					
-					
-					MatchMaking maker = MatchMaking.getInstance(); 
-					maker.matchClients();
-					
-					lock.unlock();
+				outFile.write("Sever ready to accept a new client.");
+				//Blocking call until a client is connected 
+				socket = serverSocket.accept();
+				outFile.write("Socket connected: " + socket.getInetAddress() + ":" + socket.getPort());
+				lock.tryLock();
+				transcription.addClientSocket(socket);
+				int index = transcription.getSocketIndex(socket);
+				//Stop passing sockets, start passing the index to align with 
+				//the other parallel arrays 
+				lock.unlock();
+				
+				outFile.write("Added client to client storage.");
+				
+				lock.tryLock(); 
+				send = new Send(index);
+				
+				//Send byte C to allow drawing of board
+				//byte thisByte = (byte) 'C'; 
+				//send.sendMessage(thisByte);
+				//send.sendMessage("Messgage from the Server");
+				
+				
+				MatchMaking maker = MatchMaking.getInstance(); 
+				maker.matchClients();
+				
+				lock.unlock();
 			}
 		}
 		catch (IOException e) 

@@ -19,7 +19,7 @@ public class InClient extends Input
 	{
 		logging.write("Getting socket.");
 		
-		clientSocket = getSocketToUse();
+		//clientSocket = getSocketToUse();
 		
 		try 
 		{

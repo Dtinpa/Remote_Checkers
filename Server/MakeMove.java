@@ -37,8 +37,8 @@ public class MakeMove
 		Element selected = board.getSpace(move.selected_row, move.selected_column);
 		int captured_row = 0, captured_column = 0;
 		
-		captured_row = (move.destination_row > 0) ? move.destination_row - 1 : move.destination_row + 1;
-		captured_column = (move.destination_column > 0) ? move.destination_column - 1 : move.destination_column + 1;
+		captured_row = (move.destination_row > move.selected_row) ? move.destination_row - 1 : move.destination_row + 1;
+		captured_column = (move.destination_column > move.selected_column) ? move.destination_column - 1 : move.destination_column + 1;
 		
 		boolean hasKing = false;
 		if (selected == Element.RED && move.destination_row == Board.BLUE_END)

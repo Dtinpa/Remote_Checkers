@@ -2,17 +2,18 @@ import java.net.Socket;
 
 public class Listen
 {
-	private InClient input; 
-	private Transcription transcription; 
+	private InClient input;
+	//private Transcription transcription; 
 	private OutFile output; 
 	private Parser parser; 
 	
-	public Listen(Integer socketIndex)
+	//public Listen(Integer socketIndex)
+	public Listen(Socket socket)
 	{
 		parser = new Parser(); 
-		transcription = transcription.getTranscription(); 
-		Socket socket = transcription.getSocket(socketIndex); 
-		input = new InClient(socket); 
+		//transcription = Transcription.getTranscription(); 
+		//Socket socket = transcription.getSocket(socketIndex); 
+		input = new InClient(socket);
 		output = OutFile.getInstance(); 
 	}
 	

@@ -7,7 +7,7 @@ public class ValidMoves extends Valid
 		super(board);
 	}
 
-	public Board find(int game_index, int selected_row, int selected_column)
+	public Board find(int game_index, int selected_row, int selected_column, boolean jumpOnly)
 	{
 		Board board = this.boards.get(game_index);
 		Board clone = board.clone();
@@ -45,7 +45,7 @@ public class ValidMoves extends Valid
 				}
 			}
 		}
-		else if (board.canStep(selected_row, selected_column))
+		else if (board.canStep(selected_row, selected_column) && !jumpOnly)
 		{
 			if (board.isRedPiece(selected_row, selected_column))
 			{
