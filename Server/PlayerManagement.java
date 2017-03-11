@@ -1,10 +1,8 @@
+import java.net.Socket;
 import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class PlayerManagement
 {	
-	private static Lock lock = new ReentrantLock(); 
 	private static PlayerManagement instance; 
 	private ArrayList<Player> playerOnes;
 	private ArrayList<Player> playerTwos;
@@ -19,40 +17,47 @@ public class PlayerManagement
 	
 	public static PlayerManagement getInstance()
 	{
-		lock.tryLock();
 		if (instance == null)
 		{
-			lock.tryLock();
 			instance = new PlayerManagement(); 
 		}
-		lock.unlock();
 		return instance; 
 	}
 	
-	public Player getPlayerOne(int game_index)
+	public Player getPlayerOne(int matchIndex)
 	{
-		return playerOnes.get(game_index);
+		return playerOnes.get(matchIndex);
 	}
 	
-	public Player getPlayerTwo(int game_index)
+	public Player getPlayerTwo(int matchIndex)
 	{
-		return playerTwos.get(game_index);
+		return playerTwos.get(matchIndex);
 	}
 	
-	public Player getActivePlayer(int game_index)
+	public Player getActivePlayer(int matchIndex)
 	{
-		return activePlayers.get(game_index);
+		return activePlayers.get(matchIndex);
 	}
 	
-	public void assignOrder(int matchIndex)
+	public Player getInactivePlayer(int matchIndex)
+	{
+		Player playerOne = playerOnes.get(matchIndex);
+		Player playerTwo = playerTwos.get(matchIndex);
+		if (activePlayers.get(matchIndex) == playerOne)
+			return playerTwo;
+		else
+			return playerOne;
+	}
+	
+	public void assignOrder(int matchIndex, Socket clientOne, Socket clientTwo)
 	{
 		Player firstPlayer = new Player();
-		firstPlayer.color = Player.BLUE;
-		firstPlayer.score = 0;
+		firstPlayer.setColor(Player.BLUE);
+		firstPlayer.setSocket(clientOne);
 		
 		Player secondPlayer = new Player();
-		secondPlayer.color = Player.RED;
-		secondPlayer.score = 0;
+		secondPlayer.setColor(Player.RED);
+		secondPlayer.setSocket(clientTwo);
 		
 		if (matchIndex == activePlayers.size())
 		{
@@ -68,28 +73,29 @@ public class PlayerManagement
 		}
 	}
 	
-	public void swapTurnOrder(int game_index)
+	public void swapTurnOrder(int matchIndex)
 	{
-		Player playerOne = playerOnes.get(game_index);
-		Player playerTwo = playerTwos.get(game_index);
-		playerOnes.set(game_index, playerTwo);
-		playerTwos.set(game_index, playerOne);
+		Player playerOne = playerOnes.get(matchIndex);
+		Player playerTwo = playerTwos.get(matchIndex);
+		playerOnes.set(matchIndex, playerTwo);
+		playerTwos.set(matchIndex, playerOne);
+		activePlayers.set(matchIndex, playerTwo);
 	}
 	
-	public void changeActivePlayer(int game_index)
+	public void changeActivePlayer(int matchIndex)
 	{
-		Player playerOne = playerOnes.get(game_index);
-		Player playerTwo = playerTwos.get(game_index);
-		if (activePlayers.get(game_index) == playerOne)
-			activePlayers.set(game_index, playerTwo);
+		Player playerOne = playerOnes.get(matchIndex);
+		Player playerTwo = playerTwos.get(matchIndex);
+		if (activePlayers.get(matchIndex) == playerOne)
+			activePlayers.set(matchIndex, playerTwo);
 		else
-			activePlayers.set(game_index, playerOne);
+			activePlayers.set(matchIndex, playerOne);
 	}
 	
-	public void dismissPlayers(int game_index)
+	public void dismissPlayers(int matchIndex)
 	{
-		playerOnes.set(game_index, null);
-		playerTwos.set(game_index, null);
-		activePlayers.set(game_index, null);
+		playerOnes.set(matchIndex, null);
+		playerTwos.set(matchIndex, null);
+		activePlayers.set(matchIndex, null);
 	}
 }

@@ -196,4 +196,10 @@ public class Board implements Serializable
 		Element space = getSpace(row, column);
 		return (space == Element.REDKING || space == Element.BLUEKING);
 	}
+	
+	public boolean isValidPiece(int row, int column)
+	{
+		Element space = getSpace(row, column);
+		return (space == Element.VALID || space == Element.VALIDKING);
+	}
 }

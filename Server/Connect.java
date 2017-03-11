@@ -50,7 +50,7 @@ public class Connect
 					//send.sendMessage("Messgage from the Server");
 					
 					
-					MatchMaking maker = new MatchMaking(); 
+					MatchMaking maker = MatchMaking.getInstance(); 
 					maker.matchClients();
 					
 					lock.unlock();

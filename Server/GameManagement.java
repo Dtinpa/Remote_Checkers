@@ -1,3 +1,4 @@
+import java.net.Socket;
 import java.util.*;
 
 public class GameManagement
@@ -7,6 +8,7 @@ public class GameManagement
 	
 	private static GameManagement singleton;
 	
+	public Transcription transcription;
 	public PlayerManagement playerManagement;
 	public ArrayList<Board> boards;
 	public ArrayList<ArrayList<BoardState>> previous_states;
@@ -17,6 +19,7 @@ public class GameManagement
 	
 	private GameManagement()
 	{
+		transcription = Transcription.getTranscription();
 		playerManagement = PlayerManagement.getInstance();
 		boards = new ArrayList<Board>();
 		previous_states = new ArrayList<ArrayList<BoardState>>();
@@ -34,9 +37,9 @@ public class GameManagement
 		return singleton;
 	}
 		
-	public void openGameForClients(int matchIndex)
+	public void openGameForClients(int matchIndex, Socket clientOne, Socket clientTwo)
 	{
-		playerManagement.assignOrder(matchIndex);
+		playerManagement.assignOrder(matchIndex, clientOne, clientTwo);
 		if (matchIndex == boards.size())
 		{
 			boards.add(new Board());
@@ -49,56 +52,94 @@ public class GameManagement
 			previous_states.set(matchIndex, new ArrayList<BoardState>());
 			drawCounter.set(matchIndex, 0);
 		}
+		
+		startTurn(matchIndex);
 	}
 	
-	public void startTurn(int game_index)
+	public void startTurn(int matchIndex)
 	{
-		Player active_player = playerManagement.getActivePlayer(game_index);
-		int active_color = active_player.color;
-		Board validPieceBoard = validPieces.find(game_index, active_color);
-		Board board = boards.get(game_index);
+		Player active_player = playerManagement.getActivePlayer(matchIndex);
+		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
+		
+		int active_color = active_player.getColor();
+		Board validPieceBoard = validPieces.find(matchIndex, active_color);
+		Board board = boards.get(matchIndex);
 		if (board.compare(validPieceBoard))
 		{
 			EndGameCondition win = (active_color == Player.BLUE) ? EndGameCondition.REDWIN : EndGameCondition.BLUEWIN;
-			endGame(game_index, win);
+			endGame(matchIndex, win);
 			return;
 		}
-		// Else
-		// Send ValidPiece board to ActivePlayer
+		
+		transcription.write(active_player.getSocket(), (byte)'B');
+		transcription.write(active_player.getSocket(), validPieceBoard);
+		transcription.write(active_player.getSocket(), (byte)'M');
+		transcription.write(active_player.getSocket(), "Your turn - Select a Piece to Move");
+		
+		transcription.write(inactive_player.getSocket(), (byte)'M');
+		transcription.write(inactive_player.getSocket(), "Opponent's Turn, Please Wait...");
+		// Send Normal board to Opponent?
 	}
 	
-	public void processSelectPieceMessage(int game_index, int selected_row, int selected_column)
+	public void processSelectPieceMessage(int matchIndex, int selected_row, int selected_column)
 	{
-		Board validMoveBoard = validMoves.find(game_index, selected_row, selected_column);
-		// Send ValidMove Board to ActivePlayer
+		Player active_player = playerManagement.getActivePlayer(matchIndex);
+		int active_color = active_player.getColor();
+		Board validPieceBoard = validPieces.find(matchIndex, active_color);
+		Board validMoveBoard = validMoves.find(matchIndex, selected_row, selected_column);
+		for (int i = 0; i < Board.NUM_ROW; i++)
+		{
+			for (int j = 0; j < Board.NUM_COLUMN; j++)
+			{
+				if (validPieceBoard.isValidPiece(i, j))
+				{
+					Element space = validPieceBoard.getSpace(i, j);
+					validMoveBoard.setSpace(space, i, j);
+				}
+			}
+		}
+
+		transcription.write(active_player.getSocket(), (byte)'B');
+		transcription.write(active_player.getSocket(), validMoveBoard);
+		transcription.write(active_player.getSocket(), (byte)'M');
+		transcription.write(active_player.getSocket(), "Your turn - Select a Space to Move Into or\n"
+				+ "Select a Different Piece to Move");
 	}
 	
-	public void processMoveMessage(int game_index, Move move)
+	public void processMoveMessage(int matchIndex, Move move)
 	{
 		int distance = move.getDistance();
 		if (distance == MakeMove.JUMP_DISTANCE)
 		{
-			boolean hasKing = makeMove.jump(game_index, move);
-			Board validMoveBoard = validMoves.find(game_index, move.selected_row, move.selected_column);
-			if (boards.get(game_index).compare(validMoveBoard) || hasKing)
-				endTurn(game_index);
-			//else
-			//	Send ValidMove Board to continue jump
-			//  Send Normal Board to other player
+			boolean hasKing = makeMove.jump(matchIndex, move);
+			Board validMoveBoard = validMoves.find(matchIndex, move.selected_row, move.selected_column);
+			if (boards.get(matchIndex).compare(validMoveBoard) || hasKing)
+				endTurn(matchIndex);
+			else
+			{
+				Player active_player = playerManagement.getActivePlayer(matchIndex);
+				transcription.write(active_player.getSocket(), (byte)'B');
+				transcription.write(active_player.getSocket(), validMoveBoard);
+			}
 		}
 		else if (distance == MakeMove.STEP_DISTANCE)
 		{
-			makeMove.step(game_index, move);
-			endTurn(game_index);
+			makeMove.step(matchIndex, move);
+			endTurn(matchIndex);
 		}
 	}
 	
-	public void endTurn(int game_index)
+	public void endTurn(int matchIndex)
 	{
-		Board board = boards.get(game_index);
-		// Send Normal board to both players
+		Board board = boards.get(matchIndex);
+		Player active_player = playerManagement.getActivePlayer(matchIndex);
+		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
+		transcription.write(active_player.getSocket(), (byte)'B');
+		transcription.write(active_player.getSocket(), board);
+		transcription.write(inactive_player.getSocket(), (byte)'B');
+		transcription.write(inactive_player.getSocket(), board);
 		
-		ArrayList<BoardState> prev_states = previous_states.get(game_index);
+		ArrayList<BoardState> prev_states = previous_states.get(matchIndex);
 		for (int i = 0; i < prev_states.size(); i++)
 		{
 			BoardState state = prev_states.get(i);
@@ -107,7 +148,7 @@ public class GameManagement
 				state.count++;
 				if (state.count == SAME_STATE_LIMIT)
 				{
-					endGame(game_index, EndGameCondition.DRAW);
+					endGame(matchIndex, EndGameCondition.DRAW);
 					return;
 				}
 				break;
@@ -119,64 +160,56 @@ public class GameManagement
 			}
 		}
 		
-		int drawCount = drawCounter.get(game_index);
+		int drawCount = drawCounter.get(matchIndex);
 		if (drawCount == NO_CAPTURE_LIMIT)
 		{
-			endGame(game_index, EndGameCondition.DRAW);
+			endGame(matchIndex, EndGameCondition.DRAW);
 			return;
 		}
 		
-		drawCounter.set(game_index, drawCount+1);
-		playerManagement.changeActivePlayer(game_index);
-		startTurn(game_index);
+		drawCounter.set(matchIndex, drawCount+1);
+		playerManagement.changeActivePlayer(matchIndex);
+		startTurn(matchIndex);
 	}
 	
-	public void endGame(int game_index, EndGameCondition condition)
+	public void endGame(int matchIndex, EndGameCondition condition)
 	{
-		Player player1 = playerManagement.getPlayerOne(game_index);
-		Player player2 = playerManagement.getPlayerTwo(game_index);
+		Player player1 = playerManagement.getPlayerOne(matchIndex);
+		Player player2 = playerManagement.getPlayerTwo(matchIndex);
 		
 		if (condition == EndGameCondition.BLUEWIN)
 		{
-			if (player1.color == Player.BLUE)
-				player1.score++;
-			else
-				player2.score++;
+			//Send win-loss notifs
 		}
 		else if (condition == EndGameCondition.REDWIN)
 		{
-			if (player1.color == Player.RED)
-				player1.score++;
-			else
-				player2.score++;
+			//Send win-loss notifs
 		}
-		
-		// Send end-game notification
-		
-		// Send Rematch request
-		// Call rematch() if both accepts
-		// Call closeGame() if one denies
+		else if (condition == EndGameCondition.DRAW)
+		{
+			//Send draw notifs
+		}
 	}
 	
-	public void resetDrawCounters(int game_index)
+	public void resetDrawCounters(int matchIndex)
 	{
-		previous_states.get(game_index).clear();
-		drawCounter.set(game_index, 0);
+		previous_states.get(matchIndex).clear();
+		drawCounter.set(matchIndex, 0);
 	}
 	
-	public void rematch(int game_index)
+	public void rematch(int matchIndex)
 	{
-		boards.set(game_index, new Board());
-		playerManagement.swapTurnOrder(game_index);
-		resetDrawCounters(game_index);
-		startTurn(game_index);
+		boards.set(matchIndex, new Board());
+		playerManagement.swapTurnOrder(matchIndex);
+		resetDrawCounters(matchIndex);
+		startTurn(matchIndex);
 	}
 	
-	public void closeGame(int game_index)
+	public void closeGame(int matchIndex)
 	{
-		playerManagement.dismissPlayers(game_index);
-		boards.set(game_index, null);
-		drawCounter.set(game_index, -1);
-		previous_states.set(game_index, null);
+		playerManagement.dismissPlayers(matchIndex);
+		boards.set(matchIndex, null);
+		drawCounter.set(matchIndex, -1);
+		previous_states.set(matchIndex, null);
 	}
 }
