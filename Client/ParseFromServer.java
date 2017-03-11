@@ -14,7 +14,6 @@ public class ParseFromServer extends Parser
 			case 'C':
 				String color = (String) message;
 				Game.getGame().setColor(color);
-				
 				break;
 			case 'B': // Board
 				Board newBoard = (Board) message; 
@@ -28,11 +27,13 @@ public class ParseFromServer extends Parser
 				PopUp.getPopUp().setMessage(messageV);
 				PopUp.getPopUp().setTitle("Victory");
 				PopUp.getPopUp().execute();
+				break;
 			case 'D': // Defeat
 				String messageD = (String) message;
 				PopUp.getPopUp().setMessage(messageD);
 				PopUp.getPopUp().setTitle("Defeat");
 				PopUp.getPopUp().execute();
+				break;
 			default:
 				break;
 		}

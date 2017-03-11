@@ -40,10 +40,10 @@ public class Send
 		output.write(xy);
 	}
 	
-	public void sendMove(Space clicked, Space lastClicked)
+	public void sendMove(Space lastClicked, Space clicked)
 	{
 		// get translated move as string 
-		String xyxy = parser.translate(clicked, lastClicked);
+		String xyxy = parser.translate(lastClicked, clicked);
 		output.write(xyxy);
 	}
 	
