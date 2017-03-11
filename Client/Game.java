@@ -3,6 +3,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.Socket;
 
+import javax.swing.SwingWorker;
+
 
 public class Game extends Screen implements MouseListener
 {
@@ -55,11 +57,36 @@ public class Game extends Screen implements MouseListener
 		{ gameUI = new DrawGame(); }
 		gameUI.show();*/
 		
-		while(true)
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
+				{
+					protected Void doInBackground() throws Exception {                
+						System.out.println("here");
+						
+						while(true)
+						{
+							t.read();
+							//break;
+						}
+						//return null;
+				        }
+				        @Override
+				        protected void done() {
+				            try {
+				                //textArea.setText(get());
+				            } catch (Exception e) {
+				                //ignore
+				            }
+				        }
+				    };      
+				    worker.execute();
+
+		
+		
+		/*while(true)
 		{
 			t.read();
-			break;
-		}
+			//break;
+		}*/
 	}
 	
 	@Override
@@ -88,13 +115,13 @@ public class Game extends Screen implements MouseListener
 		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING)
 		{
 			lastClicked = clicked;
-			t.write('P');
+			t.write((byte)'P');
 			t.sendMove(clicked); 
 		}
 		else if (clicked.getContents() == Element.GREENSPACE)
 		{
-			t.write('S');
-			t.sendMove(clicked, lastClicked);
+			t.write((byte)'S');
+			t.sendMove(lastClicked, clicked);
 		}
 	}
 	
