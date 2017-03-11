@@ -18,7 +18,7 @@ public class Connect
 	{
 		lock = new ReentrantLock(); 
 		outFile = OutFile.getInstance();
-		transcription = transcription.getTranscription(); 
+		transcription = Transcription.getTranscription(); 
 	}
 	
 	public void acceptConnections()

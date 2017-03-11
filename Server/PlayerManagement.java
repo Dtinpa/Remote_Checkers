@@ -24,16 +24,6 @@ public class PlayerManagement
 		return instance; 
 	}
 	
-	public Player getPlayerOne(int matchIndex)
-	{
-		return playerOnes.get(matchIndex);
-	}
-	
-	public Player getPlayerTwo(int matchIndex)
-	{
-		return playerTwos.get(matchIndex);
-	}
-	
 	public Player getActivePlayer(int matchIndex)
 	{
 		return activePlayers.get(matchIndex);

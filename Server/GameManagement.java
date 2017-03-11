@@ -66,8 +66,7 @@ public class GameManagement
 		Board board = boards.get(matchIndex);
 		if (board.compare(validPieceBoard))
 		{
-			EndGameCondition win = (active_color == Player.BLUE) ? EndGameCondition.REDWIN : EndGameCondition.BLUEWIN;
-			endGame(matchIndex, win);
+			endGame(matchIndex, false);
 			return;
 		}
 		
@@ -78,7 +77,6 @@ public class GameManagement
 		
 		transcription.write(inactive_player.getSocket(), (byte)'M');
 		transcription.write(inactive_player.getSocket(), "Opponent's Turn, Please Wait...");
-		// Send Normal board to Opponent?
 	}
 	
 	public void processSelectPieceMessage(int matchIndex, int selected_row, int selected_column)
@@ -102,8 +100,7 @@ public class GameManagement
 		transcription.write(active_player.getSocket(), (byte)'B');
 		transcription.write(active_player.getSocket(), validMoveBoard);
 		transcription.write(active_player.getSocket(), (byte)'M');
-		transcription.write(active_player.getSocket(), "Your turn - Select a Space to Move Into or\n"
-				+ "Select a Different Piece to Move");
+		transcription.write(active_player.getSocket(), "Your turn - Select a Space to Move Into");
 	}
 	
 	public void processMoveMessage(int matchIndex, Move move)
@@ -148,7 +145,7 @@ public class GameManagement
 				state.count++;
 				if (state.count == SAME_STATE_LIMIT)
 				{
-					endGame(matchIndex, EndGameCondition.DRAW);
+					endGame(matchIndex, true);
 					return;
 				}
 				break;
@@ -163,7 +160,7 @@ public class GameManagement
 		int drawCount = drawCounter.get(matchIndex);
 		if (drawCount == NO_CAPTURE_LIMIT)
 		{
-			endGame(matchIndex, EndGameCondition.DRAW);
+			endGame(matchIndex, true);
 			return;
 		}
 		
@@ -172,22 +169,24 @@ public class GameManagement
 		startTurn(matchIndex);
 	}
 	
-	public void endGame(int matchIndex, EndGameCondition condition)
+	public void endGame(int matchIndex, boolean isDraw)
 	{
-		Player player1 = playerManagement.getPlayerOne(matchIndex);
-		Player player2 = playerManagement.getPlayerTwo(matchIndex);
+		Player active_player = playerManagement.getActivePlayer(matchIndex);
+		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
 		
-		if (condition == EndGameCondition.BLUEWIN)
+		if (isDraw)
 		{
-			//Send win-loss notifs
+			transcription.write(active_player.getSocket(), (byte)'M');
+			transcription.write(active_player.getSocket(), "You lose!");
+			transcription.write(inactive_player.getSocket(), (byte)'M');
+			transcription.write(inactive_player.getSocket(), "You win!");
 		}
-		else if (condition == EndGameCondition.REDWIN)
+		else
 		{
-			//Send win-loss notifs
-		}
-		else if (condition == EndGameCondition.DRAW)
-		{
-			//Send draw notifs
+			transcription.write(active_player.getSocket(), (byte)'M');
+			transcription.write(active_player.getSocket(), "It's a draw!");
+			transcription.write(inactive_player.getSocket(), (byte)'M');
+			transcription.write(inactive_player.getSocket(), "It's a draw!");
 		}
 	}
 	
