@@ -7,9 +7,9 @@ public class ParseToServer extends Parser
 		return xy; 
 	}
 	
-	public String translate(Space clicked, Space lastClicked)
+	public String translate(Space lastClicked, Space clicked)
 	{
-		String xyxy = Integer.toString(clicked.getRow()) + Integer.toString(clicked.getCol()) + Integer.toString(lastClicked.getRow()) + Integer.toString(lastClicked.getCol());
+		String xyxy = Integer.toString(lastClicked.getRow()) + Integer.toString(lastClicked.getCol()) + Integer.toString(clicked.getRow()) + Integer.toString(clicked.getCol());
 		return xyxy; 
 	}
 
