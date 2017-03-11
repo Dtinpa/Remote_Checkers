@@ -23,23 +23,23 @@ public class DrawGame extends DrawUI
 	private JPanel boardPanel;			// GUI representation of the checkerboard
 	private Space[][] board;
 	private int size;
-	private String color = "Blue";		// this will eventually be set by the constructor
+	private String color;				// this will eventually be set by the constructor
 	
 	DrawGame()		// calls createElements(), drawElements(), and registerEventHandlers(),
-	{ 					// then loads images and draws the "new game" board
+	{ 					// then loads images
 		super();
 		Space.loadImages();
-		setupBoard();
 	}
 	
 	public void displayMessage(String message)		// displays String messages from server
 	{ lblMessage.setText(message); }
 	
-	// sets player color when received from Server
+	// sets player color (and draws board) when received from Server
 	public void setColor(String color)
 	{
 		this.color = color;
-		lblPlayer.setText("Welcome, " + color + "!");	
+		lblPlayer.setText("Welcome, " + color + "!");
+		setupBoard();
 	}
 		
 	public void reDraw(Board newBoard)	// redraws only the board spaces that have updated
@@ -48,7 +48,7 @@ public class DrawGame extends DrawUI
 		{
 			for (int col=0; col<size; col++)
 			{
-				Element newElement = newBoard.getAt(row, col);
+				Element newElement = newBoard.getSpace(row, col);
 				if(board[row][col].getContents() != newElement)
 				{
 					board[row][col].setImage(newElement, color);
@@ -131,7 +131,7 @@ public class DrawGame extends DrawUI
 		lblScore.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		lblOppScore = new JLabel("Opponent: 0");
-		//lblOppScore.setFont(LABEL_FONT);
+		lblOppScore.setFont(LABEL_FONT);
 		lblOppScore.setMinimumSize(scoreSize); 
 		lblOppScore.setMaximumSize(scoreSize); 
 		lblOppScore.setPreferredSize(scoreSize);
