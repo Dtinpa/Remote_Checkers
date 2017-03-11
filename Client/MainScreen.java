@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 
+import javax.swing.JOptionPane;
+
 
 public class MainScreen extends Screen
 {
@@ -21,6 +23,8 @@ public class MainScreen extends Screen
 	{
 		if (drawMain == null)
 		{ drawMain = new DrawMain(); }
+		//resets the singleton so a new connection can be established.
+		Transcription.clear();
 		drawMain.show();
 	}
 	
@@ -38,6 +42,7 @@ public class MainScreen extends Screen
 				//Game.getGame().connect();
 				if(g == null) {
 					PopUp p = PopUp.getPopUp();
+					p.setMessageType(JOptionPane.INFORMATION_MESSAGE);
 					p.setMessage("Cannot connect to server.  Check configuration settings in the Settings Menu.");
 					p.setTitle("Connection Error");
 					p.execute();
@@ -56,7 +61,11 @@ public class MainScreen extends Screen
 				Help.getHelp().execute();
 				break;
 			case("Quit"):
-				System.exit(0);
+				PopUp p = PopUp.getPopUp();
+				p.setMessageType(JOptionPane.YES_NO_OPTION);
+				p.setMessage("Do you wish to close the application?.");
+				p.setTitle("Quit");
+				p.execute();
 				break;
 		}
 	}

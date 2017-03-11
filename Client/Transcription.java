@@ -75,7 +75,11 @@ public class Transcription
 	{
 		send.sendMessage(b);
 	}
-	
+
+	public static void clear() {
+		singleton = null;
+	}
+			
 	public void write(Object message)
 	{
 		send.sendMessage(message);
@@ -84,8 +88,8 @@ public class Transcription
 	public void sendMove(Space clicked)
 	{ send.sendMove(clicked); }
 	
-	public void sendMove(Space lastClicked, Space clicked)
-	{ send.sendMove(lastClicked, clicked); }
+	public void sendMove(Space clicked, Space lastClicked)
+	{ send.sendMove(clicked, lastClicked); }
 	
 	public void listen()
 	{ listen.retrieveMessages(); }

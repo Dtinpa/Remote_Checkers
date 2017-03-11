@@ -13,7 +13,6 @@ public class DrawPopUp extends DrawUI
 	private Component parentComponent;
 	private String title;
 	private int messageType;
-	private JScrollPane scrollPane;
 	
 	DrawPopUp()		// calls createElements(), drawElements(), and registerEventHandlers()
 	{ super(); }
@@ -21,6 +20,8 @@ public class DrawPopUp extends DrawUI
 	@Override
 	public void createElements()
 	{
+		message = "";
+		title = "";
 		parentComponent = frame;
 		messageType = JOptionPane.INFORMATION_MESSAGE;
 	}
@@ -31,6 +32,10 @@ public class DrawPopUp extends DrawUI
 	
 	public void setMessage(String m) {
 		message = m;
+	}
+	
+	public void setMessageType(int ty) {
+		messageType = ty;
 	}
 	
 	@Override
@@ -44,11 +49,36 @@ public class DrawPopUp extends DrawUI
 	@Override
 	public void show()
 	{
-		JOptionPane.showMessageDialog(
+		if(messageType == JOptionPane.INFORMATION_MESSAGE) {
+			JOptionPane.showMessageDialog(
                 parentComponent,
                 message,
                 title, 
                 messageType);
+		}
+		else if(messageType == JOptionPane.YES_NO_OPTION) {
+			int result = JOptionPane.showConfirmDialog(parentComponent, message, title, messageType);
+			if(result == JOptionPane.YES_OPTION && title == "Rematch") {
+				Transcription.getTranscription().write('Y');
+				Transcription.getTranscription().write('Y');
+			}
+			else if(result == JOptionPane.NO_OPTION && title == "Rematch") {
+				Transcription.getTranscription().write('N');
+				Transcription.getTranscription().write('N');
+				Game.getGame().dispose();
+				MainScreen.getMainScreen().execute();
+			}
+			else if(result == JOptionPane.YES_OPTION && title == "Quit") {
+				System.exit(0);
+			}
+			else if(result == JOptionPane.YES_OPTION && title == "Resign") {
+				//resign from the game
+			}
+			else {
+				//return to Main Screen
+			}
+		}
+		
 	}
 	
 	@Override

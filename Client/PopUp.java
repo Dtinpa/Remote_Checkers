@@ -36,6 +36,10 @@ public class PopUp extends Screen
 	public void setMessage(String m) {
 		drawPopUp.setMessage(m);
 	}
+	
+	public void setMessageType(int ty) {
+		drawPopUp.setMessageType(ty);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)	// logic for handling button clicks

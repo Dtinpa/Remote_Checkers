@@ -29,7 +29,7 @@ public class Send
 	public void sendMessage(Object message)
 	{
 		//TODO: Get translates stuff;
-		parser.translate(null, message); 
+		//parser.translate(null, message); 
 		output.write(message);
 	}
 	
@@ -40,10 +40,10 @@ public class Send
 		output.write(xy);
 	}
 	
-	public void sendMove(Space lastClicked, Space clicked)
+	public void sendMove(Space clicked, Space lastClicked)
 	{
 		// get translated move as string 
-		String xyxy = parser.translate(lastClicked, clicked);
+		String xyxy = parser.translate(clicked, lastClicked);
 		output.write(xyxy);
 	}
 	

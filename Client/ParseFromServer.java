@@ -1,3 +1,4 @@
+import javax.swing.JOptionPane;
 
 public class ParseFromServer extends Parser
 {
@@ -22,17 +23,31 @@ public class ParseFromServer extends Parser
 			case 'M': // String Message
 				Game.getGame().displayMessage((String)message);
 				break;
-			case 'V': // Victory
+			case 'E': // End
 				String messageV = (String) message;
-				PopUp.getPopUp().setMessage(messageV);
-				PopUp.getPopUp().setTitle("Victory");
-				PopUp.getPopUp().execute();
+				PopUp p = PopUp.getPopUp();
+				p.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+				p.setMessage(messageV);
+				p.setTitle("Game Over");
+				p.execute();
 				break;
-			case 'D': // Defeat
-				String messageD = (String) message;
-				PopUp.getPopUp().setMessage(messageD);
-				PopUp.getPopUp().setTitle("Defeat");
-				PopUp.getPopUp().execute();
+			case 'R': //Rematch
+				String messageR = (String) message;
+				PopUp p1 = PopUp.getPopUp();
+				p1.setMessageType(JOptionPane.YES_NO_OPTION);
+				p1.setMessage(messageR);
+				p1.setTitle("Rematch");
+				p1.execute();
+				break;
+			case 'D': //Disconnect
+				Game.getGame().dispose();
+				MainScreen.getMainScreen().execute();
+				
+				PopUp p2 = PopUp.getPopUp();
+				p2.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+				p2.setMessage("Opponent has been disconnected from the server.");
+				p2.setTitle("Disconnected");
+				p2.execute();
 				break;
 			default:
 				break;

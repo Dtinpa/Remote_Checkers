@@ -3,7 +3,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.Socket;
 
-import javax.swing.SwingWorker;
+import javax.swing.JOptionPane;
 
 
 public class Game extends Screen implements MouseListener
@@ -57,36 +57,11 @@ public class Game extends Screen implements MouseListener
 		{ gameUI = new DrawGame(); }
 		gameUI.show();*/
 		
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
-				{
-					protected Void doInBackground() throws Exception {                
-						System.out.println("here");
-						
-						while(true)
-						{
-							t.read();
-							//break;
-						}
-						//return null;
-				        }
-				        @Override
-				        protected void done() {
-				            try {
-				                //textArea.setText(get());
-				            } catch (Exception e) {
-				                //ignore
-				            }
-				        }
-				    };      
-				    worker.execute();
-
-		
-		
-		/*while(true)
+		while(true)
 		{
 			t.read();
-			//break;
-		}*/
+			break;
+		}
 	}
 	
 	@Override
@@ -99,8 +74,11 @@ public class Game extends Screen implements MouseListener
 		switch(e.getActionCommand())
 		{
 			case("Resign"):
-				//TODO: Take this out
-				System.out.println("resign");
+				PopUp p = PopUp.getPopUp();
+				p.setMessageType(JOptionPane.YES_NO_OPTION);
+				p.setMessage("Do you wish to resign?");
+				p.setTitle("Resign");
+				p.execute();
 				break;
 			case("Help"):
 				Help.getHelp().execute();
@@ -115,13 +93,14 @@ public class Game extends Screen implements MouseListener
 		if (clicked.getContents() == Element.VALID || clicked.getContents() == Element.VALIDKING)
 		{
 			lastClicked = clicked;
-			t.write((byte)'P');
+			t.write('P');
 			t.sendMove(clicked); 
 		}
 		else if (clicked.getContents() == Element.GREENSPACE)
 		{
-			t.write((byte)'S');
-			t.sendMove(lastClicked, clicked);
+			t.write('S');
+			t.sendMove(clicked, lastClicked);
+			lastClicked = clicked;
 		}
 	}
 	

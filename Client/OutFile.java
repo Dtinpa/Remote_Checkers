@@ -93,8 +93,8 @@ public class OutFile extends Output
 				}
 				file.createNewFile();
 			}
-			catch(Exception e){
-				console.writeError(ex.getMessage());
+			catch(SecurityException | IOException e){
+				console.writeError(e.getMessage());
 			}
 		}
 	}
