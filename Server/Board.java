@@ -2,6 +2,10 @@ import java.io.Serializable;
 
 public class Board implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final static int NUM_ROW = 8;
 	final static int NUM_COLUMN = 8;
 	final static int RED_END = 0;
@@ -82,7 +86,7 @@ public class Board implements Serializable
 		return s;
 	}
 	
-	public Board clone()
+	public Board cloneBoard()
 	{
 		Board clone = new Board();
 		for (int i = 0; i < NUM_ROW; i++)

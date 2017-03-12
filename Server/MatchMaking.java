@@ -100,43 +100,48 @@ public class MatchMaking
 		}
 	}
 	
-	public int getClientIndex(ClientInfo disconnected)
-	{
-		int index = -1;
-		index = clientOnes.indexOf(disconnected);
-		if (index == -1)
-			index = clientTwos.indexOf(disconnected);
-		return index;
-	}
-	
 	public void unmatchClients(int matchIndex, Socket disconnectedClient)
 	{
 		Transcription transcription = Transcription.getTranscription();
 		
-		try
+		if (clientOnes.size() > matchIndex)
 		{
-			GameManagement.getInstance().closeGame(matchIndex);
-			ClientInfo clientOne = clientOnes.get(matchIndex);
-			ClientInfo clientTwo = clientTwos.get(matchIndex);
-			
-			if (disconnectedClient == clientOne.getSocket())
+			if (clientOnes.get(matchIndex) != null && clientTwos.get(matchIndex) != null)
 			{
-				transcription.write(clientTwo.getSocket(), (byte)'D');
-				transcription.write(clientTwo.getSocket(), "");
-				clientTwo.getSocket().close();
+				try
+				{
+					GameManagement.getInstance().closeGame(matchIndex);
+					ClientInfo clientOne = clientOnes.get(matchIndex);
+					ClientInfo clientTwo = clientTwos.get(matchIndex);
+					
+					if (disconnectedClient == clientOne.getSocket())
+					{
+						transcription.write(clientTwo.getSocket(), (byte)'D');
+						transcription.write(clientTwo.getSocket(), "");
+						clientTwo.getSocket().close();
+						clientOnes.set(matchIndex, null);
+					}
+					else
+					{
+						transcription.write(clientOne.getSocket(), (byte)'D');
+						transcription.write(clientOne.getSocket(), "");
+						clientOne.getSocket().close();
+						clientTwos.set(matchIndex, null);
+					}
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
 			}
+			else if (clientOnes.get(matchIndex) == null && clientTwos.get(matchIndex) != null)
+				clientTwos.set(matchIndex, null);
+			else if (clientOnes.get(matchIndex) != null && clientTwos.get(matchIndex) == null)
+				clientOnes.set(matchIndex, null);
 			else
-			{
-				transcription.write(clientOne.getSocket(), (byte)'D');
-				transcription.write(clientOne.getSocket(), "");
-				clientOne.getSocket().close();
-			}
-			clientOnes.set(matchIndex, null);
-			clientTwos.set(matchIndex, null);
+				transcription.getClientForMatching();
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		else
+			transcription.getClientForMatching();
 	}
 }

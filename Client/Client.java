@@ -10,5 +10,4 @@ public class Client
 	{
 		MainScreen.getMainScreen().execute();
 	}
-
 }

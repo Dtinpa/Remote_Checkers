@@ -57,7 +57,7 @@ public class GameManagement
 			rematchStandby.set(matchIndex, false);
 		}
 		
-		//falseBoard(matchIndex);
+		falseBoard(matchIndex);
 		startTurn(matchIndex);
 	}
 	
@@ -72,7 +72,7 @@ public class GameManagement
 					board.setSpace(Element.BLACKSPACE, i, j);
 			}
 		}
-		board.setSpace(Element.REDKING, 3, 3);
+		board.setSpace(Element.REDKING, 2, 2);
 		board.setSpace(Element.BLUEKING, 4, 4);
 		
 		Player active_player = playerManagement.getActivePlayer(matchIndex);
@@ -166,6 +166,10 @@ public class GameManagement
 			if (state.board.compare(board))
 			{
 				state.count++;
+				System.out.println("Update state count");
+				System.out.println(state.board);
+				System.out.println(state.count + " " + (state.count == SAME_STATE_LIMIT));
+				System.out.println();
 				if (state.count == SAME_STATE_LIMIT)
 				{
 					endGame(matchIndex, true);
@@ -177,6 +181,9 @@ public class GameManagement
 			{
 				BoardState new_state = new BoardState(board);
 				prev_states.add(new_state);
+				System.out.println("Add to prev states");
+				System.out.println(new_state.board);
+				System.out.println();
 			}
 		}
 		
@@ -211,9 +218,9 @@ public class GameManagement
 	
 	public void resetDrawCounters(int matchIndex)
 	{
+		System.out.println("Reset draw counters\n");
 		previous_states.get(matchIndex).clear();
 		drawCounter.set(matchIndex, 0);
-		
 	}
 	
 	public void rematch(int matchIndex)

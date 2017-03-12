@@ -10,7 +10,7 @@ public class ValidPieces extends Valid
 	public Board find(int game_index, int active_color)
 	{
 		Board board = this.boards.get(game_index);
-		Board clone = board.clone();
+		Board clone = board.cloneBoard();
 		
 		if (hasJumpPieces(board, active_color))
 		{

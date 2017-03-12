@@ -9,7 +9,6 @@ public class Parser
 	public void translate(Byte messageType, Object message, Integer matchIndex)
 	{
 		GameManagement gM = GameManagement.getInstance();
-		MatchMaking maker = MatchMaking.getInstance();
 		
 		System.out.println(messageType);
 		System.out.println("Message:\n" + message);

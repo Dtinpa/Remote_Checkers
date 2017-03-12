@@ -10,7 +10,7 @@ public class ValidMoves extends Valid
 	public Board find(int game_index, int selected_row, int selected_column, boolean jumpOnly)
 	{
 		Board board = this.boards.get(game_index);
-		Board clone = board.clone();
+		Board clone = board.cloneBoard();
 		
 		if (board.canJump(selected_row, selected_column))
 		{

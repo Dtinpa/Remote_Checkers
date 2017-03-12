@@ -10,9 +10,7 @@ public class Connect
 	private Lock lock; 
 	private Socket socket;
 	private ServerSocket serverSocket;
-	private OutFile outFile; 
-	private Send send; 
-	private Listen listen; 
+	private OutFile outFile;
 	private Transcription transcription; 
 	private OutConsole console = new OutConsole();
 	
@@ -39,21 +37,13 @@ public class Connect
 				outFile.write("Socket connected: " + socket.getInetAddress() + ":" + socket.getPort());
 				lock.tryLock();
 				transcription.addClientSocket(socket);
-				int index = transcription.getSocketIndex(socket);
 				//Stop passing sockets, start passing the index to align with 
 				//the other parallel arrays 
 				lock.unlock();
 				
 				outFile.write("Added client to client storage.");
 				
-				lock.tryLock(); 
-				send = new Send(index);
-				
-				//Send byte C to allow drawing of board
-				//byte thisByte = (byte) 'C'; 
-				//send.sendMessage(thisByte);
-				//send.sendMessage("Messgage from the Server");
-				
+				lock.tryLock();
 				
 				MatchMaking maker = MatchMaking.getInstance(); 
 				maker.matchClients();

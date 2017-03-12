@@ -3,18 +3,14 @@ import java.net.Socket;
 public class Listen
 {
 	private InClient input;
-	//private Transcription transcription; 
 	private OutFile output; 
 	private Parser parser;
 	private Socket socket;
 	
-	//public Listen(Integer socketIndex)
 	public Listen(Socket socket)
 	{
 		this.socket = socket;
-		parser = new Parser(); 
-		//transcription = Transcription.getTranscription(); 
-		//Socket socket = transcription.getSocket(socketIndex); 
+		parser = new Parser();
 		input = new InClient(socket);
 		output = OutFile.getInstance(); 
 	}
@@ -32,7 +28,7 @@ public class Listen
 			{
 				output.write("Client has disconnected.");
 				MatchMaking.getInstance().unmatchClients(matchIndex, socket);
-				return; 
+				return;
 			}
 			System.out.println(retVal[0].toString());
 			System.out.println(retVal[1].toString());
