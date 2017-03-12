@@ -1,8 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.Socket;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -20,7 +18,6 @@ public class Game extends Screen implements MouseListener
 	
 	private Game()
 	{
-		//TODO: Check for null....if this does not happen then send message and quit
 		t = Transcription.getTranscription();
 		if(t == null) {
 			serverCheck = false;
@@ -55,38 +52,35 @@ public class Game extends Screen implements MouseListener
 	@Override
 	public void execute()
 	{
-		/*if (gameUI == null)
-		{ gameUI = new DrawGame(); }
-		gameUI.show();*/
-		
 		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
 		{
-			protected Void doInBackground() throws Exception {                
-				System.out.println("here");
-				
+			protected Void doInBackground() throws Exception
+			{                
 				while(true)
 				{
 					t.read();
-					//break;
 				}
-				//return null;
-		        }
-		        @Override
-		        protected void done() {
-		            try {
-		                //textArea.setText(get());
-		            } catch (Exception e) {
-		                //ignore
-		            }
-		        }
-		    };      
-		    worker.execute();
+			}
+			
+			@Override
+			protected void done()
+			{
+				try { }
+				catch (Exception e) { }
+			}
+		};      
+		worker.execute();
 	}
 	
 	@Override
 	public void dispose()
 	{ gameUI.hide(); }
 
+	public static void clear()
+	{
+		singleton = null;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e)	// logic for handling button clicks
 	{

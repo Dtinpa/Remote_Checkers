@@ -4,15 +4,9 @@ public class ParseFromServer extends Parser
 {
 	public void translate(Byte messageType, Object message)
 	{
-		//TODO: MOVE THIS LOGIC ELSE WHERE THIS IS MEANT TO PARSE ONLY NOT 
-		//EXECUTE THESE THINGS
-		
-		System.out.println(messageType);
-		System.out.println(message);
-		
 		switch(messageType)
 		{
-			case 'C':
+			case 'C':	// Connection
 				String color = (String) message;
 				Game.getGame().setColor(color);
 				break;
@@ -39,7 +33,6 @@ public class ParseFromServer extends Parser
 			case 'D': //Disconnect
 				Game.getGame().dispose();
 				MainScreen.getMainScreen().execute();
-				
 				PopUp p2 = PopUp.getPopUp();
 				p2.setMessageType(JOptionPane.INFORMATION_MESSAGE);
 				p2.setMessage("Opponent has been disconnected from the server.");

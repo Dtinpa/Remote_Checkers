@@ -25,6 +25,7 @@ public class MainScreen extends Screen
 		{ drawMain = new DrawMain(); }
 		//resets the singleton so a new connection can be established.
 		Transcription.clear();
+		Game.clear();
 		drawMain.show();
 	}
 	
@@ -39,19 +40,19 @@ public class MainScreen extends Screen
 		{
 			case("Start Game"):
 				Game g = Game.getGame();
-				//Game.getGame().connect();
-				if(g == null) {
+				if(g == null)
+				{
 					PopUp p = PopUp.getPopUp();
 					p.setMessageType(JOptionPane.INFORMATION_MESSAGE);
 					p.setMessage("Cannot connect to server.  Check configuration settings in the Settings Menu.");
 					p.setTitle("Connection Error");
 					p.execute();
 				}
-				else {
+				else
+				{
 					dispose();
 					g.execute();
 				}
-				
 				break;
 			case("Settings"):
 				dispose();

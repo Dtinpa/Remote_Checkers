@@ -18,13 +18,6 @@ public class OutServer extends Output
 		logging = OutFile.getInstance(); 
 	}
 	
-	/*public void write(Object message)
-	{
-		logging.write("Getting socket.");	
-		
-		write(socket, message); 
-	}*/
-	
 	public void write(Object message)
 	{
 		logging.write("Wrote to server.");
@@ -36,9 +29,7 @@ public class OutServer extends Output
 			stream.flush();
 		}
 		catch (SocketException e)
-		{
-			//Connection Reset....disconnection from server 
-		}
+		{ }
 		catch (IOException e) 
 		{
 			logging.write(e.getMessage());
@@ -58,30 +49,6 @@ public class OutServer extends Output
 			write(messages[i]); 
 		}
 	}
-	
-	/*public void write(byte b)
-	{
-		logging.write("Wrote to server.");
-		if (socket == null) return; 
-		try 
-		{
-			ObjectOutputStream stream = new ObjectOutputStream(socket.getOutputStream());
-			stream.writeObject(b);
-			stream.flush(); 
-			
-		}
-		catch (SocketException e)
-		{
-			//Connection Reset....disconnection from server 
-		}
-		catch (IOException e) 
-		{
-			logging.write(e.getMessage());
-			return; 
-		} 
-		
-		logging.write("Sucessfully wrote to client.");
-	}*/
 	
 	public void writeError(String message)
 	{

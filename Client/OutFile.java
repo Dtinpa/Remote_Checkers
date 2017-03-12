@@ -20,8 +20,6 @@ public class OutFile extends Output
 	
 	private OutFile(){}
 	
-	//TODO: LOOK AT THIS FILE?
-	
 	public static OutFile getInstance()
 	{
 		if (outFile == null)
@@ -86,14 +84,14 @@ public class OutFile extends Output
 		}
 		catch(Exception ex)
 		{
-			try {
+			try
+			{
 				if (!file.getParentFile().mkdirs())
-				{
-					//Error
-				}
+				{ }
 				file.createNewFile();
 			}
-			catch(SecurityException | IOException e){
+			catch(SecurityException | IOException e)
+			{
 				console.writeError(e.getMessage());
 			}
 		}

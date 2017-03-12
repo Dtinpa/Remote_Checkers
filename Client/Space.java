@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 public class Space extends JPanel
 {
+	private static final long serialVersionUID = 1L;
 	public static ImageIcon WHITE_SQUARE;			// board images shared across all instances of the Space class
 	public static ImageIcon BLACK_SQUARE;
 	public static ImageIcon GREEN_SQUARE;

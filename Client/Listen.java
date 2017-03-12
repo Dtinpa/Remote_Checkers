@@ -59,7 +59,6 @@ public class Listen
 			}
 		} 
 		
-		//lock.tryLock(); 
 		Byte type = types.remove(); 
 		Object message = messages.remove();
 		Object[] retValue = {type, message};
@@ -70,7 +69,6 @@ public class Listen
 		
 		System.out.println(type);
 		System.out.println(message);
-		//lock.unlock();
 		
 		return retValue; 
 	}

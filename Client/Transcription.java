@@ -7,8 +7,6 @@ public class Transcription
 	private Connect connect;
 	private Listen listen;
 	private Send send;
-	//private ParseToServer parseToServer;
-	//private ParseFromServer parseFromServer;
 	private Socket socket;
 	private OutFile logging; 
 	private static Transcription singleton;
@@ -44,7 +42,6 @@ public class Transcription
 			}
 		};  
 		listenThread.start();
-		//read();
 	}
 	
 	public static Transcription getTranscription()	// implements singleton
@@ -84,10 +81,12 @@ public class Transcription
 	
 	public void closeSocket()
 	{
-		try {
+		try
+		{
 			socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (IOException e)
+		{
 			logging.writeError(e.getMessage());
 		}
 	}

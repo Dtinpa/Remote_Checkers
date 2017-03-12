@@ -1,10 +1,5 @@
 import java.awt.Component;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 
 public class DrawPopUp extends DrawUI
@@ -71,7 +66,9 @@ public class DrawPopUp extends DrawUI
 				System.exit(0);
 			}
 			else if(result == JOptionPane.YES_OPTION && title == "Resign") {
-				//resign from the game
+				Transcription.getTranscription().closeSocket();
+				Game.getGame().dispose();
+				MainScreen.getMainScreen().execute();
 			}
 			else {
 				//return to Main Screen

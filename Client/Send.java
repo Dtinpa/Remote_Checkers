@@ -23,13 +23,12 @@ public class Send
 	
 	public void sendMessage(byte b)
 	{
+		// this will be a byte signifying the type of the following object/message
 		output.write(b);
 	}
 	
 	public void sendMessage(Object message)
 	{
-		//TODO: Get translates stuff;
-		//parser.translate(null, message); 
 		output.write(message);
 	}
 	

@@ -13,27 +13,6 @@ public class InServer extends Input
 		clientSocket = s; 
 	}
 	
-	/*public Byte readByte()		// read first byte to determine message type
-	{
-		try
-		{ 
-			ObjectInputStream stream = new ObjectInputStream(clientSocket.getInputStream());
-			
-			Byte b = (Byte)stream.readObject();
-			System.out.println(b);
-			return b; 
-		}
-		catch (IOException e)
-		{
-			logging.writeError(e.getMessage());
-		} 
-		catch (ClassNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}*/
-	
 	public Object read() 
 	{
 		try 

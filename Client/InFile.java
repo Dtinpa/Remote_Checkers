@@ -1,10 +1,6 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.ObjectInputStream;
 
 public class InFile extends Input
 {
