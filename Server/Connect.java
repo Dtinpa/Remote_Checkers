@@ -7,8 +7,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Connect
 {
-	private Lock lock; 
-	private Socket socket;
+	private Lock lock;
 	private ServerSocket serverSocket;
 	private OutFile outFile;
 	private Transcription transcription; 
@@ -18,7 +17,7 @@ public class Connect
 	{
 		lock = new ReentrantLock(); 
 		outFile = OutFile.getInstance();
-		transcription = Transcription.getTranscription(); 
+		transcription = Transcription.getInstance(); 
 	}
 	
 	public void acceptConnections()
@@ -33,7 +32,7 @@ public class Connect
 			{
 				outFile.write("Sever ready to accept a new client.");
 				//Blocking call until a client is connected 
-				socket = serverSocket.accept();
+				Socket socket = serverSocket.accept();
 				outFile.write("Socket connected: " + socket.getInetAddress() + ":" + socket.getPort());
 				lock.tryLock();
 				transcription.addClientSocket(socket);
@@ -61,10 +60,4 @@ public class Connect
 	{
 		return serverSocket; 
 	}
-	
-	public Socket getSocket()
-	{
-		return socket; 
-	}
-
 }

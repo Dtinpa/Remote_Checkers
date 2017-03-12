@@ -35,30 +35,22 @@ public class MatchMaking
 	
 	public void matchClients()
 	{
-		Transcription transcription = Transcription.getTranscription();
+		Transcription transcription = Transcription.getInstance();
 		int matchIndex = getIndexForNewMatch();
 		
-		//was: transcription.getClientsCount() >= 2 
-		//Check else 
 		if (transcription.getClientsCount() % 2 == 0)
 		{
 			
 			ClientInfo firstClient = transcription.getClientForMatching();
 			ClientInfo secondClient = transcription.getClientForMatching();
 			
-			//Example of how to write to the client
 			transcription.write(secondClient.getSocket(), (byte)'C');
 			transcription.write(secondClient.getSocket(), "Red");
-			
-			
-			firstClient.setGameIndex(matchIndex);
-			secondClient.setGameIndex(matchIndex);
 			
 			Thread listenThread = new Thread()
 			{
 				public void run()
 				{
-					//listen = new Listen(matchIndex);
 					Listen listen = new Listen(secondClient.getSocket());
 					listen.retrieveMessages(matchIndex);
 				}
@@ -85,14 +77,12 @@ public class MatchMaking
 			{
 				public void run()
 				{
-					//listen = new Listen(matchIndex);
 					Listen listen = new Listen(firstClient.getSocket());
 					listen.retrieveMessages(matchIndex);
 				}
 			}; 
 			listenThread.start();
 			
-			//Example of how to write to the client 
 			transcription.write(firstClient.getSocket(), (byte)'C');
 			transcription.write(firstClient.getSocket(), "Blue");
 			transcription.write(firstClient.getSocket(), (byte)'M');
@@ -102,7 +92,7 @@ public class MatchMaking
 	
 	public void unmatchClients(int matchIndex, Socket disconnectedClient)
 	{
-		Transcription transcription = Transcription.getTranscription();
+		Transcription transcription = Transcription.getInstance();
 		
 		if (clientOnes.size() > matchIndex)
 		{

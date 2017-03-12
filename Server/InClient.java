@@ -8,7 +8,6 @@ public class InClient extends Input
 	private Socket clientSocket; 
 	private OutFile logging;
 	
-	
 	public InClient(Socket s)
 	{
 		clientSocket = s;

@@ -20,13 +20,6 @@ public class OutClient extends Output
 		socket = s; 
 		logging = OutFile.getInstance(); 
 	}
-
-	/*public void write(Object message)
-	{
-		logging.write("Getting socket.");	
-		
-		write(socket, message); 
-	}*/
 	
 	public void write(String[] messages)
 	{
@@ -66,25 +59,4 @@ public class OutClient extends Output
 	{
 		logging.writeError(message);
 	}
-
-	/*public void write(byte b) 
-	{
-		
-		logging.write("Wrote to server.");
-		
-		if (socket == null) return; 
-		try 
-		{
-			ObjectOutputStream stream = new ObjectOutputStream(socket.getOutputStream());
-			stream.writeObject(b);
-			stream.flush(); 
-		}
-		catch (IOException e) 
-		{
-			logging.write(e.getMessage());
-			return; 
-		} 
-		
-		logging.write("Sucessfully wrote to client.");
-	}*/
 }

@@ -20,7 +20,7 @@ public class GameManagement
 	
 	private GameManagement()
 	{
-		transcription = Transcription.getTranscription();
+		transcription = Transcription.getInstance();
 		playerManagement = PlayerManagement.getInstance();
 		boards = new ArrayList<Board>();
 		previous_states = new ArrayList<ArrayList<BoardState>>();
@@ -57,7 +57,7 @@ public class GameManagement
 			rematchStandby.set(matchIndex, false);
 		}
 		
-		falseBoard(matchIndex);
+		//falseBoard(matchIndex);
 		startTurn(matchIndex);
 	}
 	
@@ -129,7 +129,7 @@ public class GameManagement
 		if (distance == MakeMove.JUMP_DISTANCE)
 		{
 			boolean hasKing = makeMove.jump(matchIndex, move);
-			Board validMoveBoard = validMoves.find(matchIndex, move.destination_row, move.destination_column, true);
+			Board validMoveBoard = validMoves.find(matchIndex, move.getDestinationRow(), move.getDestinationColumn(), true);
 			if (boards.get(matchIndex).compare(validMoveBoard) || hasKing)
 				endTurn(matchIndex);
 			else
@@ -160,31 +160,30 @@ public class GameManagement
 		sendMessageToPlayer(inactive_player, 'B', board);
 		
 		ArrayList<BoardState> prev_states = previous_states.get(matchIndex);
-		for (int i = 0; i < prev_states.size(); i++)
+		for (int i = prev_states.size() - 1; i >= 0; i--)
 		{
 			BoardState state = prev_states.get(i);
-			if (state.board.compare(board))
+			if (state.getBoard().compare(board))
 			{
-				state.count++;
-				System.out.println("Update state count");
-				System.out.println(state.board);
-				System.out.println(state.count + " " + (state.count == SAME_STATE_LIMIT));
-				System.out.println();
-				if (state.count == SAME_STATE_LIMIT)
+				state.incrementCount();
+				if (state.getCount() == SAME_STATE_LIMIT)
 				{
 					endGame(matchIndex, true);
 					return;
 				}
 				break;
 			}
-			else if (i == prev_states.size() - 1)
+			else if (i == 0)
 			{
-				BoardState new_state = new BoardState(board);
+				BoardState new_state = new BoardState(board.cloneBoard());
 				prev_states.add(new_state);
-				System.out.println("Add to prev states");
-				System.out.println(new_state.board);
-				System.out.println();
 			}
+		}
+		
+		if (prev_states.size() == 0)
+		{
+			BoardState new_state = new BoardState(board.cloneBoard());
+			prev_states.add(new_state);
 		}
 		
 		int drawCount = drawCounter.get(matchIndex);
@@ -218,7 +217,6 @@ public class GameManagement
 	
 	public void resetDrawCounters(int matchIndex)
 	{
-		System.out.println("Reset draw counters\n");
 		previous_states.get(matchIndex).clear();
 		drawCounter.set(matchIndex, 0);
 	}

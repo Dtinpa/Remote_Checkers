@@ -24,11 +24,11 @@ public class Parser
 				break;
 			case 'S': // Board
 				String messageS = (String) message;
-				Move move = new Move();
-				move.selected_row = Character.getNumericValue(messageS.charAt(SELECTED_ROW_INDEX));
-				move.selected_column = Character.getNumericValue(messageS.charAt(SELECTED_COLUMN_INDEX));
-				move.destination_row = Character.getNumericValue(messageS.charAt(DESTINATION_ROW_INDEX));
-				move.destination_column = Character.getNumericValue(messageS.charAt(DESTINATION_COLUMN_INDEX));
+				int s_row = Character.getNumericValue(messageS.charAt(SELECTED_ROW_INDEX));
+				int s_column = Character.getNumericValue(messageS.charAt(SELECTED_COLUMN_INDEX));
+				int d_row = Character.getNumericValue(messageS.charAt(DESTINATION_ROW_INDEX));
+				int d_column = Character.getNumericValue(messageS.charAt(DESTINATION_COLUMN_INDEX));
+				Move move = new Move(s_row, s_column, d_row, d_column);
 				
 				gM.processMoveMessage(matchIndex, move);
 				break;
