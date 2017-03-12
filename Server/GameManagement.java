@@ -57,7 +57,28 @@ public class GameManagement
 			rematchStandby.set(matchIndex, false);
 		}
 		
+		//falseBoard(matchIndex);
 		startTurn(matchIndex);
+	}
+	
+	public void falseBoard(int matchIndex)
+	{
+		Board board = boards.get(matchIndex);
+		for (int i = 0; i < Board.NUM_ROW; i++)
+		{
+			for (int j = 0; j < Board.NUM_COLUMN; j++)
+			{
+				if (board.isBluePiece(i, j) || board.isRedPiece(i, j))
+					board.setSpace(Element.BLACKSPACE, i, j);
+			}
+		}
+		board.setSpace(Element.REDKING, 3, 3);
+		board.setSpace(Element.BLUEKING, 4, 4);
+		
+		Player active_player = playerManagement.getActivePlayer(matchIndex);
+		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
+		sendMessageToPlayer(active_player, 'B', board);
+		sendMessageToPlayer(inactive_player, 'B', board);
 	}
 	
 	public void startTurn(int matchIndex)
@@ -75,7 +96,7 @@ public class GameManagement
 		}
 		
 		sendMessageToPlayer(active_player, 'B', validPieceBoard);
-		sendMessageToPlayer(active_player, 'M', "Your turn - Select a Piece to Move");
+		sendMessageToPlayer(active_player, 'M', "Your Turn - Select a Piece to Move");
 		
 		sendMessageToPlayer(inactive_player, 'M', "Opponent's Turn, Please Wait...");
 	}
@@ -199,7 +220,7 @@ public class GameManagement
 	{
 		boolean rematchStatus = rematchStandby.get(matchIndex);
 		if (!rematchStatus)
-			rematchStatus = true;
+			rematchStandby.set(matchIndex, true);
 		else
 		{
 			boards.set(matchIndex, new Board());
@@ -218,11 +239,6 @@ public class GameManagement
 	
 	public void closeGame(int matchIndex)
 	{
-		Player active_player = playerManagement.getActivePlayer(matchIndex);
-		Player inactive_player = playerManagement.getInactivePlayer(matchIndex);
-		sendMessageToPlayer(active_player, 'D', " ");
-		sendMessageToPlayer(inactive_player, 'D', " ");
-		
 		playerManagement.dismissPlayers(matchIndex);
 		boards.set(matchIndex, null);
 		drawCounter.set(matchIndex, -1);

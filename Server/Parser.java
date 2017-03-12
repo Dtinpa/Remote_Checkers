@@ -36,9 +36,6 @@ public class Parser
 			case 'Y': // Yes to rematch
 				gM.rematch(matchIndex);
 				break;
-			case 'N': // No to rematch
-				maker.unmatchClients(matchIndex);
-				break;
 		}
 	}
 

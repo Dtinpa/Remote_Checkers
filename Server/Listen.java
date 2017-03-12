@@ -5,11 +5,13 @@ public class Listen
 	private InClient input;
 	//private Transcription transcription; 
 	private OutFile output; 
-	private Parser parser; 
+	private Parser parser;
+	private Socket socket;
 	
 	//public Listen(Integer socketIndex)
 	public Listen(Socket socket)
 	{
+		this.socket = socket;
 		parser = new Parser(); 
 		//transcription = Transcription.getTranscription(); 
 		//Socket socket = transcription.getSocket(socketIndex); 
@@ -29,6 +31,7 @@ public class Listen
 			if (retVal[0] == null || retVal[1] == null)
 			{
 				output.write("Client has disconnected.");
+				MatchMaking.getInstance().unmatchClients(matchIndex, socket);
 				return; 
 			}
 			System.out.println(retVal[0].toString());

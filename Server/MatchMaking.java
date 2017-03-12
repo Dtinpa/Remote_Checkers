@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.Socket;
 import java.util.*;
 
 public class MatchMaking
@@ -108,14 +109,28 @@ public class MatchMaking
 		return index;
 	}
 	
-	public void unmatchClients(int matchIndex)
+	public void unmatchClients(int matchIndex, Socket disconnectedClient)
 	{
+		Transcription transcription = Transcription.getTranscription();
+		
 		try
 		{
 			GameManagement.getInstance().closeGame(matchIndex);
+			ClientInfo clientOne = clientOnes.get(matchIndex);
+			ClientInfo clientTwo = clientTwos.get(matchIndex);
 			
-			clientOnes.get(matchIndex).getSocket().close();
-			clientTwos.get(matchIndex).getSocket().close();
+			if (disconnectedClient == clientOne.getSocket())
+			{
+				transcription.write(clientTwo.getSocket(), (byte)'D');
+				transcription.write(clientTwo.getSocket(), "");
+				clientTwo.getSocket().close();
+			}
+			else
+			{
+				transcription.write(clientOne.getSocket(), (byte)'D');
+				transcription.write(clientOne.getSocket(), "");
+				clientOne.getSocket().close();
+			}
 			clientOnes.set(matchIndex, null);
 			clientTwos.set(matchIndex, null);
 		}
