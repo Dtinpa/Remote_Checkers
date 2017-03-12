@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.Socket;
 
 
@@ -76,8 +77,19 @@ public class Transcription
 		send.sendMessage(b);
 	}
 
-	public static void clear() {
+	public static void clear()
+	{
 		singleton = null;
+	}
+	
+	public void closeSocket()
+	{
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			logging.writeError(e.getMessage());
+		}
 	}
 			
 	public void write(Object message)

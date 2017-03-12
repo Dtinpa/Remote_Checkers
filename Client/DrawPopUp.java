@@ -59,12 +59,11 @@ public class DrawPopUp extends DrawUI
 		else if(messageType == JOptionPane.YES_NO_OPTION) {
 			int result = JOptionPane.showConfirmDialog(parentComponent, message, title, messageType);
 			if(result == JOptionPane.YES_OPTION && title == "Rematch") {
-				Transcription.getTranscription().write('Y');
-				Transcription.getTranscription().write('Y');
+				Transcription.getTranscription().write((byte)'Y');
+				Transcription.getTranscription().write("");
 			}
 			else if(result == JOptionPane.NO_OPTION && title == "Rematch") {
-				Transcription.getTranscription().write('N');
-				Transcription.getTranscription().write('N');
+				Transcription.getTranscription().closeSocket();
 				Game.getGame().dispose();
 				MainScreen.getMainScreen().execute();
 			}

@@ -30,12 +30,9 @@ public class ParseFromServer extends Parser
 				p.setMessage(messageV);
 				p.setTitle("Game Over");
 				p.execute();
-				break;
-			case 'R': //Rematch
-				String messageR = (String) message;
 				PopUp p1 = PopUp.getPopUp();
 				p1.setMessageType(JOptionPane.YES_NO_OPTION);
-				p1.setMessage(messageR);
+				p1.setMessage("Would you like to rematch?");
 				p1.setTitle("Rematch");
 				p1.execute();
 				break;
