@@ -38,13 +38,13 @@ public class Transcription
 		{
 			public void run()
 			{
-				listen.retrieveMessages(); 
+				listen.retrieveMessages();
 			}
 		};  
 		listenThread.start();
 	}
 	
-	public static Transcription getTranscription()	// implements singleton
+	public static Transcription getInstance()	// implements singleton
 	{
 		if(singleton == null)
 		{ 

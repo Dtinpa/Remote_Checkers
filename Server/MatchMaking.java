@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.net.Socket;
 import java.util.*;
 
 public class MatchMaking
@@ -51,7 +50,7 @@ public class MatchMaking
 			{
 				public void run()
 				{
-					Listen listen = new Listen(secondClient.getSocket());
+					Listen listen = new Listen(secondClient);
 					listen.retrieveMessages(matchIndex);
 				}
 			}; 
@@ -77,7 +76,7 @@ public class MatchMaking
 			{
 				public void run()
 				{
-					Listen listen = new Listen(firstClient.getSocket());
+					Listen listen = new Listen(firstClient);
 					listen.retrieveMessages(matchIndex);
 				}
 			}; 
@@ -90,7 +89,7 @@ public class MatchMaking
 		}
 	}
 	
-	public void unmatchClients(int matchIndex, Socket disconnectedClient)
+	public void unmatchClients(int matchIndex, ClientInfo disconnectedClient)
 	{
 		Transcription transcription = Transcription.getInstance();
 		
@@ -104,7 +103,7 @@ public class MatchMaking
 					ClientInfo clientOne = clientOnes.get(matchIndex);
 					ClientInfo clientTwo = clientTwos.get(matchIndex);
 					
-					if (disconnectedClient == clientOne.getSocket())
+					if (disconnectedClient == clientOne)
 					{
 						transcription.write(clientTwo.getSocket(), (byte)'D');
 						transcription.write(clientTwo.getSocket(), "");

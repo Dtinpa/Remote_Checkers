@@ -11,7 +11,7 @@ public class InClient extends Input
 	public InClient(Socket s)
 	{
 		clientSocket = s;
-		logging = OutFile.getInstance(); 
+		logging = OutFile.getInstance();
 	}
 	
 	public Object read() 

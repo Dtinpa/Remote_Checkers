@@ -10,9 +10,6 @@ public class Parser
 	{
 		GameManagement gM = GameManagement.getInstance();
 		
-		System.out.println(messageType);
-		System.out.println("Message:\n" + message);
-		
 		switch(messageType)
 		{
 			case 'P':

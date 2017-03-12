@@ -1,18 +1,16 @@
-import java.net.Socket;
-
 public class Listen
 {
 	private InClient input;
 	private OutFile output; 
 	private Parser parser;
-	private Socket socket;
+	private ClientInfo client;
 	
-	public Listen(Socket socket)
+	public Listen(ClientInfo client)
 	{
-		this.socket = socket;
+		this.client = client;
 		parser = new Parser();
-		input = new InClient(socket);
-		output = OutFile.getInstance(); 
+		input = new InClient(client.getSocket());
+		output = OutFile.getInstance();
 	}
 	
 	public void retrieveMessages(Integer matchIndex)
@@ -20,18 +18,18 @@ public class Listen
 		while(true)
 		{
 			Byte messageType = (Byte)input.read();
-			System.out.println(messageType);
 			Object message = input.read();
-			System.out.println((String)message);
 			Object[] retVal = {messageType, message}; 
 			if (retVal[0] == null || retVal[1] == null)
 			{
-				output.write("Client has disconnected.");
-				MatchMaking.getInstance().unmatchClients(matchIndex, socket);
+				output.write("Client: " + client.getIP() + " - " + client.getPort());
+				output.write("Client has disconnected");
+				MatchMaking.getInstance().unmatchClients(matchIndex, client);
 				return;
 			}
-			System.out.println(retVal[0].toString());
-			System.out.println(retVal[1].toString());
+			output.write("Client: " + client.getIP() + " - " + client.getPort());
+			output.write("Message type: " + (char)(byte) messageType);
+			output.write("Message: " + message.toString());
 			parser.translate(messageType, message, matchIndex);
 		}
 	}

@@ -18,7 +18,7 @@ public class Game extends Screen implements MouseListener
 	
 	private Game()
 	{
-		t = Transcription.getTranscription();
+		t = Transcription.getInstance();
 		if(t == null) {
 			serverCheck = false;
 		}

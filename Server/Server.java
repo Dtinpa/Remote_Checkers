@@ -5,5 +5,4 @@ public class Server
 		Transcription transcription = Transcription.getInstance();
 		transcription.openToConnections();
 	}
-
 }
